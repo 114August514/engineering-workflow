@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# CI 跑的就是 make check —— 和本地完全一样的命令。
+# 不要在这里另抄一遍具体工具的调用，否则迟早会和 stack.mk 不一致。
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # {{RUNTIME_SETUP}}
+
+      - name: setup
+        run: make setup
+
+      - name: check
+        run: make check
+
+  audit:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # audit.sh 随项目走（scripts/），不依赖任何人的本地环境。
+      # 它会把必审项、可疑点、spec↔测试 漂移写进 PR 的 Summary。
+      # 有标红项时退出码非零 —— 想让它只提示不挡合并，加 continue-on-error: true
+      - name: 生成待人审清单
+        run: ./scripts/audit.sh --base "origin/${{ github.base_ref }}" >> "$GITHUB_STEP_SUMMARY"

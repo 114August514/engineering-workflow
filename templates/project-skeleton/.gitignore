@@ -1,0 +1,36 @@
+# 密钥与本地配置 —— 最重要的一组，不要动
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+
+# 依赖
+node_modules/
+.venv/
+venv/
+__pycache__/
+target/
+vendor/
+
+# 构建产物
+dist/
+build/
+out/
+*.egg-info/
+
+# 缓存与日志
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+coverage/
+*.log
+
+# 编辑器与系统
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/settings.json
+*.swp
