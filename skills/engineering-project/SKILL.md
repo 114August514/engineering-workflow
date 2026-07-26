@@ -1,6 +1,6 @@
 ---
 name: engineering-project
-description: 从 0 搭建并持续交付一个工程化软件项目的完整工作流——需求澄清、领域建模、架构决策、可部署骨架、契约先行、垂直切片实现、代码评审、缺陷修复、里程碑复盘、上线与回滚，以及人该在哪些点上审计 AI 的产出。语言与技术栈无关：约定的是标准动词接口和目录规范，具体命令由 adapter 填。Use this whenever the user is starting a new project, scaffolding a repo, setting up engineering baselines (CI/lint/tests/hooks/deploy), designing an API or database schema, deciding a tech stack, researching whether something is worth building at all, planning how to build a feature, reviewing code or a PR, fixing a bug, doing a milestone retrospective, coordinating multiple agents or teammates on one repo, or picking up work left half-done by a previous session — including bare requests like "帮我起个新项目"、"这个需求怎么拆"、"这个该不该做"、"怎么做需求调研"、"技术栈选什么"、"怎么部署"、"CI 怎么配"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下这个阶段"、"上次做到哪了"、"多个 agent 怎么并行"、"帮我写个后端"、"前后端怎么对接". Also use it when the user describes an idea in vague terms and expects working software at the end, or when receiving/responding to code review feedback.
+description: 软件项目的工程化工作流与编码规范，语言/框架无关。覆盖：前端书写（design tokens、组件与交互状态、三态、AI 看不见界面怎么验收）、后端书写（分层、越权防护、幂等、ID 设计、事务与并发、可观测性）、前后端对接（API 契约、错误信封、分页、类型同步）、仓库初始化（标准动词接口、工程基线、CI、.gitattributes）、需求澄清与调研、领域建模、代码评审、缺陷修复、里程碑复盘、部署与回滚，以及人该在哪些点上审计 AI 的产出。Use for any of: writing or reviewing frontend/backend code, designing an API or database schema, starting or scaffolding a repo, setting up CI/lint/tests/deploy, deciding a tech stack, clarifying vague requirements, reviewing a PR, fixing a bug, retrospectives, coordinating multiple agents on one repo, or picking up half-done work. 中文触发词："帮我写个组件/接口/后端/前端"、"这个 UI 怎么规范"、"接口怎么定"、"帮我起个新项目"、"CI 怎么配"、"这个需求怎么拆"、"这个该不该做"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下"、"上次做到哪了"、"已有项目怎么接入"。
 ---
 
 # 工程项目工作流
@@ -11,6 +11,33 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
 缺陷 +9%。瓶颈已经从"写"移到"审"。所以下面每一个阶段的设计目标都是——
 **把审计前移到又小又致命的产物上**（意图、决策、契约、迁移），
 而不是后置到一大堆实现代码上。
+
+---
+
+## 快速路径
+
+**不是所有请求都要走阶段机。** 先看是不是这几类——是的话直接跳到对应文件，
+读完就干活，不用管七个阶段：
+
+| 你要做的 | 直接读 | 顺带守三条 |
+|---|---|---|
+| 写/改前端组件、页面、样式 | `references/frontend.md` | ↓ |
+| 写/改后端接口、查询、任务 | `references/backend.md` | ↓ |
+| 定接口、改 schema、前后端对接 | `references/contract.md` | ↓ |
+| 起新仓库、补工程基线、配 CI | `references/skeleton.md` + `scripts/new-project.sh` | ↓ |
+| 修 bug | `references/bugfix.md` | ↓ |
+| 审 PR / 被要求 review | `references/audit.md` + `references/review.md` | ↓ |
+| 接手别人的活 / 不知道做到哪了 | `make journal` + `references/journal.md` | ↓ |
+| 已有项目要接入这套 | `references/brownfield.md` | ↓ |
+
+**无论走哪条快速路径，这三条都成立**（它们是横切的，所以不属于任何一份技术专题）：
+
+1. **先搜再写** —— 仓库里已经有了吗？标准库有吗？（`references/reuse.md`）
+2. **先写测试并看它红**，再写实现（`references/slices.md` 第三节）
+3. **不过度设计，也不为没发生过的故障写防御**（`references/proportion.md`）
+
+需要走完整阶段机的只有一种情况：**从 0 起一个项目，或者动了契约/权限/数据模型**。
+那才往下看分流表。
 
 ---
 
@@ -88,32 +115,25 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
 闸门是**人必须点头**的地方。到了闸门就停下来，把产物摆出来，等人回话。
 不要自己替人过闸。
 
-```
-P0 ──G1 意图闸────► P1 ──┐
-                          ├──► P2 ──G2 决策闸──► P3 ──G3 骨架闸──► P4
-                          │
-                    (G1 一并审 P1 的术语表)
-                                      P4 ──G4 契约闸──► P5 ──G5 切片闸──► P6 ──G6 上线闸
-```
 
-| 闸门 | 人审什么 | 为什么是这里 |
-|---|---|---|
-| **G0 做不做**（常跳过） | 每条判断指得出证据吗；调研有没有让范围变小过 | **砍掉一个项目比之后任何决策都省钱** |
-| **G1 意图** | 非目标、验收标准、术语表 | 最便宜、杠杆最高。这里错了，后面全白做 |
-| **G2 决策** | ADR | 决策不可逆，代码可逆。审计资源该花在不可逆的东西上 |
-| **G3 骨架** | 亲手跑一次 `make dev`，点开部署出来的 URL | 骨架是后面所有代码的地基，且此时它还很小 |
-| **G4 契约** | schema diff、迁移、错误码 | 又小又致命。审完前后端才能并行 |
-| **G5 切片** | 按 `audit.md` 的分级清单审 PR | 唯一高频闸门，所以 PR 必须小 |
-| **G6 上线** | "炸了怎么回滚" | 回滚没演练过就等于没有 |
+| 闸门 | 人审什么 |
+|---|---|
+| **G0 做不做**（常跳过） | 每条判断指得出证据吗；调研有没有让范围变小过 |
+| **G1 意图** | 非目标、验收标准、术语表 |
+| **G2 决策** | ADR |
+| **G3 骨架** | 亲手跑一次 `make dev`，点开部署出来的 URL |
+| **G4 契约** | schema diff、迁移、错误码 |
+| **G5 切片** | 按 `audit.md` 的分级清单审 PR |
+| **G6 上线** | "炸了怎么回滚" |
+
+每个闸门**为什么设在这里**、各自的时间预算、逐项怎么审——见 `references/audit.md`。
 
 外加两个不在这条线上的评审（见 `references/review.md`）：
 
 - **缺陷评审**——每次修 bug 之后。10 分钟，第一条就是"有没有先红后绿的回归测试"，
   没有就不用往下看了。
-- **里程碑复盘**——周期性，不是线性闸门。一组切片完成 / 阶段结束 / 两周一次，
-  取早的那个。先跑 `make review`（机器能查的它都查了），人再看八条：
-  spec 还成立吗、术语漂移了吗、架构侵蚀了吗、测试还可信吗、技术债登记了吗、
-  依赖膨胀了吗、文档过期了吗、下阶段最大的风险是什么。
+- **里程碑复盘**——周期性，不是线性闸门。一组切片完成 / 阶段结束 / 两周一次。
+  先跑 `make review`，人再看脚本查不了的那几条（`review.md` 第六节）。
 
   **每个 PR 都过了，不代表整体还立得住。** 侵蚀在每个 PR 里都合规，
   只有拉远了看才看得见。
@@ -150,21 +170,10 @@ P0 ──G1 意图闸────► P1 ──┐
 
 ## 起手式
 
-新项目：
-
 ```bash
-~/.claude/skills/engineering-project/scripts/new-project.sh <目标目录> --adapter <语言>
+# 新项目（--list 看有哪些语言 adapter）
+~/.claude/skills/engineering-project/scripts/new-project.sh <目录> --adapter <语言>
 ```
 
-`--list` 看有哪些 adapter。骨架语言无关，adapter 只填 `stack.mk` 里那八个命令变量。
 生成的项目**自带 `scripts/`**，`make audit|review|journal|doctor` 不依赖这台机器
-装没装这个 skill。
-
-已有项目：
-
-```bash
-make doctor    # 工程基线缺什么（没有 Makefile 就直接跑 skill 里的 doctor.sh）
-make journal   # 有没有在途工作、孤儿锁、悬空的仓外副作用
-make audit     # 这次改动的待人审清单
-make review    # 阶段结束时的全仓库复盘
-```
+装没装这个 skill。已有项目从 `make doctor` 开始，接入步骤见 `references/brownfield.md`。
