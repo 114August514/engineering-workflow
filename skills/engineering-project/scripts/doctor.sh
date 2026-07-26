@@ -117,8 +117,17 @@ fi
 head_ 配置与密钥
 if [ -f .env.example ]; then
   ok ".env.example 存在"
-  LEAK=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' .env.example 2>/dev/null \
-    | grep -E '=(.{24,})' | grep -viE '=(postgres|mysql|redis|http|example|changeme|your)' || true)
+  # 真正的泄露是**敏感键名带了值**，不是"值很长"。
+  # 旧规则按长度判断，把 JSON 默认值和 sqlite:///./var/x.db 都误报了 ——
+  # 误报比没有检查更糟：人会对真问题失去信任。
+  BODY=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' .env.example 2>/dev/null || true)
+  PLACEHOLDER='=[[:space:]]*$|changeme|your-|<|例如|placeholder|xxx|TODO'
+  # ① 敏感键名后面跟了非空且不像占位符的值
+  LEAK=$(echo "$BODY" | grep -iE '^[A-Za-z0-9_]*(SECRET|TOKEN|PASSWORD|PASSWD|APIKEY|API_KEY|PRIVATE_KEY|CREDENTIAL)[A-Za-z0-9_]*=' \
+    | grep -viE "$PLACEHOLDER" || true)
+  # ② 连接串里内嵌了账号密码
+  LEAK="$LEAK$(echo "$BODY" | grep -E '://[^:/@[:space:]]+:[^@[:space:]]+@' \
+    | grep -viE 'user:password|USER:PASS|<|changeme' || true)"
   [ -n "$LEAK" ] && bad ".env.example 里可能有真实值" "只留键名和格式示例" || ok ".env.example 没有真实值"
 else
   bad "没有 .env.example" "别人和 AI 都不知道要配哪些环境变量"
