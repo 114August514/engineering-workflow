@@ -4,7 +4,16 @@
 set -uo pipefail
 cd "$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-command -v python3 >/dev/null || { echo "跳过（无 python3）"; exit 0; }
+# 必须区分「yaml 模块不可用」和「YAML 不合法」——
+# 把依赖缺失报成内容错误，就是自己文档里骂的"静默给一个错误答案"。
+if ! command -v python3 >/dev/null; then
+  echo "✗ 没有 python3，无法校验模板。CI 上这必须是硬失败，别静默跳过"; exit 1
+fi
+if ! python3 -c 'import yaml' 2>/dev/null; then
+  echo "✗ python3 缺 PyYAML —— 装上（pip install pyyaml）再跑。"
+  echo "  这不是模板的问题，是这台机器的问题。"
+  exit 1
+fi
 
 fail=0
 n=0
