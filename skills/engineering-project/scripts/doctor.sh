@@ -67,13 +67,19 @@ fi
 
 # ── 测试 ────────────────────────────────────────────────────
 head_ 测试
-TESTS=$(find . -path ./node_modules -prune -o -path ./.git -prune -o \
-  \( -name '*test*' -o -name '*spec*' \) -type f -print 2>/dev/null | grep -cE '\.(ts|js|py|rs|go)$' || true)
+# 依赖目录里全是别人的测试和别人 skip 掉的测试。第一次在真实仓库上跑就踩到了：
+# backend/.venv/ 里 pytest 自己的源码被算成"103 个测试文件"和"有被 skip 的测试"。
+EXCLUDE='/node_modules/|/\.venv/|/venv/|/site-packages/|/\.git/|/target/|/vendor/|/dist/|/build/|/\.tox/'
+# 两种都算：文件名带 test/spec 的，以及躺在 tests/ __tests__/ 目录里的
+# （本仓库自己的 verbs-consistent.sh 就属于后者 —— 第一次跑时被漏掉了）
+TESTS=$(find . \( -name '*test*' -o -name '*spec*' -o -path '*/tests/*' -o -path '*/__tests__/*' \) \
+  -type f -print 2>/dev/null \
+  | grep -vE "$EXCLUDE" | sort -u | grep -cE '\.(ts|tsx|js|py|rs|go|sh)$' || true)
 if [ "${TESTS:-0}" -gt 0 ]; then
   ok "找到 $TESTS 个测试文件"
   SKIPPED=$(grep -rlE '\b(it|test|describe)\.(skip|todo)|@pytest\.mark\.skip|#\[ignore\]|t\.Skip' \
-    --include='*.ts' --include='*.js' --include='*.py' --include='*.rs' --include='*.go' . 2>/dev/null \
-    | grep -v node_modules | head -5 || true)
+    --include='*.ts' --include='*.tsx' --include='*.js' --include='*.py' --include='*.rs' --include='*.go' . 2>/dev/null \
+    | grep -vE "$EXCLUDE" | head -5 || true)
   [ -n "$SKIPPED" ] && bad "有被 skip 的测试" "$(echo "$SKIPPED" | tr '\n' ' ')—— skip 掉的测试等于没有" \
     || ok "没有被 skip 的测试"
 else
