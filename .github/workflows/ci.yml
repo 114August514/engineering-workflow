@@ -57,6 +57,9 @@ jobs:
             --break-system-packages pyyaml 2>/dev/null || python3 -m pip install --quiet pyyaml
           bash tests/templates-valid.sh
 
+      - name: 卫星 skill 保持薄壳
+        run: bash tests/satellites-thin.sh
+
       - name: 文档交叉引用没断
         run: bash tests/docs-links.sh
 

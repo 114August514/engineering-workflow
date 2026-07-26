@@ -1,6 +1,6 @@
 ---
 name: engineering-project
-description: 软件项目的工程化工作流与编码规范，语言/框架无关。覆盖：前端书写（design tokens、组件与交互状态、三态、AI 看不见界面怎么验收）、后端书写（分层、越权防护、幂等、ID 设计、事务与并发、可观测性）、前后端对接（API 契约、错误信封、分页、类型同步）、仓库初始化（标准动词接口、工程基线、CI、.gitattributes）、需求澄清与调研、领域建模、代码评审、缺陷修复、里程碑复盘、部署与回滚，以及人该在哪些点上审计 AI 的产出。Use for any of: writing or reviewing frontend/backend code, designing an API or database schema, starting or scaffolding a repo, setting up CI/lint/tests/deploy, deciding a tech stack, clarifying vague requirements, reviewing a PR, fixing a bug, retrospectives, coordinating multiple agents on one repo, or picking up half-done work. 中文触发词："帮我写个组件/接口/后端/前端"、"这个 UI 怎么规范"、"接口怎么定"、"帮我起个新项目"、"CI 怎么配"、"这个需求怎么拆"、"这个该不该做"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下"、"上次做到哪了"、"已有项目怎么接入"。
+description: 从 0 搭建并持续交付软件项目的完整工作流：需求调研（该不该做）、意图澄清（EARS 验收标准与非目标）、领域建模、架构决策与 ADR、可部署骨架、契约先行、垂直切片、代码评审与缺陷修复、里程碑复盘、上线与回滚，以及人该在哪些点上审计 AI 的产出、多 agent 怎么并行不打架。写具体代码的规范另有 frontend-code / backend-code / api-contract / repo-init 四个 skill。Use for whole-project or process-level work: planning a new project end to end, deciding scope, breaking down vague requirements, choosing an architecture, reviewing a PR or a milestone, fixing a bug properly, coordinating multiple agents, or picking up half-done work — 中文触发词："帮我起个项目"、"这个需求怎么拆"、"这个该不该做"、"怎么做需求调研"、"技术栈选什么"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下这个阶段"、"上次做到哪了"、"多个 agent 怎么并行"。
 ---
 
 # 工程项目工作流
@@ -14,29 +14,30 @@ description: 软件项目的工程化工作流与编码规范，语言/框架无
 
 ---
 
-## 快速路径
+## 快速路径：先看要不要走阶段机
 
-**不是所有请求都要走阶段机。** 先看是不是这几类——是的话直接跳到对应文件，
-读完就干活，不用管七个阶段：
+**不是所有请求都要走七个阶段。** 窄请求有专门的卫星 skill，触发它们就够了：
 
-| 你要做的 | 直接读 | 顺带守三条 |
+| 你要做的 | 用这个 skill | 它会带你读 |
 |---|---|---|
-| 写/改前端组件、页面、样式 | `references/frontend.md` | ↓ |
-| 写/改后端接口、查询、任务 | `references/backend.md` | ↓ |
-| 定接口、改 schema、前后端对接 | `references/contract.md` | ↓ |
-| 起新仓库、补工程基线、配 CI | `references/skeleton.md` + `scripts/new-project.sh` | ↓ |
-| 修 bug | `references/bugfix.md` | ↓ |
-| 审 PR / 被要求 review | `references/audit.md` + `references/review.md` | ↓ |
-| 接手别人的活 / 不知道做到哪了 | `make journal` + `references/journal.md` | ↓ |
-| 已有项目要接入这套 | `references/brownfield.md` | ↓ |
+| 写/改前端组件、页面、样式 | `frontend-code` | `frontend.md` |
+| 写/改后端接口、查询、事务 | `backend-code` | `backend.md` |
+| 定接口、改 schema、写迁移 | `api-contract` | `contract.md` |
+| 起新仓库、补工程基线、配 CI | `repo-init` | `skeleton.md` + `conventions.md` |
 
-**无论走哪条快速路径，这三条都成立**（它们是横切的，所以不属于任何一份技术专题）：
+不在上表里但同样不用走阶段机的：
 
-1. **先搜再写** —— 仓库里已经有了吗？标准库有吗？（`references/reuse.md`）
-2. **先写测试并看它红**，再写实现（`references/slices.md` 第三节）
-3. **不过度设计，也不为没发生过的故障写防御**（`references/proportion.md`）
+| 你要做的 | 直接读 |
+|---|---|
+| 修 bug | `references/bugfix.md` |
+| 审 PR / 被要求 review | `references/audit.md` + `references/review.md` |
+| 接手别人的活 / 不知道做到哪了 | `make journal` + `references/journal.md` |
+| 已有项目要接入这套 | `references/brownfield.md` |
 
-需要走完整阶段机的只有一种情况：**从 0 起一个项目，或者动了契约/权限/数据模型**。
+**无论走哪条路径，`references/always.md` 那三条横切规则都成立**
+（先搜再写 / 先写测试并看它红 / 不过度设计）。
+
+需要走完整阶段机的只有一种情况：**从 0 起一个项目，或者动了契约/权限/数据模型。**
 那才往下看分流表。
 
 ---

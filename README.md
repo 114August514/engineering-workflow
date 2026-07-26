@@ -15,7 +15,20 @@
 ./install.sh
 ```
 
-把 `skills/engineering-project` 软链进 `~/.claude/skills/`。改仓库即改 skill。
+把 `skills/` 下的 5 个 skill 软链进 `~/.claude/skills/`。改仓库即改 skill。
+
+| skill | 什么时候触发 |
+|---|---|
+| **engineering-project** | 流程：起项目、拆需求、选架构、审 PR、复盘、接手别人的活 |
+| **frontend-code** | 写组件、页面、样式、表单 |
+| **backend-code** | 写接口、查询、事务、后台任务 |
+| **api-contract** | 定接口、改 schema、写迁移、错误码 |
+| **repo-init** | 起仓库、配 CI、补工程基线、存量项目接入 |
+
+后四个是**薄壳**（各 15—29 行）：只有精准的 description + 转发到主 skill 的
+`references/`。规范内容一份不复制——19 份 references 之间 48 条交叉引用，
+真按话题拆会断 38%，而被引最多的三份恰恰是横切的。
+`tests/satellites-thin.sh` 强制它们保持薄。
 
 ## 用
 
@@ -140,6 +153,7 @@ skills/engineering-project/
 ├── SKILL.md              # 分流 + 阶段路由（每次都会进上下文，所以很短）
 ├── references/
 │   ├── discovery.md      # P-1 调研：该不该做、问过去不问意愿、AI 幻觉调研
+│   ├── always.md         # ★ 三条横切规则（卫星 skill 都指向它）
 │   ├── intake.md         # P0 需求澄清：EARS 句式、例子驱动、非目标
 │   ├── domain.md         # P1 通用语言、限界上下文、不变量、状态机
 │   ├── architecture.md   # P2 ADR、选型收敛、风险排序
@@ -172,6 +186,7 @@ templates/
 
 tests/                    # 这个仓库自己的回归测试，CI 在 ubuntu + macos 上跑
 ├── verbs-consistent.sh   # 标准动词三处一致
+├── satellites-thin.sh    # 卫星 skill 不许长内容
 ├── spec-traceability.sh  # 需求变更下追溯仍成立（含不误报）
 ├── docs-links.sh         # 文档交叉引用没断
 └── journal-behaviour.sh  # journal.sh 三项检测真的会触发
