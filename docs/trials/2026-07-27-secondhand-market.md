@@ -62,6 +62,7 @@
 | 假阳性 | 报"103 个测试文件"、"有被 skip 的测试" | 排除规则只挡了 `node_modules`，没挡 `.venv/` `site-packages/` `target/` `vendor/` `dist/` —— 扫进了 pytest 自己的源码 |
 | 假阴性 | 本仓库 6 个测试被认成 1 个 | 只按文件名 `*test*` / `*spec*` 认，漏了躺在 `tests/` 目录里但名字不含 test 的 |
 | 假阴性 | shell 测试完全不算数 | 扩展名白名单里没有 `.sh` |
+| 假阴性 | 报"没找到 lint 配置"，实际 `backend/pyproject.toml` 里有 `[tool.ruff]` | **只 `ls` 根目录**，不看子目录，也不认 toml 里的 `[tool.*]` 段 —— **monorepo 上系统性漏报** |
 
 修复后：engineering-workflow 6 个（正确），107-workspace 53 个真实测试、无 skip（正确）。
 
@@ -69,5 +70,7 @@
 
 - **工具在真实仓库上跑一次，比在造出来的场景里跑十次有用。** 这三个 bug
   在自造的测试项目里永远暴露不了——因为自造的项目不会有 `.venv/`
+- **第四个 bug 是另一类**：工具假设"单项目、配置在根目录"。真实项目是
+  monorepo（`backend/` + `frontend/`），这个假设在自造场景里永远不会被挑战
 - 这也印证了 `proportion.md` 那条：**静默给一个错误答案比报错更糟**。
   "103 个测试文件"读起来完全正常，不 diff 一下根本发现不了它是假的

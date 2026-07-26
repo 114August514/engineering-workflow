@@ -50,10 +50,26 @@ fi
 
 # ── 质量闸 ──────────────────────────────────────────────────
 head_ 质量闸
-FMT_CFG=$(ls .prettierrc* biome.json* .rustfmt.toml rustfmt.toml ruff.toml pyproject.toml setup.cfg 2>/dev/null | head -1)
+# monorepo 很常见：配置在 backend/ frontend/ 里而不是根目录，
+# 而且 Python/Rust 的工具配置藏在 pyproject.toml / Cargo.toml 的 [tool.*] 段里。
+# 只 ls 根目录会系统性漏报 —— 第一次在真实 monorepo 上跑就踩到了。
+find_cfg() {
+  # $1 = 文件名模式（空格分隔）; $2 = 在 *.toml 里找的段名正则（可空）
+  for pat in $1; do
+    hit=$(find . -maxdepth 3 -name "$pat" -not -path '*/node_modules/*' \
+      -not -path '*/.venv/*' -not -path '*/.git/*' 2>/dev/null | head -1)
+    [ -n "$hit" ] && { echo "${hit#./}"; return; }
+  done
+  [ -z "$2" ] && return
+  hit=$(grep -rlE "$2" --include='pyproject.toml' --include='Cargo.toml' \
+    --include='package.json' . 2>/dev/null | grep -vE '/node_modules/|/\.venv/' | head -1)
+  [ -n "$hit" ] && echo "${hit#./} 里的配置段"
+}
+
+FMT_CFG=$(find_cfg '.prettierrc* biome.json* rustfmt.toml .rustfmt.toml .editorconfig' '^\[tool\.(ruff|black|isort)')
 [ -n "$FMT_CFG" ] && ok "格式化配置：$FMT_CFG" || warn "没找到格式化配置" "配一个格式化器，让格式问题永远不进人的评审视野"
 
-LINT_CFG=$(ls .eslintrc* eslint.config.* biome.json* .golangci.y*ml ruff.toml 2>/dev/null | head -1)
+LINT_CFG=$(find_cfg '.eslintrc* eslint.config.* biome.json* .golangci.y*ml ruff.toml' '^\[tool\.(ruff|mypy|pylint)')
 [ -n "$LINT_CFG" ] && ok "lint 配置：$LINT_CFG" || warn "没找到 lint 配置" "配一个 linter"
 
 HOOKS=$(git config core.hooksPath 2>/dev/null || echo .git/hooks)
