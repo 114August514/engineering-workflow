@@ -47,6 +47,7 @@
 ├── Makefile               # 标准动词（不改）
 ├── stack.mk               # 唯一与语言耦合的文件
 ├── .env.example           # 全部键名，无真实值
+├── .gitattributes         # LF 换行、二进制标记、生成文件折叠、LFS 规则
 ├── contracts/             # 🔴 必审区：API schema、错误码、共享类型
 ├── migrations/            # 🔴 必审区：数据库迁移
 ├── docs/
@@ -94,10 +95,32 @@
 主干开发：从 `main` 切短命分支，做完一条切片就合回去，**分支不要活过两天**。
 长命分支 = 大 diff = 人审不动 = 闸门失效。
 
+命名：`<类型>/<issue 号>-<短描述>`
+
+```
+feat/123-create-workspace     fix/207-run-status-sync
+refactor/231-slurm-adapter    docs/256-git-workflow
+```
+
+带上 issue 号，`git log` 和分支列表里就能直接回溯到需求。
+
+**禁止**：`zxb_branch`、`backend-new`、`final`、`临时分支`，
+以及**每个人一个长期个人分支**——那个必然和 `main` 严重分叉。
+
+### 合并策略
+
+**Squash merge**，并在平台上开启"合并后自动删除远程分支"。
+
+这样开发分支里可以自由出现"补测试""修 lint""处理 review"这类中间提交，
+而 `main` 上每条切片只留一个提交——`git log --oneline` 就是一份可读的变更史，
+`git bisect` 也好用。
+
+合并后本地要自己清：`git checkout main && git pull --ff-only && git branch -D <分支> && git fetch --prune`
+
 ### 提交信息
 
 ```
-<类型>: <做了什么>
+<类型>(<范围>): <做了什么>
 
 <为什么这么做，如果不明显的话>
 
@@ -105,6 +128,15 @@ REQ-ORD-003
 ```
 
 类型：`feat` / `fix` / `refactor` / `test` / `docs` / `chore` / `contract` / `migrate`。
+
+范围可选，用**限界上下文名**（`order` / `payment` / `auth` / `ci`）——
+和目录结构对齐，别另发明一套词。
+
+```
+feat(order): 库存不足时拒绝下单
+fix(payment): 取消作业后状态未更新
+contract(order): 新增 409 OUT_OF_STOCK
+```
 
 后两个是我们加的，因为 `audit.sh` 和人都需要一眼看出必审提交。
 
@@ -114,10 +146,48 @@ REQ-ORD-003
 - 一个提交一件事。"顺手改了格式"要单独提交
 - 不写"更新代码"、"修复 bug"这类无信息量的信息
 
+### 撤销与密钥泄露
+
+| 情况 | 做法 |
+|---|---|
+| 最近一次提交还没推 | `git commit --amend` |
+| 已经推到共享分支 | **`git revert`**，不要 `reset --hard` + `push --force` |
+| 确实要覆盖远程历史 | `git push --force-with-lease`（会检测别人是否推过新提交） |
+| **不小心提交了密钥** | **第一步永远是轮换密钥**，不是研究怎么改历史 |
+
+密钥泄露的正确顺序：**轮换 → 通知维护者 → 清理历史 → 检查 CI 日志/缓存/
+Release 里是否还有残留**。删掉文件重新提交不够——密钥还在历史里，
+而且此刻可能已经被爬走了。
+
 ### 提交前
 
 `make check` 通过。pre-commit 钩子跑 `make fmt` + `make lint`
 （**不跑全量测试**——太慢的钩子一定会被 `--no-verify` 绕过）。
+
+---
+
+## 四点五、什么该进仓库
+
+| 类型 | 放哪 |
+|---|---|
+| 源码、配置模板、文档、小型测试数据 | 普通 Git |
+| **锁文件**（`uv.lock` / `pnpm-lock.yaml` / `Cargo.lock`）、迁移文件、`.env.example`、Dockerfile、CI 配置、`.gitattributes` | **必须提交** |
+| 必须随版本走的大型二进制（演示视频、设计源文件） | Git LFS，**且限定目录** |
+| 数据集、模型权重、checkpoint、运行输出、日志 | 对象存储 / 算力平台存储，**不进 Git 也不进 LFS** |
+| 构建产物、缓存、依赖目录、虚拟环境 | 不保存，写进 `.gitignore` |
+| 密钥、token、密码 | 环境变量或密钥管理，**永不进仓库** |
+
+两条容易踩的：
+
+1. **同一种包管理器只保留一个锁文件。** 同时存在
+   `package-lock.json` + `yarn.lock` + `pnpm-lock.yaml` 会让 CI 装出不同的依赖树
+2. **不要按扩展名全局启用 LFS**（`git lfs track "*.pt"`）——
+   那会把所有训练产物拖进版本控制。**限定目录**：`git lfs track "docs/demo/*.mp4"`。
+   LFS 仍属于版本控制，一样有存储和流量限制，不是通用大文件网盘
+
+`.gitattributes` 也要提交，它管**已被 Git 跟踪的文件怎么处理**
+（`.gitignore` 管的是哪些文件不进来）。至少统一换行符为 LF——
+否则 Windows/WSL 下拉出来的 shell 脚本在 Linux 上会因为 CRLF 直接执行失败。
 
 ---
 

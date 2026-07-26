@@ -1,0 +1,55 @@
+# .gitignore 管「哪些文件不进 Git」；这个文件管「已经进来的文件怎么处理」。
+# 两者职责不同，都要提交。
+
+# ── 换行符统一为 LF ─────────────────────────────────────────
+# 不统一的话，Windows/WSL 下检出的 shell 脚本会带 CRLF，
+# 在 Linux 上直接执行失败（报错还很难懂："bad interpreter: no such file"）。
+* text=auto eol=lf
+
+*.sh    text eol=lf
+*.py    text eol=lf
+*.rs    text eol=lf
+*.go    text eol=lf
+*.ts    text eol=lf
+*.tsx   text eol=lf
+*.js    text eol=lf
+*.json  text eol=lf
+*.toml  text eol=lf
+*.yaml  text eol=lf
+*.yml   text eol=lf
+*.sql   text eol=lf
+*.md    text eol=lf
+Makefile text eol=lf
+*.mk    text eol=lf
+
+# Windows 批处理必须是 CRLF
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+
+# ── 二进制：不要尝试做 diff/合并 ─────────────────────────────
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+
+# ── 生成文件：diff 里折叠，评审时不占篇幅 ────────────────────
+# 它们仍然要提交（保证依赖可复现），只是不该淹没人工改动。
+*.lock          linguist-generated=true -diff
+package-lock.json linguist-generated=true -diff
+pnpm-lock.yaml  linguist-generated=true -diff
+bun.lock        linguist-generated=true -diff
+uv.lock         linguist-generated=true -diff
+Cargo.lock      linguist-generated=true -diff
+contracts/**/*.generated.* linguist-generated=true -diff
+
+# ── Git LFS：**限定目录**，不要按扩展名全局启用 ───────────────
+# 反面教材：git lfs track "*.pt" 会把所有训练产物拖进版本控制。
+# 数据集、模型权重、checkpoint、运行输出应该进对象存储，不进 Git 也不进 LFS。
+# 需要时取消注释，并按实际目录改：
+# docs/demo/*.mp4        filter=lfs diff=lfs merge=lfs -text
+# tests/fixtures/bin/*.zip filter=lfs diff=lfs merge=lfs -text

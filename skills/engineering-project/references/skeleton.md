@@ -97,6 +97,7 @@ BUILD     := bun run build
 
 ### 版本控制
 - [ ] `git init` 完成，有 `.gitignore`（覆盖依赖目录、构建产物、`.env`、编辑器文件）
+- [ ] 有 `.gitattributes`：**换行符统一 LF**（否则 Windows 检出的 shell 脚本在 Linux 上跑不了）、二进制标记、锁文件在 diff 里折叠
 - [ ] 第一个提交是骨架，不是一坨堆好的代码
 
 ### 代码质量（机器把关，人不该看的东西）
