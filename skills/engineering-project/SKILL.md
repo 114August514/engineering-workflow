@@ -1,6 +1,6 @@
 ---
 name: engineering-project
-description: 从 0 搭建并持续交付一个工程化软件项目的完整工作流——需求澄清、领域建模、架构决策、可部署骨架、契约先行、垂直切片实现、代码评审、缺陷修复、里程碑复盘、上线与回滚，以及人该在哪些点上审计 AI 的产出。语言与技术栈无关：约定的是标准动词接口和目录规范，具体命令由 adapter 填。Use this whenever the user is starting a new project, scaffolding a repo, setting up engineering baselines (CI/lint/tests/hooks/deploy), designing an API or database schema, deciding a tech stack, planning how to build a feature, reviewing code or a PR, fixing a bug, or doing a milestone retrospective — including bare requests like "帮我起个新项目"、"这个需求怎么拆"、"技术栈选什么"、"怎么部署"、"CI 怎么配"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下这个阶段"、"帮我写个后端"、"前后端怎么对接". Also use it when the user describes an idea in vague terms and expects working software at the end, or when receiving/responding to code review feedback.
+description: 从 0 搭建并持续交付一个工程化软件项目的完整工作流——需求澄清、领域建模、架构决策、可部署骨架、契约先行、垂直切片实现、代码评审、缺陷修复、里程碑复盘、上线与回滚，以及人该在哪些点上审计 AI 的产出。语言与技术栈无关：约定的是标准动词接口和目录规范，具体命令由 adapter 填。Use this whenever the user is starting a new project, scaffolding a repo, setting up engineering baselines (CI/lint/tests/hooks/deploy), designing an API or database schema, deciding a tech stack, planning how to build a feature, reviewing code or a PR, fixing a bug, doing a milestone retrospective, coordinating multiple agents or teammates on one repo, or picking up work left half-done by a previous session — including bare requests like "帮我起个新项目"、"这个需求怎么拆"、"技术栈选什么"、"怎么部署"、"CI 怎么配"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下这个阶段"、"上次做到哪了"、"多个 agent 怎么并行"、"帮我写个后端"、"前后端怎么对接". Also use it when the user describes an idea in vague terms and expects working software at the end, or when receiving/responding to code review feedback.
 ---
 
 # 工程项目工作流
@@ -50,7 +50,7 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
 | **P5 切片** | 一次一条垂直切片，测试先行 | `references/slices.md` |
 | **P6 交付** | 发布、回滚、监控、备份、依赖 | `references/delivery.md` |
 
-**贯穿全程的六份**：
+**贯穿全程的七份**：
 
 - `references/audit.md` —— **审什么**。分级清单 + AI 失败模式。每个闸门都读它。
 - `references/review.md` —— **怎么审**。评审协议：请求格式、反馈三级、
@@ -59,6 +59,8 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
   建防御。**写代码前和评审时都读它。**
 - `references/reuse.md` —— **别重复造轮子**。动手前的四层检索、哪些不许手搓、
   怎么借鉴结构，以及**抄进来之后必须做的适配**。**同样是写代码前读。**
+- `references/journal.md` —— **在途、回退、并发**。借 OS 的预写日志/undo log/锁：
+  会话死在半路怎么接、`git revert` 撤不掉的仓外副作用怎么记、多 agent 怎么不打架。
 - `references/bugfix.md` —— 缺陷修复流程（TF 档专用）。
 - `references/handoff.md` —— 人机对接：`AGENTS.md` 怎么写、任务卡格式、上下文怎么管。
 
@@ -127,7 +129,10 @@ P0 ──G1 意图闸────► P1 ──┐
    金额精度、重试退避一律用成熟实现，不许手搓。** 见 `references/reuse.md`。
 9. **抄进来的东西必须适配。** 换成术语表里的命名、删掉用不到的部分、
    接上本项目的错误模型和日志格式。不适配的复用比自己写更糟。
-10. **这套流程本身也受第 7 条管。** 清单是 checklist 不是待办；
+10. **动手前先写意图，收工前更新状态。** 会话会死（压缩、打断、超时），
+    写完意图那一刻是可恢复的，反过来什么都不剩。**产生仓外副作用之前，
+    先写下怎么撤销它**——写不出撤销方式就是需要人点头的信号。见 `references/journal.md`。
+11. **这套流程本身也受第 7 条管。** 清单是 checklist 不是待办；
    没有信号就不要逐条去找问题。某个环节持续没发现过真问题就删掉它。
 
 ---

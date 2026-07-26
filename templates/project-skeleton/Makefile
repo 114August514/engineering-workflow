@@ -12,9 +12,10 @@ EW_SKILL ?= $(HOME)/.claude/skills/engineering-project
 AUDIT  := $(if $(wildcard scripts/audit.sh),./scripts/audit.sh,$(EW_SKILL)/scripts/audit.sh)
 DOCTOR := $(if $(wildcard scripts/doctor.sh),./scripts/doctor.sh,$(EW_SKILL)/scripts/doctor.sh)
 REVIEW := $(if $(wildcard scripts/review.sh),./scripts/review.sh,$(EW_SKILL)/scripts/review.sh)
+JOURNAL:= $(if $(wildcard scripts/journal.sh),./scripts/journal.sh,$(EW_SKILL)/scripts/journal.sh)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup dev fmt fmt-check lint typecheck test check build ship audit review doctor
+.PHONY: help setup dev fmt fmt-check lint typecheck test check build ship audit review journal doctor
 
 help: ## 列出所有目标
 	@grep -hE '^[a-z][a-z-]*:.*?## ' $(MAKEFILE_LIST) \
@@ -56,6 +57,9 @@ audit: ## 生成待人审清单（增量：这次改动）
 
 review: ## 里程碑复盘（全量：整个仓库）
 	@$(REVIEW)
+
+journal: ## 谁在做什么 / 孤儿锁 / 悬空的仓外副作用
+	@$(JOURNAL)
 
 doctor: ## 工程基线体检
 	@$(DOCTOR)

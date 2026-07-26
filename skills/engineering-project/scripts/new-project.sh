@@ -84,11 +84,12 @@ done
 # 把 audit/doctor 拷进项目，让生成的项目自包含 ——
 # 它不该依赖某个人的 ~/.claude 才能跑 make audit，CI 里也没有那个目录。
 mkdir -p "$TARGET/scripts"
-cp "$SKILL_DIR/scripts/audit.sh" "$SKILL_DIR/scripts/doctor.sh" "$SKILL_DIR/scripts/review.sh" "$TARGET/scripts/"
-chmod +x "$TARGET/scripts/audit.sh" "$TARGET/scripts/doctor.sh" "$TARGET/scripts/review.sh"
+cp "$SKILL_DIR/scripts/audit.sh" "$SKILL_DIR/scripts/doctor.sh" "$SKILL_DIR/scripts/review.sh" "$SKILL_DIR/scripts/journal.sh" "$TARGET/scripts/"
+chmod +x "$TARGET/scripts/audit.sh" "$TARGET/scripts/doctor.sh" "$TARGET/scripts/review.sh" "$TARGET/scripts/journal.sh"
 
 mkdir -p "$TARGET/src" "$TARGET/tests" "$TARGET/migrations"
-for d in src tests migrations contracts docs/decisions; do
+mkdir -p "$TARGET/docs/journal"
+for d in src tests migrations contracts docs/decisions docs/journal; do
   [ -d "$TARGET/$d" ] && [ -z "$(ls -A "$TARGET/$d")" ] && touch "$TARGET/$d/.gitkeep"
 done
 

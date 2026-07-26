@@ -60,6 +60,7 @@ CI 跑的和本地跑的是同一条命令，不会出现"本地过了 CI 挂了
 | `make ship` | 部署 | 幂等；失败不能留下半个状态 |
 | `make audit` | 生成待人审清单（增量） | 每个 PR 跑，见 `audit.md` |
 | `make review` | 里程碑复盘（全量） | 阶段结束时跑，见 `review.md` |
+| `make journal` | 在途工作、孤儿锁、悬空副作用 | 开工前和接手时跑，见 `journal.md` |
 | `make doctor` | 工程基线体检 | 缺项要给出修复建议 |
 
 规则：
@@ -149,7 +150,8 @@ BUILD     := bun run build
 │   ├── spec.md            # 意图与验收标准
 │   ├── glossary.md        # 术语、边界、不变量
 │   ├── decisions/         # ADR
-│   └── runbook.md         # 部署与回滚
+│   ├── runbook.md         # 部署与回滚
+│   └── journal/           # 作业日志：在途、回退、并发（见 journal.md）
 ├── src/
 │   └── <上下文名>/         # 按限界上下文分，不按技术层分
 │       ├── domain/        # 纯业务规则，不碰 IO

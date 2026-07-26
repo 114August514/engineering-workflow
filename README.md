@@ -31,6 +31,7 @@ make check    # 提交前唯一要记的命令
 make doctor   # 工程基线还缺什么
 make audit    # 待人审清单（增量：这次改动，每个 PR 跑）
 make review   # 里程碑复盘（全量：整个仓库，阶段结束时跑）
+make journal  # 谁在做什么 / 孤儿锁 / 悬空的仓外副作用
 ```
 
 Claude 会在你说"帮我起个新项目"、"这个需求怎么拆"、"这个 PR 我该看什么"
@@ -62,7 +63,7 @@ Claude 会在你说"帮我起个新项目"、"这个需求怎么拆"、"这个 P
   **每个 PR 都过了不代表整体还立得住**：侵蚀在每个 PR 里都合规，
   只有拉远了看才看得见。
 
-## 五个设计选择
+## 六个设计选择
 
 ### 1. 分流，不是所有改动一视同仁
 
@@ -76,7 +77,7 @@ Claude 会在你说"帮我起个新项目"、"这个需求怎么拆"、"这个 P
 
 ```
 make setup / dev / fmt / fmt-check / lint / typecheck / test
-make check / build / ship / audit / review / doctor
+make check / build / ship / audit / review / journal / doctor
 ```
 
 语言差异只存在于 `stack.mk` 一个文件（八个变量）。于是：
@@ -106,7 +107,21 @@ AI 最常见的重复造轮子不是引错了库，是**在仓库里已经有一
 接上本项目的错误模型和日志格式。**读起来应该像这个项目里长出来的，
 而不是贴上去的。**
 
-### 5. spec 漂移是机械可查的
+### 5. 用操作系统的方式处理多方协作
+
+AI 会话会死——被压缩、被打断、超时。死在半路时仓库处于未知状态，
+下一个会话完全不知道刚才在干什么。这是崩溃恢复问题，所以借三个 OS 机制：
+
+- **预写日志**：先写意图再动手。写完意图那一刻是可恢复的，反过来什么都不剩
+- **undo log**：`git revert` 撤不掉已跑的迁移、已发的部署、已建的外部资源。
+  **产生仓外副作用之前先写下怎么撤销它**——写不出来就是需要人点头的信号
+- **锁**：粒度是限界上下文（文件级太细、仓库级太粗）。
+  日志里「进行中」的条目就是锁；超过 24 小时没动的是孤儿锁，需要回收
+
+不做任务数据库、不做真锁、不做调度器——git 已经是代码的日志，
+这里只补它记不了的三样。
+
+### 6. spec 漂移是机械可查的
 
 SDD 的公认短板是 spec 和代码会悄悄不一致，通常只能靠人定期对一遍。
 这里：每条验收标准有 `REQ-ID`，测试名里必须带这个 ID，`make audit` 做双向检查——
@@ -130,6 +145,7 @@ skills/engineering-project/
 │   ├── review.md         # ★ 怎么审：评审协议、反馈三级、收到反馈怎么办、里程碑复盘
 │   ├── proportion.md     # ★ 做多少：不过度设计、不追幻影风险、按可逆性决定投入
 │   ├── reuse.md          # ★ 别造轮子：四层检索、哪些不许手搓、抄完必须适配
+│   ├── journal.md        # ★ 在途/回退/并发：预写日志、undo log、锁粒度
 │   ├── bugfix.md         # 缺陷修复：复现→回归测试→根因→找同类→回填
 │   ├── handoff.md        # 人机对接：AGENTS.md、任务卡、上下文管理
 │   ├── conventions.md    # 标准动词、目录、命名、git
@@ -139,7 +155,8 @@ skills/engineering-project/
     ├── new-project.sh    # 建项目
     ├── doctor.sh         # 工程基线体检
     ├── audit.sh          # 待人审清单（增量）
-    └── review.sh         # 里程碑复盘（全量）
+    ├── review.sh         # 里程碑复盘（全量）
+    └── journal.sh        # 在途工作 / 孤儿锁 / 悬空副作用
 
 templates/
 ├── project-skeleton/     # 语言无关：Makefile / AGENTS.md / docs / contracts / CI

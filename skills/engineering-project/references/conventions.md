@@ -23,6 +23,7 @@
 | `make ship` | 部署 | 幂等；失败不留半个状态 |
 | `make audit` | 生成待人审清单（**增量**：这次改动） | 每个 PR 跑，见 `audit.md` |
 | `make review` | 里程碑复盘（**全量**：整个仓库） | 阶段结束时跑，见 `review.md` |
+| `make journal` | 在途工作、孤儿锁、悬空副作用 | 开工前和接手时跑，见 `journal.md` |
 | `make doctor` | 工程基线体检 | 缺项要给出修复建议 |
 
 可以加项目特有的（`make seed`、`make migrate`、`make migrate-down`），
@@ -53,7 +54,7 @@
 │   ├── glossary.md        # 术语、限界上下文、不变量、状态机
 │   ├── decisions/         # ADR，NNNN-短标题.md
 │   ├── runbook.md         # 部署、回滚、排障、备份
-│   └── tasks/             # 任务卡（可选，也可以写在 PR 描述里）
+│   └── journal/           # 作业日志：一条工作一个文件（= 任务卡 + 状态 + 回退）
 ├── src/
 │   └── <上下文名>/
 │       ├── domain/        # 纯业务规则，不 import IO

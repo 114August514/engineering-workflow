@@ -30,8 +30,11 @@
 
 ## 二、任务卡
 
-每条切片开工前写一张，写在 PR 描述或 `docs/tasks/` 里。
-**这是人机对接的标准接口**，格式固定：
+每条切片开工前写一张，放在 `docs/journal/`（用 `./scripts/journal.sh --new <slug> <上下文>` 生成骨架）。
+**这是人机对接的标准接口**，格式固定。
+
+**先写它，再动手**——这是预写日志的顺序：会话死在半路时，
+写完意图的那一刻是可恢复的，反过来就什么都没留下。见 `journal.md`。
 
 ```markdown
 ## 背景
@@ -49,6 +52,12 @@
 ## 约束
 - 用 contracts/openapi.yaml 里已定义的 POST /orders，不要改契约
 - 库存扣减必须在同一事务里，参考 docs/decisions/0001-choose-postgres.md
+
+## 仓外副作用
+无。（有的话逐条写，**每条都要写怎么撤销**——写不出撤销方式就是需要人点头的信号）
+
+## 回退方式
+git revert <commit>
 
 ## 验证
 make check
