@@ -11,18 +11,21 @@ set -uo pipefail
 DIR="docs/journal"
 STALE_HOURS="${JOURNAL_STALE_HOURS:-24}"
 
-field() { sed -n "s/^- *$2：\s*//p" "$1" | head -1; }
+field() { sed -n "s/^- *$2：[[:space:]]*//p" "$1" | head -1; }
 
 # ── 预写一个新条目 ──────────────────────────────────────────
 if [ "${1:-}" = "--new" ]; then
   SLUG="${2:-}"
   [ -z "$SLUG" ] && { echo "用法：journal.sh --new <slug> [上下文]"; exit 1; }
+  case "$SLUG" in
+    */*|.*) echo "slug 不能含 / 或以 . 开头（它只是文件名的一部分）"; exit 1 ;;
+  esac
   CTX="${3:-未指定}"
   WHO="${JOURNAL_WHO:-$(git config user.name 2>/dev/null || echo unknown)}"
   mkdir -p "$DIR"
   F="$DIR/$(date +%Y-%m-%d-%H%M)-$SLUG.md"
   [ -e "$F" ] && { echo "已存在：$F"; exit 1; }
-  cat > "$F" <<EOF
+  if ! cat > "$F" <<EOF
 # $SLUG
 
 - 状态：进行中
@@ -51,6 +54,9 @@ make check；测试名含 <REQ-ID>
 - 不动 contracts/、migrations/
 - 不加依赖
 EOF
+  then
+    echo "写入失败：$F" >&2; exit 1
+  fi
   echo "$F"
   echo
   echo "  预写完成。**先填完这个文件，再动手。**"
@@ -80,11 +86,12 @@ for f in "${FILES[@]}"; do
 
   # 仓外副作用那一节是不是只有"无"
   SIDE=$(awk '/^## 仓外副作用/{f=1;next} /^## /{f=0} f' "$f" \
-    | grep -vE '^\s*$|^\s*<|^\s*无。?\s*$' || true)
+    | grep -vE '^[[:space:]]*$|^[[:space:]]*<|^[[:space:]]*无。?[[:space:]]*$' || true)
 
   if [ "$ST" = "进行中" ]; then
     INPROG=$((INPROG+1))
-    MT=$(stat -c %Y "$f" 2>/dev/null || echo "$NOW")
+    # GNU 与 BSD 的 stat 参数不同；两个都失败才退回"当前时间"（= 视为不超期）
+    MT=$(stat -c %Y "$f" 2>/dev/null || stat -f %m "$f" 2>/dev/null || echo "$NOW")
     AGE=$(( (NOW - MT) / 3600 ))
     LINE="  · $TITLE\n      认领 $WHO · 上下文 ${CTX:-未指定} · ${AGE}h 未动 · $f"
     if [ "$AGE" -ge "$STALE_HOURS" ]; then
@@ -106,24 +113,24 @@ done
 printf '\n\033[1m作业日志\033[0m  (%s)\n' "$DIR"
 
 printf '\n\033[1m在途\033[0m（这些就是锁：要动的上下文被占着就别开工）\n'
-[ -n "$OUT_INPROG" ] && printf "$OUT_INPROG" || printf '  无\n'
+[ -n "$OUT_INPROG" ] && printf '%b' "$OUT_INPROG" || printf '  无\n'
 
 if [ "$STALE" -gt 0 ]; then
   printf '\n\033[33m孤儿锁\033[0m（超过 %sh 没动，多半是会话死了）\n' "$STALE_HOURS"
-  printf "$OUT_STALE"
+  printf '%b' "$OUT_STALE"
   printf '  → 三选一：接着做（改认领人）/ 按「回退方式」回滚（状态改已回退）/\n'
   printf '     放弃（状态改已放弃，未做的部分回到 spec）。**不许直接删条目。**\n'
 fi
 
 if [ "$DANGLING" -gt 0 ]; then
   printf '\n\033[31m悬空的仓外副作用\033[0m（状态未完成，但已经动了仓库外的东西）\n'
-  printf "$OUT_DANG"
+  printf '%b' "$OUT_DANG"
   printf '  → 这是最危险的一类：git 撤不掉它们。逐条确认是已经撤销了，\n'
   printf '     还是该登记进 docs/runbook.md。\n'
 fi
 
 if [ "${1:-}" = "--all" ] && [ -n "$OUT_DONE" ]; then
-  printf '\n\033[2m已归档\033[0m\n'; printf "$OUT_DONE"
+  printf '\n\033[2m已归档\033[0m\n'; printf '%b' "$OUT_DONE"
 fi
 
 printf '\n在途 %d · 孤儿 %d · 悬空副作用 %d\n\n' "$INPROG" "$STALE" "$DANGLING"

@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# 这个仓库的"代码"就是那几个 shell 脚本和一堆互相引用的 markdown。
+# 所以 CI 就查三件事：脚本能不能跑、引用断没断、三处动词表一致不一致。
+#
+# 注意 templates/project-skeleton/.github/ 是模板文件，不会被 Actions 执行
+# （Actions 只认仓库根目录的 .github/workflows/）。
+
+jobs:
+  check:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest]   # macOS 用 BSD 工具链，专门拦 GNU-only 写法
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: shell 语法
+        run: for f in skills/*/scripts/*.sh install.sh; do bash -n "$f" || exit 1; done
+
+      - name: shellcheck
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update -qq && sudo apt-get install -y shellcheck
+          shellcheck -S warning skills/*/scripts/*.sh install.sh
+
+      - name: 端到端 —— 建项目、跑标准动词
+        run: |
+          set -e
+          for adapter in ts-bun python-uv rust-cargo go; do
+            ./skills/engineering-project/scripts/new-project.sh "/tmp/t-$adapter" --adapter "$adapter"
+            test -f "/tmp/t-$adapter/stack.mk"
+            test -x "/tmp/t-$adapter/scripts/doctor.sh"
+            # HOME 指向不存在的路径：证明生成的项目不依赖 ~/.claude
+            ( cd "/tmp/t-$adapter" && HOME=/nonexistent make help >/dev/null )
+            ( cd "/tmp/t-$adapter" && HOME=/nonexistent make journal >/dev/null )
+            ( cd "/tmp/t-$adapter" && HOME=/nonexistent make review >/dev/null ) || true
+            ( cd "/tmp/t-$adapter" && HOME=/nonexistent make doctor ) && \
+              { echo "doctor 在空模板上不该通过"; exit 1; } || true
+          done
+
+      - name: journal 三项检测
+        run: bash tests/journal-behaviour.sh
+
+      - name: 文档交叉引用没断
+        run: bash tests/docs-links.sh
+
+      - name: 标准动词三处一致
+        run: bash tests/verbs-consistent.sh

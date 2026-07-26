@@ -161,6 +161,15 @@ skills/engineering-project/
 templates/
 ├── project-skeleton/     # 语言无关：Makefile / AGENTS.md / docs / contracts / CI
 └── adapters/             # 每个语言一个 .mk（八个变量）+ 一段 CI 运行时片段
+
+tests/                    # 这个仓库自己的回归测试，CI 在 ubuntu + macos 上跑
+├── verbs-consistent.sh   # 标准动词三处一致
+├── docs-links.sh         # 文档交叉引用没断
+└── journal-behaviour.sh  # journal.sh 三项检测真的会触发
 ```
+
+macOS runner 不是凑数：BSD 工具链专门用来拦 GNU-only 的写法
+（`\s` / `stat -c` / `date -d` / `sed -i` / `readlink -f` / `xargs -r`），
+这些在 macOS 上要么直接失败，要么**静默降级成错误答案**。
 
 调研笔记在 `docs/research/`。

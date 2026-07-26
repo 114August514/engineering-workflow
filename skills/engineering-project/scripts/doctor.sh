@@ -95,7 +95,7 @@ fi
 head_ 配置与密钥
 if [ -f .env.example ]; then
   ok ".env.example 存在"
-  LEAK=$(grep -vE '^\s*#|^\s*$' .env.example 2>/dev/null \
+  LEAK=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' .env.example 2>/dev/null \
     | grep -E '=(.{24,})' | grep -viE '=(postgres|mysql|redis|http|example|changeme|your)' || true)
   [ -n "$LEAK" ] && bad ".env.example 里可能有真实值" "只留键名和格式示例" || ok ".env.example 没有真实值"
 else
@@ -112,8 +112,8 @@ done
 
 if [ -f docs/spec.md ]; then
   # 模板占位符不算数：'不做 ……' 和 REQ-XXX-001 都是没填的样子
-  NONGOALS=$(grep -cE '^\s*-\s*不做\s*\S' docs/spec.md 2>/dev/null | tr -d ' ')
-  NONGOALS_REAL=$(grep -E '^\s*-\s*不做' docs/spec.md 2>/dev/null | grep -vcE '……|\.\.\.|＜|<' | tr -d ' ')
+  NONGOALS=$(grep -cE '^[[:space:]]*-[[:space:]]*不做[[:space:]]*\S' docs/spec.md 2>/dev/null | tr -d ' ')
+  NONGOALS_REAL=$(grep -E '^[[:space:]]*-[[:space:]]*不做' docs/spec.md 2>/dev/null | grep -vcE '……|\.\.\.|＜|<' | tr -d ' ')
   if [ "${NONGOALS_REAL:-0}" -ge 5 ]; then
     ok "spec 写了 $NONGOALS_REAL 条非目标"
   elif [ "${NONGOALS_REAL:-0}" -gt 0 ]; then
@@ -125,7 +125,7 @@ if [ -f docs/spec.md ]; then
   REQS=$(grep -oE 'REQ-[A-Z]+-[0-9]+' docs/spec.md 2>/dev/null | grep -v 'REQ-XXX-' | sort -u | wc -l)
   if [ "${REQS:-0}" -gt 0 ]; then
     ok "spec 里有 $REQS 条 REQ-ID"
-    grep -qE '例：\s*\S' docs/spec.md && ok "验收标准配了具体例子" \
+    grep -qE '例：[[:space:]]*\S' docs/spec.md && ok "验收标准配了具体例子" \
       || warn "验收标准没有配例子" "抽象描述会被各自解读，具体例子不会"
   else
     bad "spec 里还没有真的 REQ-ID（只有模板占位符）" "没有 ID 就做不了 spec↔测试 的漂移检查，见 references/intake.md"

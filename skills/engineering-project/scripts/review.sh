@@ -49,7 +49,7 @@ else
   fi
 
   # 上下文之间直连（A 的代码 import 了 B 的 infra/domain 内部）
-  CTXS=$(find "$SRC" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | grep -vE "$EX" | xargs -r -n1 basename || true)
+  CTXS=$(find "$SRC" -maxdepth 1 -mindepth 1 -type d 2>/dev/null | grep -vE "$EX" | sed 's|.*/||' || true)
   CROSS=""
   for c in $CTXS; do
     for other in $CTXS; do
@@ -103,7 +103,7 @@ else
 fi
 
 if [ -f docs/spec.md ]; then
-  NIF=$(grep -cE '如果.*那么|^\s*-\s*\*\*REQ-[A-Z]+-[0-9]+\*\*\s*如果' docs/spec.md 2>/dev/null || echo 0)
+  NIF=$(grep -cE '如果.*那么|^[[:space:]]*-[[:space:]]*\*\*REQ-[A-Z]+-[0-9]+\*\*[[:space:]]*如果' docs/spec.md 2>/dev/null || echo 0)
   note "spec 里的异常路径（「如果……那么……」）：$NIF 条"
   [ "${NIF:-0}" -eq 0 ] && warn "一条异常路径都没有 —— 每三条正常路径至少该配一条，见 \`intake.md\`"
 fi
@@ -137,7 +137,8 @@ echo
 echo "## 文件规模"
 echo
 BIG=$(find "$SRC" -type f \( -name '*.ts' -o -name '*.tsx' -o -name '*.py' -o -name '*.rs' -o -name '*.go' -o -name '*.js' \) 2>/dev/null \
-  | grep -vE "$EX" | xargs -r wc -l 2>/dev/null | awk '$1 > 400 && $2 != "total" {print $1" "$2}' | sort -rn || true)
+  | grep -vE "$EX" | while IFS= read -r bf; do wc -l "$bf" 2>/dev/null; done \
+  | awk '$1 > 400 && $2 != "total" {print $1" "$2}' | sort -rn || true)
 if [ -n "$BIG" ]; then
   warn "**超过 400 行的文件** —— 通常意味着一个文件在做不止一件事，"
   echo "  也意味着 AI 每次改它都要吞掉整个文件的上下文，编辑可靠性会下降："
@@ -154,7 +155,7 @@ echo
 echo "## 过度设计信号"
 echo
 if [ -f .env.example ]; then
-  KEYS=$(grep -vE '^\s*#|^\s*$' .env.example 2>/dev/null | cut -d= -f1 | tr -d ' ' || true)
+  KEYS=$(grep -vE '^[[:space:]]*#|^[[:space:]]*$' .env.example 2>/dev/null | cut -d= -f1 | tr -d ' ' || true)
   UNUSEDK=""
   for k in $KEYS; do
     grep -rqF "$k" "$SRC" 2>/dev/null || UNUSEDK="$UNUSEDK $k"
@@ -194,9 +195,9 @@ echo "## 依赖"
 echo
 count_deps() {
   [ -f package.json ] && node -e 'const p=require("./package.json");console.log(Object.keys({...p.dependencies,...p.devDependencies}||{}).length)' 2>/dev/null && return
-  [ -f pyproject.toml ] && grep -cE '^\s*"[a-zA-Z]' pyproject.toml 2>/dev/null && return
+  [ -f pyproject.toml ] && grep -cE '^[[:space:]]*"[a-zA-Z]' pyproject.toml 2>/dev/null && return
   [ -f Cargo.toml ] && awk '/^\[dependencies\]/{f=1;next}/^\[/{f=0}f&&/=/{n++}END{print n+0}' Cargo.toml && return
-  [ -f go.mod ] && grep -c '^\s*[a-z].*v[0-9]' go.mod 2>/dev/null && return
+  [ -f go.mod ] && grep -c '^[[:space:]]*[a-z].*v[0-9]' go.mod 2>/dev/null && return
   echo ""
 }
 NDEP=$(count_deps)
@@ -213,8 +214,12 @@ echo
 if [ -f docs/runbook.md ]; then
   LAST=$(grep -oE '[0-9]{4}-[0-9]{2}-[0-9]{2}' docs/runbook.md 2>/dev/null | sort -r | head -1)
   if [ -n "$LAST" ]; then
-    DAYS=$(( ( $(date +%s) - $(date -d "$LAST" +%s 2>/dev/null || echo 0) ) / 86400 ))
-    if [ "$DAYS" -gt 90 ]; then
+    # GNU: date -d ；BSD/macOS: date -j -f
+    LASTS=$(date -d "$LAST" +%s 2>/dev/null || date -j -f "%Y-%m-%d" "$LAST" +%s 2>/dev/null || echo "")
+    if [ -z "$LASTS" ]; then DAYS=""; else DAYS=$(( ( $(date +%s) - LASTS ) / 86400 )); fi
+    if [ -z "$DAYS" ]; then
+      note "runbook 里有日期 $LAST，但这台机器的 date 解析不了，跳过新鲜度检查"
+    elif [ "$DAYS" -gt 90 ]; then
       warn "**runbook 里最近的演练日期是 $LAST（$DAYS 天前）** —— 回滚和恢复演练该重做了"
     else
       note "✓ runbook 最近演练：$LAST（$DAYS 天前）"

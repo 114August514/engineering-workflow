@@ -145,17 +145,15 @@ P0 ──G1 意图闸────► P1 ──┐
 ~/.claude/skills/engineering-project/scripts/new-project.sh <目标目录> --adapter <语言>
 ```
 
-`--list` 看有哪些 adapter。骨架是语言无关的，adapter 只填 `make` 各动词
-对应的具体命令。
+`--list` 看有哪些 adapter。骨架语言无关，adapter 只填 `stack.mk` 里那八个命令变量。
+生成的项目**自带 `scripts/`**，`make audit|review|journal|doctor` 不依赖这台机器
+装没装这个 skill。
 
-已有项目先体检，看工程基线缺什么：
-
-```bash
-~/.claude/skills/engineering-project/scripts/doctor.sh
-```
-
-要人审之前，先生成待审清单（自动标出必审项）：
+已有项目：
 
 ```bash
-~/.claude/skills/engineering-project/scripts/audit.sh
+make doctor    # 工程基线缺什么（没有 Makefile 就直接跑 skill 里的 doctor.sh）
+make journal   # 有没有在途工作、孤儿锁、悬空的仓外副作用
+make audit     # 这次改动的待人审清单
+make review    # 阶段结束时的全仓库复盘
 ```

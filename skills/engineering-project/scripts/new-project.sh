@@ -2,7 +2,16 @@
 # 从语言无关的骨架建一个新项目，adapter 只决定 stack.mk 里的命令。
 set -euo pipefail
 
-SELF="$(readlink -f "${BASH_SOURCE[0]}")"
+# readlink -f 是 GNU 的，macOS 默认没有 —— 用 pwd -P 逐层解析软链
+resolve() {
+  local t="$1"
+  while [ -L "$t" ]; do
+    local d; d="$(cd "$(dirname "$t")" && pwd -P)"
+    t="$(readlink "$t")"; case "$t" in /*) ;; *) t="$d/$t" ;; esac
+  done
+  printf '%s/%s\n' "$(cd "$(dirname "$t")" && pwd -P)" "$(basename "$t")"
+}
+SELF="$(resolve "${BASH_SOURCE[0]}")"
 SKILL_DIR="$(dirname "$(dirname "$SELF")")"
 TPL="${EW_TEMPLATES:-$(dirname "$(dirname "$SKILL_DIR")")/templates}"
 
@@ -73,12 +82,12 @@ if [ -f "$SNIP" ] && [ -f "$CI" ]; then
     { print }
   ' "$CI" > "$CI.tmp" && mv "$CI.tmp" "$CI"
 else
-  [ -f "$CI" ] && sed -i 's|# {{RUNTIME_SETUP}}|# 在这里加语言运行时的 setup action|' "$CI"
+  [ -f "$CI" ] && { sed 's|# {{RUNTIME_SETUP}}|# 在这里加语言运行时的 setup action|' "$CI" > "$CI.tmp" && mv "$CI.tmp" "$CI"; }
 fi
 
 # 占位符
 grep -rl '{{PROJECT_NAME}}' "$TARGET" 2>/dev/null | while read -r f; do
-  sed -i "s/{{PROJECT_NAME}}/$NAME/g" "$f"
+  sed "s/{{PROJECT_NAME}}/$NAME/g" "$f" > "$f.tmp" && mv "$f.tmp" "$f"
 done
 
 # 把 audit/doctor 拷进项目，让生成的项目自包含 ——

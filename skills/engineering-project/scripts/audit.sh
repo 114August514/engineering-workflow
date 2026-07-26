@@ -90,19 +90,19 @@ sus() { echo "- **$1**"; echo '  ```'; echo "$2" | head -5 | sed 's/^/  /'; echo
 M=$(echo "$ADDED" | grep -E '\b(it|test|describe)\.(skip|todo)|@pytest\.mark\.skip|#\[ignore\]|t\.Skip' || true)
 [ -n "$M" ] && { sus "被 skip 的测试 —— 测试红了是代码错了，不是测试该被关掉" "$M"; BLOCK=1; }
 
-M=$(echo "$ADDED" | grep -E 'catch\s*\([^)]*\)\s*\{\s*\}|except.*:\s*pass|catch\s*\{\s*\}' || true)
+M=$(echo "$ADDED" | grep -E 'catch[[:space:]]*\([^)]*\)[[:space:]]*\{[[:space:]]*\}|except.*:[[:space:]]*pass|catch[[:space:]]*\{[[:space:]]*\}' || true)
 [ -n "$M" ] && sus "吞掉的异常 —— 故障会在几层之后以更难懂的方式爆出来" "$M"
 
 M=$(echo "$ADDED" | grep -E 'https?://(localhost|127\.0\.0\.1|[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+)' || true)
 [ -n "$M" ] && sus "硬编码地址 —— 配置该从环境变量读" "$M"
 
-M=$(echo "$ADDED" | grep -iE '(password|token|secret|api_?key)\s*[=:]\s*["'"'"'][^"'"'"']{8,}' || true)
+M=$(echo "$ADDED" | grep -iE '(password|token|secret|api_?key)[[:space:]]*[=:][[:space:]]*["'"'"'][^"'"'"']{8,}' || true)
 [ -n "$M" ] && { sus "疑似硬编码密钥" "$M"; BLOCK=1; }
 
 M=$(echo "$ADDED" | grep -iE 'log.*\b(password|token|secret|id_?card|phone)\b' || true)
 [ -n "$M" ] && { sus "日志里可能有敏感信息" "$M"; BLOCK=1; }
 
-M=$(echo "$ADDED" | grep -E ':\s*any\b|as any\b' || true)
+M=$(echo "$ADDED" | grep -E ':[[:space:]]*any\b|as any\b' || true)
 [ -n "$M" ] && sus "逃逸的类型 —— any 会让类型检查在这里失效" "$M"
 
 M=$(echo "$ADDED" | grep -E 'onClick|onclick' | grep -E '<div|<span' || true)
