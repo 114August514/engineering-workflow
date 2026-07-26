@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 先看看约定
+    url: https://github.com/OWNER/REPO/blob/main/docs/conventions.md
+    about: 怎么干活、怎么写测试、怎么改需求都在这里

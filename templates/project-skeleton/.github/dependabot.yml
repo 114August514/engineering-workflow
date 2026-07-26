@@ -1,0 +1,21 @@
+# 依赖更新要有节奏：定期小步升，不要攒一年一次大升。
+# 每个新增/升级的依赖仍然要过准入检查（维护状态、许可证、间接依赖、
+# 弃维了切换成本多大）—— dependabot 只负责让你按时看见，不负责替你决定。
+#
+# 按项目实际用的包管理器改 package-ecosystem，用不到的删掉。
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+
+  # - package-ecosystem: "npm"        # 或 pip / cargo / gomod
+  #   directory: "/"
+  #   schedule:
+  #     interval: "weekly"
+  #   open-pull-requests-limit: 5
+  #   groups:
+  #     # 补丁版本合并成一个 PR，避免每周被十个 PR 淹掉
+  #     patch:
+  #       update-types: ["patch"]

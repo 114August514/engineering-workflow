@@ -41,6 +41,7 @@ Claude 会在你说"帮我起个新项目"、"这个需求怎么拆"、"这个 P
 
 | 阶段 | 产物 | 🚦 人审什么 |
 |---|---|---|
+| P-1 调研（常跳过） | 几条有证据的判断 + 做/不做 | **G0** 每条判断指得出证据吗 |
 | P0 意图 | `docs/spec.md`：问题 / 非目标 / EARS 验收标准 | **G1** 非目标、标准能不能被机器判定 |
 | P1 领域 | `docs/glossary.md`：术语 / 边界 / 不变量 / 状态机 | （并入 G1） |
 | P2 决策 | `docs/decisions/`：ADR | **G2** ADR——决策不可逆，代码可逆 |
@@ -134,6 +135,7 @@ SDD 的公认短板是 spec 和代码会悄悄不一致，通常只能靠人定�
 skills/engineering-project/
 ├── SKILL.md              # 分流 + 阶段路由（每次都会进上下文，所以很短）
 ├── references/
+│   ├── discovery.md      # P-1 调研：该不该做、问过去不问意愿、AI 幻觉调研
 │   ├── intake.md         # P0 需求澄清：EARS 句式、例子驱动、非目标
 │   ├── domain.md         # P1 通用语言、限界上下文、不变量、状态机
 │   ├── architecture.md   # P2 ADR、选型收敛、风险排序
@@ -160,7 +162,8 @@ skills/engineering-project/
     └── journal.sh        # 在途工作 / 孤儿锁 / 悬空副作用
 
 templates/
-├── project-skeleton/     # 语言无关：Makefile / AGENTS.md / docs / contracts / CI
+├── project-skeleton/     # 语言无关：Makefile / AGENTS.md / docs / contracts /
+│                         # .github（issue+PR 模板、CODEOWNERS、dependabot）
 └── adapters/             # 每个语言一个 .mk（八个变量）+ 一段 CI 运行时片段
 
 tests/                    # 这个仓库自己的回归测试，CI 在 ubuntu + macos 上跑

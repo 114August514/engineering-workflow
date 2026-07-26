@@ -1,0 +1,68 @@
+name: 功能需求
+description: 提一个需求。这些问题就是 P0 意图澄清要问的，先填能省好几轮来回。
+labels: ["feature"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **形容词会被各自解读，例子不会。** 凡是想写"友好""高效""稳定"的地方，
+        换成一个具体数字或一次具体交互。
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: 问题
+      description: 现在什么情况、什么地方不成立。**先别写方案。**
+      placeholder: 运营每天手工导出订单再贴进表格，一次 40 分钟，且经常贴错行。
+    validations:
+      required: true
+
+  - type: input
+    id: who
+    attributes:
+      label: 谁用？用完之后什么变了
+      description: 没有行为改变就没有价值，这个功能可以砍。
+      placeholder: 运营；从每天 40 分钟手工操作变成点一次按钮。
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 怎么算做完（配具体例子）
+      description: |
+        一条一行。至少写一条「如果……那么……」的异常路径——这类最容易漏，也最容易出事故。
+      placeholder: |
+        - 当用户点导出时，系统应当返回一个 CSV
+          例：3 条订单 → 3 行 + 表头，金额列是「12.34」不是「1234」
+        - 如果订单数超过 10 万，那么系统应当改为异步生成并发通知
+          例：15 万条 → 立即返回 202，5 分钟内收到下载链接
+    validations:
+      required: true
+
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: 明确不做什么
+      description: |
+        **这一项比"做什么"更重要。** 不划边界，AI 和你自己都会顺手多做。
+      placeholder: |
+        - 不做自定义列（先固定这 8 列）
+        - 不做定时导出
+        - 不支持 Excel 格式，只出 CSV
+    validations:
+      required: true
+
+  - type: input
+    id: existing
+    attributes:
+      label: 现在是怎么解决的
+      description: 手工？某个现成工具？**先确认没有现成的能用**再自己造。
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: 约束
+      description: 可选。时间、必须兼容的东西、合规、权限。

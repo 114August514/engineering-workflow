@@ -1,0 +1,67 @@
+name: 缺陷报告
+description: 报一个 bug。必填项是照着修复流程设计的——复现不了就没法修。
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        修 bug 的产物不是"修好的代码"，是**一条先红后绿的回归测试 + 写下来的根因**。
+        所以下面这几项不是走过场：没有稳定复现，就只能猜着改。
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      description: 从干净状态开始，一步一步。别人照着做要能重现。
+      placeholder: |
+        1. 用库存为 2 的商品 A
+        2. POST /orders，数量 3
+        3. 看返回
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: 期望 vs 实际
+      description: 具体到状态码、字段、数值。不要写"不对"。
+      placeholder: |
+        期望：409 OUT_OF_STOCK，订单不落库
+        实际：201，订单落库了，库存变成 -1
+    validations:
+      required: true
+
+  - type: input
+    id: frequency
+    attributes:
+      label: 必现还是偶发
+      description: 偶发的话，多少次里出现几次？有没有规律？
+      placeholder: 必现 / 约 10 次里 1 次，并发下更容易
+    validations:
+      required: true
+
+  - type: textarea
+    id: env
+    attributes:
+      label: 环境
+      description: 版本/提交、环境（本地/预发/生产）、相关配置。有 traceId 就贴。
+      placeholder: |
+        提交：a3f2c1d
+        环境：预发
+        traceId：01J8X...
+    validations:
+      required: true
+
+  - type: input
+    id: impact
+    attributes:
+      label: 影响
+      description: 丢数据 / 丢钱 / 用户重试一次就好 / 只是日志难看。这决定优先级。
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 已经查到的线索
+      description: 可选。怀疑的位置、试过什么、什么情况下不出现。

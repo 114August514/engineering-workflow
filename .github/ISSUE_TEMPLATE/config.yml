@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 先看看这个仓库自身的约束
+    url: https://github.com/114August514/engineering-workflow/blob/main/AGENTS.md
+    about: 跨平台写法、动词表三处一致、行数是烟雾报警器

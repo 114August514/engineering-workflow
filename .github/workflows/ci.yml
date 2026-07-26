@@ -51,6 +51,9 @@ jobs:
       - name: spec 追溯（含需求变更）
         run: bash tests/spec-traceability.sh
 
+      - name: 协作模板合法
+        run: bash tests/templates-valid.sh
+
       - name: 文档交叉引用没断
         run: bash tests/docs-links.sh
 

@@ -1,6 +1,6 @@
 ---
 name: engineering-project
-description: 从 0 搭建并持续交付一个工程化软件项目的完整工作流——需求澄清、领域建模、架构决策、可部署骨架、契约先行、垂直切片实现、代码评审、缺陷修复、里程碑复盘、上线与回滚，以及人该在哪些点上审计 AI 的产出。语言与技术栈无关：约定的是标准动词接口和目录规范，具体命令由 adapter 填。Use this whenever the user is starting a new project, scaffolding a repo, setting up engineering baselines (CI/lint/tests/hooks/deploy), designing an API or database schema, deciding a tech stack, planning how to build a feature, reviewing code or a PR, fixing a bug, doing a milestone retrospective, coordinating multiple agents or teammates on one repo, or picking up work left half-done by a previous session — including bare requests like "帮我起个新项目"、"这个需求怎么拆"、"技术栈选什么"、"怎么部署"、"CI 怎么配"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下这个阶段"、"上次做到哪了"、"多个 agent 怎么并行"、"帮我写个后端"、"前后端怎么对接". Also use it when the user describes an idea in vague terms and expects working software at the end, or when receiving/responding to code review feedback.
+description: 从 0 搭建并持续交付一个工程化软件项目的完整工作流——需求澄清、领域建模、架构决策、可部署骨架、契约先行、垂直切片实现、代码评审、缺陷修复、里程碑复盘、上线与回滚，以及人该在哪些点上审计 AI 的产出。语言与技术栈无关：约定的是标准动词接口和目录规范，具体命令由 adapter 填。Use this whenever the user is starting a new project, scaffolding a repo, setting up engineering baselines (CI/lint/tests/hooks/deploy), designing an API or database schema, deciding a tech stack, researching whether something is worth building at all, planning how to build a feature, reviewing code or a PR, fixing a bug, doing a milestone retrospective, coordinating multiple agents or teammates on one repo, or picking up work left half-done by a previous session — including bare requests like "帮我起个新项目"、"这个需求怎么拆"、"这个该不该做"、"怎么做需求调研"、"技术栈选什么"、"怎么部署"、"CI 怎么配"、"这个 PR 我该看什么"、"帮我 review 一下"、"这个 bug 怎么修"、"复盘一下这个阶段"、"上次做到哪了"、"多个 agent 怎么并行"、"帮我写个后端"、"前后端怎么对接". Also use it when the user describes an idea in vague terms and expects working software at the end, or when receiving/responding to code review feedback.
 ---
 
 # 工程项目工作流
@@ -32,7 +32,10 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
 但 `make check` 通过只说明现有测试没被破坏——既然它是 bug，
 就说明现有测试根本没覆盖它。没有新增回归测试的修复必然复发。
 
-新项目一定是 T2，从 P0 开始。
+新项目一定是 T2。**从 P0 还是 P-1 开始**看这个：
+自用工具 / 需求已拍板 / 你自己就是用户 / 做个最小版本比调研还快 → 直接 P0；
+要投入超过两周、且你在替别人解决问题 → 先 P-1（`references/discovery.md`）。
+**跳过 P-1 是常态**，它的开销必须和项目体量匹配。
 
 **已有项目**（大部分实际工作）：不要为了接入这套流程去做大重构。
 新流程从**下一条切片**开始生效，老代码原地不动。
@@ -46,6 +49,7 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
 
 | 阶段 | 产物 | 详细步骤 |
 |---|---|---|
+| **P-1 调研**（常跳过） | 几条有证据的判断 + 做/不做的决定 | `references/discovery.md` |
 | **P0 意图** | `docs/spec.md`：问题 / 非目标 / 验收标准（带 REQ-ID） | `references/intake.md` |
 | **P1 领域** | `docs/glossary.md`：术语 / 边界 / 不变量 / 状态机 | `references/domain.md` |
 | **P2 决策** | `docs/decisions/NNNN-*.md`：ADR + 容器图 + 风险排序 | `references/architecture.md` |
@@ -79,7 +83,7 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
 
 ---
 
-## 六个闸门
+## 闸门
 
 闸门是**人必须点头**的地方。到了闸门就停下来，把产物摆出来，等人回话。
 不要自己替人过闸。
@@ -94,6 +98,7 @@ P0 ──G1 意图闸────► P1 ──┐
 
 | 闸门 | 人审什么 | 为什么是这里 |
 |---|---|---|
+| **G0 做不做**（常跳过） | 每条判断指得出证据吗；调研有没有让范围变小过 | **砍掉一个项目比之后任何决策都省钱** |
 | **G1 意图** | 非目标、验收标准、术语表 | 最便宜、杠杆最高。这里错了，后面全白做 |
 | **G2 决策** | ADR | 决策不可逆，代码可逆。审计资源该花在不可逆的东西上 |
 | **G3 骨架** | 亲手跑一次 `make dev`，点开部署出来的 URL | 骨架是后面所有代码的地基，且此时它还很小 |

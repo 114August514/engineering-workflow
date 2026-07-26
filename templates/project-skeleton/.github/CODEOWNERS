@@ -1,0 +1,19 @@
+# 多人协作时才需要这个文件；单人开发可以整份删掉。
+#
+# 它的用途不是"分配活儿"，是**让必审区的闸门变成机器强制**：
+# 配上之后，动 contracts/ 或 migrations/ 的 PR 不获得指定审阅者批准就合不进去。
+# 靠自觉的闸门迟早会被赶进度绕过，这个不会。
+#
+# 用法：把 @OWNER 换成真实的用户名或团队，然后在仓库设置里开启
+# Settings → Branches → 保护 main → Require review from Code Owners
+
+# 契约与数据结构：改错了很贵，且不可逆
+/contracts/     @OWNER
+/migrations/    @OWNER
+
+# 流程与工程基线本身
+/AGENTS.md      @OWNER
+/docs/conventions.md  @OWNER
+/.github/       @OWNER
+/Makefile       @OWNER
+/stack.mk       @OWNER
