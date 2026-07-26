@@ -48,6 +48,9 @@ jobs:
       - name: journal 三项检测
         run: bash tests/journal-behaviour.sh
 
+      - name: spec 追溯（含需求变更）
+        run: bash tests/spec-traceability.sh
+
       - name: 文档交叉引用没断
         run: bash tests/docs-links.sh
 

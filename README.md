@@ -147,6 +147,7 @@ skills/engineering-project/
 │   ├── reuse.md          # ★ 别造轮子：四层检索、哪些不许手搓、抄完必须适配
 │   ├── journal.md        # ★ 在途/回退/并发：预写日志、undo log、锁粒度
 │   ├── bugfix.md         # 缺陷修复：复现→回归测试→根因→找同类→回填
+│   ├── brownfield.md     # 存量项目接入：五步顺序，不推倒重来
 │   ├── handoff.md        # 人机对接：AGENTS.md、任务卡、上下文管理
 │   ├── conventions.md    # 标准动词、目录、命名、git
 │   ├── backend.md        # 技术专题：分层、事务与并发、数据库、可观测性
@@ -164,6 +165,7 @@ templates/
 
 tests/                    # 这个仓库自己的回归测试，CI 在 ubuntu + macos 上跑
 ├── verbs-consistent.sh   # 标准动词三处一致
+├── spec-traceability.sh  # 需求变更下追溯仍成立（含不误报）
 ├── docs-links.sh         # 文档交叉引用没断
 └── journal-behaviour.sh  # journal.sh 三项检测真的会触发
 ```

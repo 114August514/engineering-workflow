@@ -46,14 +46,21 @@ BSD 工具链专门用来拦 GNU-only 的写法（见下）。
 `tests/verbs-consistent.sh` 兜住：不一致就红。**不许在没有这个检查的前提下
 制造新的文档重复。**
 
-### 3. `SKILL.md` 每次会话都会整个进上下文
+### 3. 行数是烟雾报警器，不是预算
 
-所以它必须短。目前 161 行。**加内容之前先问能不能删**——
-细节属于 `references/`，`SKILL.md` 只负责分流和路由。
-超过 200 行就必须动手瘦身。
+`SKILL.md` 每次会话都整个进上下文。但**约束不是 token**（200 行中文 ≈ 5k token，
+在 20 万上下文里不算什么），**是注意力**：一份长路由文档会稀释信号。
 
-同理 `templates/project-skeleton/AGENTS.md` 目前 140 行，
-而 `handoff.md` 自己定的宪法上限是 150 行——已经逼近，加一节就要砍一节。
+所以真正的规则是**职责划分**，不是行数：
+
+- `SKILL.md` 只放三样：分流、路由表、硬规则。
+  任何解释、例子、理由都属于 `references/`
+- `templates/project-skeleton/AGENTS.md` 只放约束和指针，
+  展开的做法放 `templates/project-skeleton/docs/conventions.md`
+  （它随项目走，用的人不需要装这个 skill）
+
+行数（SKILL.md 200 / AGENTS.md 150）只当烟雾报警器：**报警时先问"哪部分
+放错了地方"，而不是"能不能把预算调大"。** 靠压缩句子去凑行数是绕过规则。
 
 ## 写测试
 

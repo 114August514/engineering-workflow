@@ -121,19 +121,14 @@ if [ -f docs/spec.md ]; then
   echo
   # REQ-XXX-* 是模板占位符，不参与追溯
   SPEC_IDS=$(grep -oE 'REQ-[A-Z]+-[0-9]+' docs/spec.md | grep -v '^REQ-XXX-' | sort -u)
-  if [ -z "$SPEC_IDS" ]; then
-    echo "- spec 里没有 REQ-ID（或只有模板占位符），无法做追溯。见 \`references/intake.md\`。"
-  else
+  CODE_IDS=$(git grep -hoE 'REQ-[A-Z]+-[0-9]+' -- ':(exclude)docs/' 2>/dev/null | grep -v '^REQ-XXX-' | sort -u)
+
+  # 孤儿需求：spec 里有，代码/测试里搜不到
+  if [ -n "$SPEC_IDS" ]; then
     ORPHAN_REQ=""
     for id in $SPEC_IDS; do
-      git grep -qF "$id" -- ':(exclude)docs/' >/dev/null 2>&1 || ORPHAN_REQ="$ORPHAN_REQ $id"
+      git grep -qlF "$id" -- ':(exclude)docs/' >/dev/null 2>&1 || ORPHAN_REQ="$ORPHAN_REQ $id"
     done
-    CODE_IDS=$(git grep -hoE 'REQ-[A-Z]+-[0-9]+' -- ':(exclude)docs/' 2>/dev/null | grep -v '^REQ-XXX-' | sort -u)
-    ORPHAN_TEST=""
-    for id in $CODE_IDS; do
-      echo "$SPEC_IDS" | grep -qxF "$id" || ORPHAN_TEST="$ORPHAN_TEST $id"
-    done
-
     if [ -n "$ORPHAN_REQ" ]; then
       echo "- ⚠️ **孤儿需求**（spec 里有，代码/测试里搜不到）：\`$(echo $ORPHAN_REQ)\`"
       echo "  → 要么还没做，要么做了没测。"
@@ -141,11 +136,63 @@ if [ -f docs/spec.md ]; then
     else
       echo "- ✓ 每条 REQ 都能在代码/测试里找到"
     fi
-    [ -n "$ORPHAN_TEST" ] && {
-      echo "- ⚠️ **孤儿测试**（代码里引用了 spec 里不存在的 ID）：\`$(echo $ORPHAN_TEST)\`"
-      echo "  → spec 过期了，或者在做范围外的事。"
+  else
+    echo "- spec 里没有 REQ-ID（或只有模板占位符），见 \`references/intake.md\`。"
+  fi
+
+  # 孤儿测试：代码里引用了 spec 里不存在的 ID。
+  # 这一段**必须独立于上面那段**跑 —— 曾经把它写在 else 分支里，
+  # 于是"把 spec 里的需求删光"会让追溯静默关闭，一条都不报。
+  ORPHAN_TEST=""
+  for id in $CODE_IDS; do
+    echo "$SPEC_IDS" | grep -qxF "$id" || ORPHAN_TEST="$ORPHAN_TEST $id"
+  done
+  [ -n "$ORPHAN_TEST" ] && {
+    echo "- ⚠️ **孤儿测试**（代码里引用了 spec 里不存在的 ID）：\`$(echo $ORPHAN_TEST)\`"
+    echo "  → 需求被删了但测试还在，或者在做范围外的事。"
+    BLOCK=1
+  }
+
+  # 需求改了但测试没跟着改 —— ID 相同挡不住内容 180 度反转。
+  # 只靠 git diff，不需要给 REQ 加哈希或版本号。
+  # 一条 REQ 的定义跨多行（EARS 句子 + 「例：」），所以必须把变更行**归属到它所属的
+  # REQ**，不能只找"含 REQ-ID 的变更行" —— 真实的需求变更经常只动「例」那一行
+  # （把期望结果从 409 改成 201），REQ 标题一个字不变。
+  CHANGED_REQ=$(git diff -U0 "$BASE"...HEAD -- docs/spec.md 2>/dev/null \
+    | awk '
+        /^@@/ {
+          match($0, /\+[0-9]+(,[0-9]+)?/); h = substr($0, RSTART+1, RLENGTH-1)
+          split(h, pp, ","); st = pp[1] + 0; cnt = (pp[2] == "" ? 1 : pp[2] + 0)
+          if (cnt == 0) { changed[st] = 1; changed[st+1] = 1 }   # 纯删除：标记删除点前后
+          else for (i = 0; i < cnt; i++) changed[st+i] = 1
+        }
+        END {
+          n = 0; cur = ""
+          while ((getline line < "docs/spec.md") > 0) {
+            n++
+            if (match(line, /REQ-[A-Z]+-[0-9]+/)) cur = substr(line, RSTART, RLENGTH)
+            else if (line ~ /^#/) cur = ""          # 换节了，不再属于上一条 REQ
+            if (changed[n] && cur != "") print cur
+          }
+        }' | grep -v '^REQ-XXX-' | sort -u)
+  if [ -n "$CHANGED_REQ" ]; then
+    STALE=""
+    for id in $CHANGED_REQ; do
+      # 这条 REQ 的定义动了：这次 diff 里有没有同时改到引用它的文件？
+      REFS=$(git grep -lF "$id" -- ':(exclude)docs/' 2>/dev/null || true)
+      [ -z "$REFS" ] && continue   # 没人引用它，交给孤儿需求那段去报
+      TOUCHED=0
+      for r in $REFS; do
+        echo "$FILES" | grep -qxF "$r" && TOUCHED=1 && break
+      done
+      [ "$TOUCHED" -eq 0 ] && STALE="$STALE $id"
+    done
+    if [ -n "$STALE" ]; then
+      echo "- ⚠️ **需求改了，但引用它的测试/代码这次没动**：\`$(echo $STALE)\`"
+      echo "  → ID 相同挡不住内容变了。逐条确认：现有测试断言的还是新需求要的吗？"
+      echo "    （典型翻车：需求从「拒绝」改成「转预售」，测试仍在断言 409 且照样通过）"
       BLOCK=1
-    }
+    fi
   fi
   echo
 fi

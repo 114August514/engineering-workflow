@@ -34,6 +34,10 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
 
 新项目一定是 T2，从 P0 开始。
 
+**已有项目**（大部分实际工作）：不要为了接入这套流程去做大重构。
+新流程从**下一条切片**开始生效，老代码原地不动。
+接入顺序和常见翻车见 `references/brownfield.md`。
+
 ---
 
 ## 七个阶段
@@ -63,6 +67,8 @@ description: 从 0 搭建并持续交付一个工程化软件项目的完整工�
   会话死在半路怎么接、`git revert` 撤不掉的仓外副作用怎么记、多 agent 怎么不打架。
 - `references/bugfix.md` —— 缺陷修复流程（TF 档专用）。
 - `references/handoff.md` —— 人机对接：`AGENTS.md` 怎么写、任务卡格式、上下文怎么管。
+- `references/brownfield.md` —— **存量项目怎么接入**：五步接入顺序、
+  已有测试很烂怎么办、什么时候不值得接入。
 
 工程规范本身（标准动词、目录约定、命名、提交）在 `references/conventions.md`。
 
