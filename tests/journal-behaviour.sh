@@ -28,8 +28,8 @@ ck "标题含 % 时不报 printf 错"  '! out | grep -q "invalid format"'
 
 # 断言拒绝的**理由**，不只是"没成功"。只断言退出码的话，
 # 把校验整个删掉、让它靠写入失败来退出，这条测试照样绿 —— 那就是假测试。
-ck "含 / 的 slug 被校验拒绝"    '"$J" --new ../escaped 2>&1 | grep -q "slug 不能含"'
-ck "以 . 开头的 slug 被拒绝"    '"$J" --new .hidden   2>&1 | grep -q "slug 不能含"'
+ck "含 / 的 slug 被校验拒绝"    'out --new ../escaped | grep -q "slug 不能含"'
+ck "以 . 开头的 slug 被拒绝"    'out --new .hidden   | grep -q "slug 不能含"'
 ck "拒绝后没留下文件"           '[ ! -e "$T/escaped.md" ] && [ ! -e "$T/../escaped.md" ]'
 
 "$J" --new beta src/pay/ >/dev/null
