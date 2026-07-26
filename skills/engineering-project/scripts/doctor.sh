@@ -112,7 +112,6 @@ done
 
 if [ -f docs/spec.md ]; then
   # 模板占位符不算数：'不做 ……' 和 REQ-XXX-001 都是没填的样子
-  NONGOALS=$(grep -cE '^[[:space:]]*-[[:space:]]*不做[[:space:]]*\S' docs/spec.md 2>/dev/null | tr -d ' ')
   NONGOALS_REAL=$(grep -E '^[[:space:]]*-[[:space:]]*不做' docs/spec.md 2>/dev/null | grep -vcE '……|\.\.\.|＜|<' | tr -d ' ')
   if [ "${NONGOALS_REAL:-0}" -ge 5 ]; then
     ok "spec 写了 $NONGOALS_REAL 条非目标"

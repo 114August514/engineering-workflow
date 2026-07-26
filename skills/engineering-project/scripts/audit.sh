@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 生成"待人审清单"：自动标出必审项，让人的十五分钟花在刀刃上。
-# 输出是 markdown，可以直接贴进 PR 或 $GITHUB_STEP_SUMMARY。
+# 输出是 markdown，可以直接贴进 PR 或 ${GITHUB_STEP_SUMMARY}。
 #
 # 用法：audit.sh [--base <ref>] [--max-lines N]
 set -uo pipefail
@@ -72,12 +72,12 @@ fi
 echo "### 规模"
 echo
 if [ "${NLINES:-0}" -gt "$MAX_LINES" ]; then
-  echo "- ⚠️ **$NLINES 行（上限 $MAX_LINES）**。超过这个体积，评审会从"
+  echo "- ⚠️ **$NLINES 行（上限 ${MAX_LINES}）**。超过这个体积，评审会从"
   echo "  逐行看退化成扫一眼点同意——闸门就失效了。先拆出纯机械改动"
   echo "  （重命名、移动文件、格式化）单独一个提交，还超就是切片切大了。"
   BLOCK=1
 else
-  echo "- ✓ $NLINES 行（上限 $MAX_LINES）"
+  echo "- ✓ $NLINES 行（上限 ${MAX_LINES}）"
 fi
 echo
 

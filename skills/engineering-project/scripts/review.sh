@@ -55,7 +55,7 @@ else
     for other in $CTXS; do
       [ "$c" = "$other" ] && continue
       H=$(grep -rlE "$other/(domain|infra)/" "$SRC/$c" 2>/dev/null | grep -vE "$EX" || true)
-      [ -n "$H" ] && CROSS="$CROSS $c→$other"
+      [ -n "$H" ] && CROSS="$CROSS ${c}→$other"
     done
   done
   [ -n "$CROSS" ] && warn "**上下文之间直连内部实现**：$CROSS —— 跨上下文只能走明确接口" \
@@ -218,11 +218,11 @@ if [ -f docs/runbook.md ]; then
     LASTS=$(date -d "$LAST" +%s 2>/dev/null || date -j -f "%Y-%m-%d" "$LAST" +%s 2>/dev/null || echo "")
     if [ -z "$LASTS" ]; then DAYS=""; else DAYS=$(( ( $(date +%s) - LASTS ) / 86400 )); fi
     if [ -z "$DAYS" ]; then
-      note "runbook 里有日期 $LAST，但这台机器的 date 解析不了，跳过新鲜度检查"
+      note "runbook 里有日期 ${LAST}，但这台机器的 date 解析不了，跳过新鲜度检查"
     elif [ "$DAYS" -gt 90 ]; then
-      warn "**runbook 里最近的演练日期是 $LAST（$DAYS 天前）** —— 回滚和恢复演练该重做了"
+      warn "**runbook 里最近的演练日期是 ${LAST}（$DAYS 天前）** —— 回滚和恢复演练该重做了"
     else
-      note "✓ runbook 最近演练：$LAST（$DAYS 天前）"
+      note "✓ runbook 最近演练：${LAST}（$DAYS 天前）"
     fi
   else
     warn "runbook 里没有演练日期 —— **没演练过的回滚方案等于没有**（\`delivery.md\`）"
@@ -230,7 +230,11 @@ if [ -f docs/runbook.md ]; then
 else
   warn "没有 \`docs/runbook.md\`"
 fi
-NADR=$(ls docs/decisions/*.md 2>/dev/null | grep -vc '0000-template' || echo 0)
+NADR=0
+for adr in docs/decisions/*.md; do
+  case "$adr" in *0000-template.md|*'*.md') continue ;; esac
+  [ -f "$adr" ] && NADR=$((NADR+1))
+done
 note "ADR 数量：$NADR"
 [ "${NADR:-0}" -eq 0 ] && warn "一份 ADR 都没有 —— 那些选型决定的理由现在只存在于某次对话里"
 echo

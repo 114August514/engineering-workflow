@@ -120,7 +120,7 @@ fi
 cat <<EOF
 
   ✓ 建好了：$TARGET
-    技术栈：$ADAPTER（只写在 stack.mk 一个文件里）
+    技术栈：${ADAPTER}（只写在 stack.mk 一个文件里）
 
   接下来（P3 骨架阶段）：
 
