@@ -196,4 +196,6 @@ macOS runner 不是凑数：BSD 工具链专门用来拦 GNU-only 的写法
 （`\s` / `stat -c` / `date -d` / `sed -i` / `readlink -f` / `xargs -r`），
 这些在 macOS 上要么直接失败，要么**静默降级成错误答案**。
 
-调研笔记在 `docs/research/`。
+调研笔记在 `docs/research/`。泛化升级的研究规格见
+[`docs/research/agent-collaboration-foundation.md`](docs/research/agent-collaboration-foundation.md)，
+当前任务与完成证据分别维护在 [`todo.md`](todo.md) 和 [`done.md`](done.md)。
