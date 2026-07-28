@@ -10,6 +10,7 @@
 - 本协调周期的 ledger steward 是 `agent:root`。worker 不直接编辑两个账本。
 - 控制面以 `task ID + expected rev + claim token` 做 CAS；成功后递增 `rev`。
 - `state` 只允许 `ready`、`claimed`、`blocked`。只有 `accepted` 依赖可解锁任务。
+- `tracking` 映射同仓库 GitHub Issue/PR/Milestone；`none` 表示尚未物化为外部工作项。
 - `write` 是排他写范围，不包含账本控制文件；路径禁止绝对地址、glob 和 `..`。
 - `ready`/`claimed` 必须有具体 write/artifact；等待 ADR 定路径的 blocked 任务使用 `none`。
 - handoff 先记录 checkpoint、下一步和风险，再释放 owner/claim；旧 claim 随即失效。
@@ -19,12 +20,13 @@
 
 ## TASK-RES-001 | 建立 claim/evidence 登记册
 - state: ready
-- rev: 1
+- rev: 2
 - rq: RQ-00,RQ-01,RQ-02,RQ-03,RQ-04,RQ-05,RQ-06,RQ-07,RQ-08,RQ-09,RQ-10
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- updated: 2026-07-29T02:14:24+08:00
+- tracking: github:issue#9; github:milestone#1
+- updated: 2026-07-29T02:47:36+08:00
 - write: repo:docs/research/evidence-register.md
 - artifact: repo:docs/research/evidence-register.md
 - accept AC-1: 每个核心产品 claim 记录证据等级、版本、方法、可支持与不可支持的结论
@@ -36,12 +38,13 @@
 
 ## TASK-RES-002 | 固化 harness 能力与缺陷矩阵
 - state: ready
-- rev: 1
+- rev: 2
 - rq: RQ-07,RQ-08
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- updated: 2026-07-29T02:14:24+08:00
+- tracking: github:issue#10; github:milestone#1
+- updated: 2026-07-29T02:47:36+08:00
 - write: repo:docs/research/harness-capability-matrix.md
 - artifact: repo:docs/research/harness-capability-matrix.md
 - accept AC-1: 覆盖 12-factor-agents、OpenHarness、oh-my-pi、Kimi Code、Claude Code
@@ -53,12 +56,13 @@
 
 ## TASK-RES-003 | 核验协议边界
 - state: ready
-- rev: 1
+- rev: 2
 - rq: RQ-03,RQ-07
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- updated: 2026-07-29T02:14:24+08:00
+- tracking: github:issue#7; github:milestone#1
+- updated: 2026-07-29T02:47:36+08:00
 - write: repo:docs/research/protocol-boundaries.md
 - artifact: repo:docs/research/protocol-boundaries.md
 - accept AC-1: MCP、ACP、A2A、AG-UI 的稳定能力和限制均采用官方规范核验
@@ -70,12 +74,13 @@
 
 ## TASK-RES-004 | 设计四基线与预注册评测
 - state: ready
-- rev: 1
+- rev: 2
 - rq: RQ-00,RQ-01,RQ-02,RQ-04,RQ-05,RQ-08
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- updated: 2026-07-29T02:14:24+08:00
+- tracking: github:issue#3; github:milestone#1
+- updated: 2026-07-29T02:47:36+08:00
 - write: repo:docs/research/evaluation-design.md
 - artifact: repo:docs/research/evaluation-design.md
 - accept AC-1: 定义任务语料、评分量表、H/A/C/R 基线、机制消融、主指标和混淆因素
@@ -87,12 +92,13 @@
 
 ## TASK-RES-005 | 收集第二垂直任务与领域评审者
 - state: ready
-- rev: 1
+- rev: 2
 - rq: RQ-09
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- updated: 2026-07-29T02:14:24+08:00
+- tracking: github:issue#8; github:milestone#1
+- updated: 2026-07-29T02:47:36+08:00
 - write: repo:docs/research/second-vertical-corpus.md
 - artifact: repo:docs/research/second-vertical-corpus.md
 - accept AC-1: 至少比较 research-to-decision 与两个替代垂直的对象、副作用和验证器差异
@@ -104,12 +110,13 @@
 
 ## TASK-FORK-001 | 运行 Component Intake Gate
 - state: ready
-- rev: 1
+- rev: 2
 - rq: RQ-07,RQ-10
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- updated: 2026-07-29T02:14:24+08:00
+- tracking: github:issue#11; github:milestone#1
+- updated: 2026-07-29T02:47:36+08:00
 - write: repo:docs/research/component-intake.md
 - artifact: repo:docs/research/component-intake.md
 - accept AC-1: Kimi Code、OpenHarness、oh-my-pi、Claude SDK 均有 adopt/fork/adapt/build 结论
@@ -122,20 +129,21 @@
 
 ## TASK-OPS-001 | 为任务账本增加机器检查
 - state: ready
-- rev: 1
+- rev: 2
 - rq: none
 - deps: TASK-DOC-001
 - owner: none
 - claim: none
-- updated: 2026-07-29T02:14:24+08:00
+- tracking: github:issue#2; github:milestone#1
+- updated: 2026-07-29T02:47:36+08:00
 - write: repo:docs/research/task-ledger-contract.md
 - write: repo:tests/task-ledger.sh
 - write: repo:.github/workflows/ci.yml
 - write: repo:AGENTS.md
 - artifact: repo:docs/research/task-ledger-contract.md
 - artifact: repo:tests/task-ledger.sh
-- accept AC-1: 校验器先断言 fixture 非空，再检查字段、ID、依赖、claim、scope、evidence 和 effect/undo
-- accept AC-2: 重复 ID、todo/done 重叠、依赖环、scope 冲突和缺证据分别给出准确失败原因
+- accept AC-1: 校验器先断言 fixture 非空，再检查字段、ID、依赖、claim、tracking、scope、evidence 和 effect/undo
+- accept AC-2: 重复 ID、todo/done 重叠、依赖环、scope 冲突、tracking 复用和缺证据分别给出准确失败原因
 - accept AC-3: 故意破坏实现可使对应负例变红，脚本通过 Bash 3.2 与 BSD 工具链约束
 - accept AC-4: CI 和 AGENTS.md 的验证入口都调用任务账本检查
 - evidence: none
@@ -150,6 +158,7 @@
 - deps: TASK-RES-004
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: repo:docs/research/baselines/
 - artifact: repo:docs/research/baselines/
@@ -167,6 +176,7 @@
 - deps: TASK-RES-002,TASK-RES-003,TASK-FORK-001,TASK-EVAL-000
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: repo:docs/decisions/
 - artifact: repo:docs/decisions/
@@ -184,6 +194,7 @@
 - deps: TASK-RES-001,TASK-RES-003
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: repo:docs/research/collaboration-glossary.md
 - artifact: repo:docs/research/collaboration-glossary.md
@@ -201,6 +212,7 @@
 - deps: TASK-CORE-001,TASK-ADR-001
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: none
 - artifact: none
@@ -218,6 +230,7 @@
 - deps: TASK-RES-002,TASK-RES-003,TASK-CORE-001,TASK-ADR-001
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: none
 - artifact: none
@@ -235,6 +248,7 @@
 - deps: TASK-CORE-001,TASK-RES-004,TASK-ADR-001
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: none
 - artifact: none
@@ -252,6 +266,7 @@
 - deps: TASK-RES-004,TASK-CORE-001,TASK-EVAL-000,TASK-ADR-001
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: none
 - artifact: none
@@ -269,6 +284,7 @@
 - deps: TASK-ADP-001,TASK-FORK-001,TASK-ADR-001
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: none
 - artifact: none
@@ -286,6 +302,7 @@
 - deps: TASK-CORE-002,TASK-ASR-001,TASK-EVAL-001
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: repo:docs/research/software-engineering-domain-pack.md
 - artifact: repo:docs/research/software-engineering-domain-pack.md
@@ -303,6 +320,7 @@
 - deps: TASK-SWE-001,TASK-ADP-002
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: none
 - artifact: none
@@ -320,6 +338,7 @@
 - deps: TASK-RES-005,TASK-SWE-002
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: repo:docs/research/second-vertical-selection.md
 - artifact: repo:docs/research/second-vertical-selection.md
@@ -337,6 +356,7 @@
 - deps: TASK-GEN-001
 - owner: none
 - claim: none
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: none
 - artifact: none

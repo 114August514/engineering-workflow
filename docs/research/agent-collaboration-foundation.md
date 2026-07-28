@@ -459,6 +459,14 @@ R0 仍按“对比度、真实任务、领域 owner、风险、可验证性”�
     阶段默认只读外部来源。
 13. commit 遵循本仓库格式，并在描述中带任务 ID，例如：
     `docs: TASK-RES-001 建立协作底座证据登记册`。
+14. GitHub Issue 是公开协作视图，`todo.md` / `done.md` 是随代码版本化的可审计状态源。
+    每个已物化任务用 `tracking` 记录 Issue、PR 和 Milestone；GitHub label 或关闭状态不能
+    单独覆盖 ledger state。
+15. PR 必须写 Task ID 并引用对应 Issue；只有该 PR 满足全部 acceptance 且合入后才能使用
+    `Closes #N`。中间 spike、部分证据或依赖 PR 只使用 `Refs #N`，不能提前关闭任务。
+16. Milestone 对应 roadmap gate，但进度百分比不是验收。每个活跃阶段保留一个 gate Issue；
+    只有 gate report 合入、gate Issue 与 Milestone 关闭后，才在该主干提交创建不可移动的
+    annotated tag `rN-accepted`。新证据推翻结论时另写 superseding decision，不改写历史 Tag。
 
 ## 十二、当前非目标
 

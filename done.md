@@ -12,6 +12,7 @@
 - deps: none
 - owner: agent:root
 - claim: run:initial-research-20260729
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - artifact: repo:docs/research/agent-collaboration-foundation.md
@@ -31,6 +32,7 @@
 - deps: TASK-RES-000
 - owner: human:user
 - claim: conversation:2026-07-29
+- tracking: none
 - updated: 2026-07-29T02:14:24+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - artifact: repo:docs/research/agent-collaboration-foundation.md
@@ -45,12 +47,13 @@
 
 ## TASK-DOC-001 | 建立研究规格与协作账本
 - state: accepted
-- rev: 1
+- rev: 2
 - rq: none
 - deps: TASK-DEC-001
 - owner: agent:root
 - claim: run:research-spec-20260729
-- updated: 2026-07-29T02:22:45+08:00
+- tracking: github:issue#1; github:pr#12; github:milestone#1
+- updated: 2026-07-29T02:48:29+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - write: repo:todo.md
 - write: repo:done.md
@@ -60,10 +63,10 @@
 - artifact: repo:done.md
 - accept AC-1: 研究规格明确问题、边界、RQ、证据、基线、stage gates、停止条件和协作协议
 - evidence AC-1: ref=repo:docs/research/agent-collaboration-foundation.md
-- accept AC-2: 任务账本包含固定字段、依赖、claim、write scope、acceptance 和恢复语义
+- accept AC-2: 任务账本包含固定字段、依赖、claim、tracking、write scope、acceptance 和恢复语义
 - evidence AC-2: ref=repo:todo.md; ref=repo:done.md
 - accept AC-3: 本仓库要求的文档与 shell 验证全部通过
-- evidence AC-3: command=repository-required-verification; exit=0; at=2026-07-29T02:22:45+08:00
+- evidence AC-3: command=repository-required-verification; exit=0; at=2026-07-29T02:48:29+08:00
 - blocker: none
 - handoff: none
 - effect: none
