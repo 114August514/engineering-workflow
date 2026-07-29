@@ -8,8 +8,8 @@
 >
 > 历史状态：本文保留 PR #12 的原修复语义，不再是当前迁移路线。当前边界与任务图以
 > [`2026-07-29-evolvable-mother-roadmap-migration.md`](../plans/2026-07-29-evolvable-mother-roadmap-migration.md)
-> 和 `TASK-DEC-002` 为准。下文“PR #12 必须 squash merge”是被取代路线的原规则；当前执行是
-> PR #14 squash merge 并以 `Closes #1` 交付原任务，随后关闭而不合并 PR #12。
+> 和 `TASK-DEC-002` 为准。下文“PR #12 必须 squash merge”是被取代路线的原规则；PR #14 已
+> squash merge 并以 `Closes #1` 交付原任务，PR #12 随后关闭且未合并。
 
 ## 一、目标
 

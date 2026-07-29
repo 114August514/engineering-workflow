@@ -487,3 +487,30 @@
 - undo: FX-GH-MILESTONE-DIRECTIONS; action=reopen historical milestones restore issue milestone#1 close direction milestones restore issue#20/pr#14 projection from prestate commit 9484028 and retain successor audit
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=documentation and reversible GitHub roadmap projection do not change product runtime
 - move: move-task-ops-004-accepted-r2
+
+## TASK-OPS-003 | 迁移 PR 合入后归档旧路线对象
+- state: accepted
+- rev: 5
+- rq: none
+- deps: TASK-DOC-002
+- owner: agent:root
+- claim: run:r0-supersede-20260730T004605p0800
+- tracking: github:issue#20; github:milestone#8
+- updated: 2026-07-30T00:49:22+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:docs/research/github-roadmap-migration.md
+- write: repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md
+- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: PR #14 以 squash merge 合入 main 后，保留 proposed-successor links 与历史语义，再关闭 #2、#11、#13 与 PR #12；Issue #1 由 PR #14 的 `Closes #1` 关闭
+- evidence AC-1: ref=github:pr#14; result=squash-merged; merge-commit=f09eeb25059c2b797a008accd565d716b5e07ff9; merged-at=2026-07-29T16:46:05Z; ref=github:issue#1; state=closed-completed; closed-at=2026-07-29T16:46:07Z; refs=github:issue#2,github:issue#11,github:issue#13; state=closed-not-planned; closed-at=2026-07-29T16:47:18Z; ref=github:pr#12; state=closed-unmerged-draft; head=60b768c1fe6e118bc66d126577fe5b32930c62b3; closed-at=2026-07-29T16:47:18Z
+- accept AC-2: 每次 mutation 记录 URL、时间与 undo；旧 Milestone #1-#7 的关闭与活跃 R0 Issue 重投影由 TASK-OPS-004 独立验收
+- evidence AC-2: ref=repo:docs/research/github-roadmap-migration.md; effect=FX-GH-R0-SUPERSEDE; result=completed-with-undo; ref=TASK-OPS-004; state=accepted
+- accept AC-3: canonical、迁移计划和历史补救说明不再把已完成的迁移写成当前等待项
+- evidence AC-3: refs=repo:docs/research/agent-collaboration-foundation.md,repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md,repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md; result=current-status-normalized
+- blocker: none
+- handoff: none
+- effect: FX-GH-R0-SUPERSEDE; action=close issue#2 issue#11 issue#13 and pr#12 after migration squash merge
+- undo: FX-GH-R0-SUPERSEDE; action=reopen closed objects and retain successor comments and audit
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=receipt and current-status documentation do not change product runtime
+- move: move-task-ops-003-accepted-r5
