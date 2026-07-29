@@ -30,16 +30,16 @@ OpenHarness 是首个 Substrate Capsule 的来源候选。我们可以从其代�
 及其晋升记录。Capsule 提供具体的 Agent loop、工具、上下文、权限和执行环境。软件工程是
 第一垂直和持续 dogfood 场。轻量 lab workspace 负责把三者的确定版本组合成可复现实验。
 
-本设计通过书面复核后，取代当前研究说明中的以下研发顺序：先冻结 harness-neutral Core 和
-Adapter contract，再实现执行后端，最后才接入软件工程 Domain Pack。保留原决定中“不从零
-重写完整 harness、优先复用成熟实现、用证据检验通用性”的部分。
+本设计已通过书面复核，并取代此前研究说明中的以下研发顺序：先冻结 harness-neutral Core 和
+Adapter contract，再实现执行后端，最后才接入软件工程 Domain Pack。原决定中“不从零重写
+完整 harness、优先复用成熟实现、用证据检验通用性”的部分继续保留。
 
-历史上的 `TASK-DEC-001` 不原地修改。书面规格批准后，以新的 superseding decision 记录
-顺序变化：harness-neutral 从初始架构前提降为需要第二 Capsule 验证的研究假设。
+历史上的 `TASK-DEC-001` 不原地修改。`TASK-DEC-002` 已用 superseding decision 记录顺序变化：
+harness-neutral 从初始架构前提降为需要第二 Capsule 验证的研究假设。
 
 ## 二、为什么需要调整
 
-当前 roadmap 把待证的通用对象、schema、保障层和 Adapter contract 放在可运行实验之前。
+被取代的 roadmap 把待证的通用对象、schema、保障层和 Adapter contract 放在可运行实验之前。
 这有三个问题：
 
 1. 没有共同执行装置，机制收益无法与 Harness 差异分离。
@@ -357,7 +357,7 @@ Conformance 只证明结构可实现，不能代替用户价值或跨领域效�
 
 ## 十一、GitHub 与 Ledger 投影
 
-书面规格批准后，现有 task graph 改用以下稳定前缀：
+书面规格已经批准；当前 task graph 使用以下稳定前缀：
 
 - `TASK-MOTHER-*`：母体 Workbench、trace、replay 和组合能力。
 - `TASK-CAPSULE-*`：具体执行底座的 fork、能力和测试。
@@ -409,8 +409,8 @@ program task。GitHub Milestone 不跨仓转移，历史记录也不跨仓复制
 
 ### 11.2 CI 相关性，而非普遍阻塞
 
-CI 是验证证据，不是所有工作的全局同步屏障。书面规格批准后，本节取代旧补救设计中
-“所有 PR 均等待完整双平台检查”的普遍阻塞语义，但保留“相关验证必须在终态动作前成立”。
+CI 是验证证据，不是所有工作的全局同步屏障。本节已经取代旧补救设计中“所有 PR 均等待
+完整双平台检查”的普遍阻塞语义，但保留“相关验证必须在终态动作前成立”。
 每个任务或 PR 按当前 acceptance 和改动范围将远端检查分成三类：
 
 - `required`：该检查能够推翻当前验收结论，或覆盖被修改的执行、契约、安全、权限、模板或

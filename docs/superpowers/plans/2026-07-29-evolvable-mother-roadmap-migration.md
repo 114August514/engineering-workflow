@@ -1,6 +1,6 @@
 # 可演化 Mother 研究路线迁移计划
 
-> 状态：PR #14 实施中；Task 5A 已 claim，整体等待 squash merge
+> 状态：PR #14 实施中；Task 5A 已完成并回填 receipt，整体等待 squash merge
 >
 > 本文是执行路线，不是实现 receipt。除已批准设计外，文中出现的 ADR、validator、
 > GitHub Milestone/Issue、Mother/Capsule 仓库、实验与 tag 均不得据此声称已经存在或通过。
@@ -136,7 +136,7 @@ Mother 仓库在前一 Gate `accepted + continue` 后创建，避免把方向占
 | `TASK-GATE-R0-002` | R0 evidence audit 与 continue/pivot/stop | 全部 R0 研究与运行产物 | blocked |
 | `TASK-OPS-R1-BOOTSTRAP-001` | 创建 Mother/Capsule/lab 并把本仓作为 Domain 接入 | `TASK-GATE-R0-002@continue` | blocked，不创建 R0 Issue |
 | `TASK-OPS-003` | 迁移 PR 合入后归档旧路线对象 | 迁移 PR 已在默认分支 | blocked，不作为研究 Gate 依赖 |
-| `TASK-OPS-004` | 清退旧路线投影并建立方向 Milestone | `TASK-DOC-002` | 实施时 claimed，不作为研究 Gate 依赖 |
+| `TASK-OPS-004` | 清退旧路线投影并建立方向 Milestone | `TASK-DOC-002` | accepted，不作为研究 Gate 依赖 |
 
 R0 pre-bootstrap manifest 至少记录：experiment/preregistration 版本、当前仓库 commit、
 Mother prototype path、Capsule spike path、Domain path、OpenHarness upstream/fork point、
@@ -341,6 +341,9 @@ restore #20/PR #14 projection from prestate commit 9484028; retain comments and 
 - 外部查询失败不会被当作“不存在”继续写入。
 
 ### Task 5A：清退旧路线投影并建立方向 Milestone
+
+**状态：completed。** GitHub URL、时间与 undo 见
+[`github-roadmap-migration.md`](../../research/github-roadmap-migration.md)。
 
 **做什么**
 

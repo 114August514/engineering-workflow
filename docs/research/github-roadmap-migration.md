@@ -23,7 +23,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | Issue #8 | `[TASK-RES-005] 收集第二垂直任务与领域评审者` | [#8](https://github.com/114August514/engineering-workflow/issues/8) | 继续产生 R0 领域证据 |
 | Issue #9 | `[TASK-RES-001] 建立 claim/evidence 登记册` | [#9](https://github.com/114August514/engineering-workflow/issues/9) | 继续维护 R0 证据登记 |
 | Issue #10 | `[TASK-RES-002] 固化 harness 能力与缺陷矩阵` | [#10](https://github.com/114August514/engineering-workflow/issues/10) | 继续产生 R0 harness 证据 |
-| Milestone #1 | `R0 — Evidence & Boundary` | [Milestone #1](https://github.com/114August514/engineering-workflow/milestone/1) | 保留原标题、原始描述和旧对象关系；活跃 R0 Issue 重投影到 #8 后关闭，不原地复用 |
+| Milestone #1 | `R0 — Evidence & Boundary` | [Milestone #1](https://github.com/114August514/engineering-workflow/milestone/1) | 原标题、原始描述和旧对象关系均保留；活跃 R0 Issue 已重投影到 #8，Milestone 已关闭且未原地复用 |
 | PR #12 | `docs: TASK-DOC-001 建立协作底座研究规格与任务账本` | [PR #12](https://github.com/114August514/engineering-workflow/pull/12) | 保持 draft 且不合并；原 head 为 `agent/research-foundation@60b768c1fe6e118bc66d126577fe5b32930c62b3`；PR #14 squash merge 后由 `TASK-OPS-003` 关闭 |
 
 旧 Milestone #2 至 #7 采用一条 grouped disposition：
@@ -33,9 +33,9 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 [#5 `R6 — Productization & Standards`](https://github.com/114August514/engineering-workflow/milestone/5)、
 [#6 `R1 — Collaboration Semantics & Conformance`](https://github.com/114August514/engineering-workflow/milestone/6)
 和 [#7 `R2 — Assurance, Recovery & Human Attention`](https://github.com/114August514/engineering-workflow/milestone/7)
-均保持原标题、原始描述与历史语义，不重命名或复用。旧 Milestone #1-#7 将直接关闭，
-successor 关系由本映射承载；当前仓库另建 R1-R6 direction-only Milestone，只确认阶段方向，
-不挂 Issue、不设 due date。R1 解锁后再由 Mother 创建可执行 successor。
+均保持原标题、原始描述与历史语义，现已关闭且未重命名或复用。successor 关系由本映射承载；
+当前仓库另建的 R1-R6 direction-only Milestone 只确认阶段方向，不挂 Issue、不设 due date。
+R1 解锁后再由 Mother 创建可执行 successor。
 
 ## Task Identity Closed Set
 
@@ -63,7 +63,7 @@ successor 关系由本映射承载；当前仓库另建 R1-R6 direction-only Mil
 | `TASK-FORK-001` / [Issue #11](https://github.com/114August514/engineering-workflow/issues/11) | [`TASK-CAPSULE-000` / Issue #15](https://github.com/114August514/engineering-workflow/issues/15) | ledger cancelled；successor created/blocked；旧 Issue open，已追加 proposed-successor comment |
 | 旧 R0 gate / [Issue #13](https://github.com/114August514/engineering-workflow/issues/13) | [`TASK-GATE-R0-002` / Issue #19](https://github.com/114August514/engineering-workflow/issues/19) | successor created/blocked；旧 Issue open，已追加 proposed-successor comment |
 | `TASK-EVAL-001` | [`TASK-EXP-000` / Issue #17](https://github.com/114August514/engineering-workflow/issues/17) | ledger cancelled；successor created/blocked |
-| `TASK-OPS-001` / [Issue #2](https://github.com/114August514/engineering-workflow/issues/2) | `TASK-OPS-R1-BOOTSTRAP-001` 后由外置 Mother 重新决定机器控制面 | ledger cancelled；原 Issue 未改动，不继承完成状态 |
+| `TASK-OPS-001` / [Issue #2](https://github.com/114August514/engineering-workflow/issues/2) | `TASK-OPS-R1-BOOTSTRAP-001` 后由外置 Mother 重新决定机器控制面 | ledger cancelled；原 Issue 已追加 proposed-successor comment 且保持 open，不继承完成状态 |
 | `TASK-ADR-001` | `TASK-DEC-002` + R1 topology evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
 | `TASK-CORE-001` | `TASK-DEC-002` + R1/R3 semantics and promotion evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
 | `TASK-CORE-002` | `TASK-DEC-002` + R1/R3 trace and promotion evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
@@ -92,12 +92,12 @@ cancelled；旧 Issue/PR 仍保持 open，只追加 proposed-successor comment�
 | R0 Issue 4/6 | [`[TASK-OPS-002] 建立 R0 Tag 保护与相关 CI 规则`（#18）](https://github.com/114August514/engineering-workflow/issues/18) | created, ready |
 | R0 Issue 5/6 | [`[TASK-GATE-R0-002] 验收 Evidence & Mother Choice`（#19）](https://github.com/114August514/engineering-workflow/issues/19) | created, blocked |
 | R0 Issue 6/6 | [`[TASK-OPS-003] 迁移 PR 合入后归档旧路线对象`（#20）](https://github.com/114August514/engineering-workflow/issues/20) | created, blocked |
-| R1 direction Milestone | `R1 — Runnable Mother v0` | planned；no issues, no due date |
-| R2 direction Milestone | `R2 — Mechanism Labs` | planned；no issues, no due date |
-| R3 direction Milestone | `R3 — Promotion & Portability` | planned；no issues, no due date |
-| R4 direction Milestone | `R4 — Software Engineering Confirmation` | planned；no issues, no due date |
-| R5 direction Milestone | `R5 — Second Vertical` | planned；no issues, no due date |
-| R6 direction Milestone | `R6 — Productization` | planned；no issues, no due date |
+| R1 direction Milestone | [`R1 — Runnable Mother v0`（#9）](https://github.com/114August514/engineering-workflow/milestone/9) | created, open；no issues, no due date；未启动执行 |
+| R2 direction Milestone | [`R2 — Mechanism Labs`（#10）](https://github.com/114August514/engineering-workflow/milestone/10) | created, open；no issues, no due date；未启动执行 |
+| R3 direction Milestone | [`R3 — Promotion & Portability`（#11）](https://github.com/114August514/engineering-workflow/milestone/11) | created, open；no issues, no due date；未启动执行 |
+| R4 direction Milestone | [`R4 — Software Engineering Confirmation`（#12）](https://github.com/114August514/engineering-workflow/milestone/12) | created, open；no issues, no due date；未启动执行 |
+| R5 direction Milestone | [`R5 — Second Vertical`（#13）](https://github.com/114August514/engineering-workflow/milestone/13) | created, open；no issues, no due date；未启动执行 |
+| R6 direction Milestone | [`R6 — Productization`（#14）](https://github.com/114August514/engineering-workflow/milestone/14) | created, open；no issues, no due date；未启动执行 |
 
 ## Effects And Undo
 
@@ -106,9 +106,10 @@ cancelled；旧 Issue/PR 仍保持 open，只追加 proposed-successor comment�
   undo = 关闭新建对象，保留 audit events、评论与本映射。
 - `FX-GH-R0-SUPERSEDE` (planned): effect = 仅在迁移 PR squash merge 后关闭 #2、#11、#13 与 PR #12，
   并保留 successor links；undo = 重新打开被关闭对象，保留 successor links 与 audit。
-- `FX-GH-MILESTONE-DIRECTIONS` (planned): effect = 把 #3/#7/#8/#9/#10 重投影到 #8、创建
+- `FX-GH-MILESTONE-DIRECTIONS` (completed): effect = 把 #3/#7/#8/#9/#10 重投影到 #8、创建
   R1-R6 direction-only Milestone、关闭旧 Milestone #1-#7，并给 Issue #2 追加 proposed-successor
-  comment，同时更新 Issue #20 与 PR #14 投影；undo = reopen #1-#7、把五个 Issue 恢复到 #1、
+  comment，同时更新 Issue #20 与 PR #14 投影；completed-at = `2026-07-29T16:33:19Z`；
+  undo = reopen #1-#7、把五个 Issue 恢复到 #1、
   关闭新方向 Milestone，并按 prestate commit `9484028` 恢复 #20/PR #14 投影，保留 comment 与 audit。
 
 ## Receipts
@@ -124,6 +125,9 @@ cancelled；旧 Issue/PR 仍保持 open，只追加 proposed-successor comment�
 | 创建六个 R0 Issue | completed | [#15](https://github.com/114August514/engineering-workflow/issues/15), [#16](https://github.com/114August514/engineering-workflow/issues/16), [#17](https://github.com/114August514/engineering-workflow/issues/17), [#18](https://github.com/114August514/engineering-workflow/issues/18), [#19](https://github.com/114August514/engineering-workflow/issues/19), [#20](https://github.com/114August514/engineering-workflow/issues/20); created-at `2026-07-29T15:10:09Z..15:10:10Z` |
 | 校正 R0 AC 与 merge protocol 投影 | completed | [#16](https://github.com/114August514/engineering-workflow/issues/16) updated-at `2026-07-29T16:06:39Z`; [#17](https://github.com/114August514/engineering-workflow/issues/17) 与 [#20](https://github.com/114August514/engineering-workflow/issues/20) updated-at `2026-07-29T16:06:48Z`; [PR #14](https://github.com/114August514/engineering-workflow/pull/14) updated-at `2026-07-29T16:06:58Z`, code-head `1525d29` |
 | 追加 proposed-successor links | completed | [#11 comment](https://github.com/114August514/engineering-workflow/issues/11#issuecomment-5119741963), [#13 comment](https://github.com/114August514/engineering-workflow/issues/13#issuecomment-5119742476), [PR #12 comment](https://github.com/114August514/engineering-workflow/pull/12#issuecomment-5119742752); completed-at `2026-07-29T15:10:58Z` |
-| 给 Issue #2 追加 proposed-successor link | planned | 由 `TASK-OPS-004` 承载；PR #14 合入前不关闭 |
+| 把五个活跃 R0 Issue 重投影到 #8 | completed | [#3](https://github.com/114August514/engineering-workflow/issues/3)、[#7](https://github.com/114August514/engineering-workflow/issues/7)、[#8](https://github.com/114August514/engineering-workflow/issues/8)、[#9](https://github.com/114August514/engineering-workflow/issues/9)、[#10](https://github.com/114August514/engineering-workflow/issues/10) updated-at `2026-07-29T16:31:45Z..16:31:48Z`；[#8 Milestone](https://github.com/114August514/engineering-workflow/milestone/8) open with 11 issues |
+| 创建 R1-R6 direction-only Milestone | completed | [#9](https://github.com/114August514/engineering-workflow/milestone/9)、[#10](https://github.com/114August514/engineering-workflow/milestone/10)、[#11](https://github.com/114August514/engineering-workflow/milestone/11)、[#12](https://github.com/114August514/engineering-workflow/milestone/12)、[#13](https://github.com/114August514/engineering-workflow/milestone/13)、[#14](https://github.com/114August514/engineering-workflow/milestone/14), created-at `2026-07-29T16:31:13Z..16:31:31Z`；均 open、0 issues、no due date |
+| 关闭旧 Milestone #1-#7 | completed | [#1](https://github.com/114August514/engineering-workflow/milestone/1)、[#2](https://github.com/114August514/engineering-workflow/milestone/2)、[#3](https://github.com/114August514/engineering-workflow/milestone/3)、[#4](https://github.com/114August514/engineering-workflow/milestone/4)、[#5](https://github.com/114August514/engineering-workflow/milestone/5)、[#6](https://github.com/114August514/engineering-workflow/milestone/6)、[#7](https://github.com/114August514/engineering-workflow/milestone/7), closed-at `2026-07-29T16:31:59Z..16:32:05Z`；原标题与原始描述保留，Issue/PR 未随之关闭 |
+| 给 Issue #2 追加 proposed-successor link | completed | [comment](https://github.com/114August514/engineering-workflow/issues/2#issuecomment-5120696144), created-at `2026-07-29T16:32:30Z`；Issue 保持 open，等待 PR #14 squash merge |
+| 对齐 Issue #20 与 PR #14 当前投影 | completed | [#20](https://github.com/114August514/engineering-workflow/issues/20) updated-at `2026-07-29T16:33:18Z`; [PR #14](https://github.com/114August514/engineering-workflow/pull/14) updated-at `2026-07-29T16:33:19Z`, code-head `9f298baea9387d208ecf1d2193628c3cf7ec38bd` |
 | 关闭 #2、#11、#13 与 PR #12 | planned after migration squash merge | not changed；由 [#20](https://github.com/114August514/engineering-workflow/issues/20) 承载 |
-| 旧 Milestone #1-#7 historical closeout | planned | 由 `TASK-OPS-004` 承载；不关闭其中 Issue/PR |

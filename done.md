@@ -459,3 +459,31 @@
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate canonical roadmap content
 - move: move-task-doc-002-accepted-r3
 - amendment-receipt: scope=link-evidence-and-github-projection-correction; previous-rev=4; acceptance-content=unchanged; tests/docs-links.sh=product-references-only; refs=github:issue#16,github:issue#17,github:issue#20,github:pr#14
+
+## TASK-OPS-004 | 清退旧路线投影并建立方向 Milestone
+- state: accepted
+- rev: 2
+- rq: none
+- deps: TASK-DOC-002
+- owner: agent:root
+- claim: run:milestone-directions-20260730T001909p0800
+- tracking: github:pr#14
+- updated: 2026-07-30T00:35:28+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:docs/research/github-roadmap-migration.md
+- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: #8 是唯一承载当前 R0 执行 Issue 的 Milestone；#3、#7、#8、#9、#10 已重投影到 #8，旧 Milestone #1-#7 保留原身份与描述后关闭
+- evidence AC-1: refs=github:issue#3,github:issue#7,github:issue#8,github:issue#9,github:issue#10; milestone=github:milestone#8; issue-updated-at=2026-07-29T16:31:45Z..16:31:48Z; result=milestone#8-open-with-11-issues; historical=github:milestone#1..#7-closed-with-original-titles-and-descriptions; closed-at=2026-07-29T16:31:59Z..16:32:05Z
+- accept AC-2: R1-R6 各有一个 direction-only Milestone，只记录阶段问题、入口条件和 continue/pivot/stop 边界，不挂 Issue、不设 due date、不承诺具体实现
+- evidence AC-2: refs=github:milestone#9,github:milestone#10,github:milestone#11,github:milestone#12,github:milestone#13,github:milestone#14; created-at=2026-07-29T16:31:13Z..16:31:31Z; result=open-with-0-issues-and-no-due-date
+- accept AC-3: Issue #2 已追加 proposed-successor comment；GitHub URL、时间、effect 与 undo 回填 migration map，PR #14 与 Issue #20 指向同一当前口径
+- evidence AC-3: ref=https://github.com/114August514/engineering-workflow/issues/2#issuecomment-5120696144; comment-at=2026-07-29T16:32:30Z; ref=github:issue#20; updated-at=2026-07-29T16:33:18Z; ref=github:pr#14; projection-code-head=9f298baea9387d208ecf1d2193628c3cf7ec38bd; updated-at=2026-07-29T16:33:19Z; map=repo:docs/research/github-roadmap-migration.md
+- blocker: none
+- handoff: none
+- effect: FX-GH-MILESTONE-DIRECTIONS; action=move active R0 issues create direction milestones close historical milestone#1-#7 append issue#2 successor audit and update issue#20/pr#14 projections
+- undo: FX-GH-MILESTONE-DIRECTIONS; action=reopen historical milestones restore issue milestone#1 close direction milestones restore issue#20/pr#14 projection from prestate commit 9484028 and retain successor audit
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=documentation and reversible GitHub roadmap projection do not change product runtime
+- move: move-task-ops-004-accepted-r2

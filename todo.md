@@ -22,13 +22,13 @@
 
 ## TASK-RES-001 | 建立 claim/evidence 登记册
 - state: ready
-- rev: 3
+- rev: 4
 - rq: RQ-00,RQ-01,RQ-02,RQ-03,RQ-04,RQ-05,RQ-06,RQ-07,RQ-08,RQ-09,RQ-10
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- tracking: github:issue#9; github:milestone#1
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#9; github:milestone#8
+- updated: 2026-07-30T00:35:28+08:00
 - write: repo:docs/research/evidence-register.md
 - artifact: repo:docs/research/evidence-register.md
 - accept AC-1: 每个核心产品 claim 记录证据等级、版本、方法、可支持与不可支持的结论
@@ -42,13 +42,13 @@
 
 ## TASK-RES-002 | 固化 harness 能力与缺陷矩阵
 - state: ready
-- rev: 3
+- rev: 4
 - rq: RQ-07,RQ-08
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- tracking: github:issue#10; github:milestone#1
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#10; github:milestone#8
+- updated: 2026-07-30T00:35:28+08:00
 - write: repo:docs/research/harness-capability-matrix.md
 - artifact: repo:docs/research/harness-capability-matrix.md
 - accept AC-1: 覆盖 12-factor-agents、OpenHarness、oh-my-pi、Kimi Code、Claude Code
@@ -62,13 +62,13 @@
 
 ## TASK-RES-003 | 核验协议边界
 - state: ready
-- rev: 3
+- rev: 4
 - rq: RQ-03,RQ-07
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- tracking: github:issue#7; github:milestone#1
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#7; github:milestone#8
+- updated: 2026-07-30T00:35:28+08:00
 - write: repo:docs/research/protocol-boundaries.md
 - artifact: repo:docs/research/protocol-boundaries.md
 - accept AC-1: MCP、ACP、A2A、AG-UI 的稳定能力和限制均采用官方规范核验
@@ -82,13 +82,13 @@
 
 ## TASK-RES-004 | 设计四基线与预注册评测
 - state: ready
-- rev: 3
+- rev: 4
 - rq: RQ-00,RQ-01,RQ-02,RQ-04,RQ-05,RQ-08
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- tracking: github:issue#3; github:milestone#1
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#3; github:milestone#8
+- updated: 2026-07-30T00:35:28+08:00
 - write: repo:docs/research/evaluation-design.md
 - artifact: repo:docs/research/evaluation-design.md
 - accept AC-1: 定义任务语料、评分量表、H/A/C/R 基线、机制消融、主指标和混淆因素
@@ -102,13 +102,13 @@
 
 ## TASK-RES-005 | 收集第二垂直任务与领域评审者
 - state: ready
-- rev: 3
+- rev: 4
 - rq: RQ-09
 - deps: TASK-RES-000
 - owner: none
 - claim: none
-- tracking: github:issue#8; github:milestone#1
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#8; github:milestone#8
+- updated: 2026-07-30T00:35:28+08:00
 - write: repo:docs/research/second-vertical-corpus.md
 - artifact: repo:docs/research/second-vertical-corpus.md
 - accept AC-1: 至少比较 research-to-decision 与两个替代垂直的对象、副作用和验证器差异
@@ -291,28 +291,3 @@
 - effect: FX-GH-R0-SUPERSEDE; action=close issue#2 issue#11 issue#13 and pr#12 after migration squash merge
 - undo: FX-GH-R0-SUPERSEDE; action=reopen closed objects and retain successor comments and audit
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
-
-## TASK-OPS-004 | 清退旧路线投影并建立方向 Milestone
-- state: claimed
-- rev: 1
-- rq: none
-- deps: TASK-DOC-002
-- owner: agent:root
-- claim: run:milestone-directions-20260730T001909p0800
-- tracking: github:pr#14
-- updated: 2026-07-30T00:19:09+08:00
-- write: repo:docs/research/agent-collaboration-foundation.md
-- write: repo:docs/research/github-roadmap-migration.md
-- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
-- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
-- write: repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md
-- artifact: repo:docs/research/github-roadmap-migration.md
-- accept AC-1: #8 是唯一承载当前 R0 执行 Issue 的 Milestone；#3、#7、#8、#9、#10 已重投影到 #8，旧 Milestone #1-#7 保留原身份与描述后关闭
-- accept AC-2: R1-R6 各有一个 direction-only Milestone，只记录阶段问题、入口条件和 continue/pivot/stop 边界，不挂 Issue、不设 due date、不承诺具体实现
-- accept AC-3: Issue #2 已追加 proposed-successor comment；GitHub URL、时间、effect 与 undo 回填 migration map，PR #14 与 Issue #20 指向同一当前口径
-- evidence: none
-- blocker: none
-- handoff: none
-- effect: FX-GH-MILESTONE-DIRECTIONS; action=move active R0 issues create direction milestones close historical milestone#1-#7 append issue#2 successor audit and update issue#20/pr#14 projections
-- undo: FX-GH-MILESTONE-DIRECTIONS; action=reopen historical milestones restore issue milestone#1 close direction milestones restore issue#20/pr#14 projection from prestate commit 9484028 and retain successor audit
-- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=documentation and reversible GitHub roadmap projection do not change product runtime
