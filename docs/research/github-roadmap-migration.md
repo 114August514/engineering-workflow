@@ -36,7 +36,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 
 | 新对象 | 身份 | 状态 |
 | --- | --- | --- |
-| 迁移 PR | `TASK-DEC-002`；目标 `main`；独立 draft PR | pending |
+| 迁移 PR | `TASK-DEC-002`；目标 `main`；独立 [draft PR #14](https://github.com/114August514/engineering-workflow/pull/14) | completed |
 | R0 successor Milestone | `R0 - Evidence & Mother Choice` | planned, not created |
 | R0 Issue 1/6 | `[TASK-CAPSULE-000] 选择并验证首个 Substrate Capsule` | planned, not created |
 | R0 Issue 2/6 | `[TASK-PACK-SWE-000] 切分软件工程 discovery 与 sealed holdout` | planned, not created |
@@ -59,7 +59,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | --- | --- | --- |
 | 核对 PR #12 身份与 head | completed | [PR #12](https://github.com/114August514/engineering-workflow/pull/12), `60b768c1fe6e118bc66d126577fe5b32930c62b3` |
 | 写入迁移映射 | completed | `docs/research/github-roadmap-migration.md` |
-| 创建或复用迁移 draft PR | planned | number/URL pending |
+| 创建或复用迁移 draft PR | completed | [PR #14](https://github.com/114August514/engineering-workflow/pull/14) |
 | 创建 successor Milestone | planned | not created |
 | 创建六个 R0 Issue | planned | not created |
 | 修改 #11、#13 或 Milestone #1 | planned for later archival task | not changed by this task |
