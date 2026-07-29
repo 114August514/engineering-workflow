@@ -331,7 +331,7 @@ undo: reopen objects; retain successor comments and audit history
 
 ```bash
 for t in tests/*.sh; do bash "$t" || exit 1; done
-for f in skills/*/scripts/*.sh scripts/*.sh install.sh; do bash -n "$f" || exit 1; done
+for f in skills/*/scripts/*.sh scripts/*.sh install.sh; do [ -e "$f" ] || continue; bash -n "$f" || exit 1; done
 git diff --check
 ```
 
@@ -343,7 +343,7 @@ git diff --check
 - validator 是否存在空输入假绿。
 - CI 是否只等待当前变更真正相关的 required checks。
 
-本迁移会修改 shell validator 与 workflow，因此 migration PR 准备合并时 Ubuntu/macOS 是 required；
+本迁移会修改 shell 测试与 workflow，因此 migration PR 准备合并时 Ubuntu/macOS 是 required；
 等待只发生在这个终态检查点。通过评审与相关检查后把 PR 标 ready，不自动 merge、不打 tag。
 
 ## 10. 多 Agent 协作约定
