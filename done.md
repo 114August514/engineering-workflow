@@ -52,13 +52,13 @@
 
 ## TASK-DOC-001 | 建立研究规格与协作账本
 - state: accepted
-- rev: 4
+- rev: 5
 - rq: none
 - deps: TASK-DEC-001
 - owner: agent:root
 - claim: run:research-spec-20260729
 - tracking: github:issue#1; github:pr#12; github:milestone#1
-- updated: 2026-07-29T23:58:07+08:00
+- updated: 2026-07-30T00:03:13+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - write: repo:todo.md
 - write: repo:done.md
@@ -71,13 +71,13 @@
 - accept AC-2: 任务账本包含固定字段、依赖、claim、tracking、write scope、acceptance 和恢复语义
 - evidence AC-2: ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:todo.md; ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:done.md
 - accept AC-3: 本仓库要求的文档与 shell 验证全部通过
-- evidence AC-3: command=repository-required-verification; exit=0; at=2026-07-29T02:48:29+08:00; commit=60b768c1fe6e118bc66d126577fe5b32930c62b3
+- evidence AC-3: command=repository-required-verification; exit=0; at=2026-07-29T02:48:29+08:00; replay-source=git:60b768c1fe6e118bc66d126577fe5b32930c62b3; replay-command=all-tests-and-shell-syntax; replay-exit=0; replay-at=2026-07-30T00:03:13+08:00
 - blocker: none
 - handoff: none
 - effect: none
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=metadata amendment does not reopen historical acceptance
 - move: ledger-v2:task-doc-001:20260729
-- amendment-receipt: scope=pin-historical-evidence; previous-move=bootstrap:2026-07-29; acceptance-content=unchanged; original-head=60b768c1fe6e118bc66d126577fe5b32930c62b3
+- amendment-receipt: scope=pin-and-replay-historical-evidence; previous-rev=4; previous-move=bootstrap:2026-07-29; acceptance-content=unchanged; original-head=60b768c1fe6e118bc66d126577fe5b32930c62b3
 
 ## TASK-DEC-002 | 记录可演化 Mother superseding decision
 - state: accepted
