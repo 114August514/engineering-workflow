@@ -142,13 +142,13 @@
 
 ## TASK-CAPSULE-000 | 选择并验证首个 Substrate Capsule
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: RQ-07,RQ-10
 - deps: TASK-RES-002,TASK-RES-003
 - owner: none
 - claim: none
-- tracking: none
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#15; github:milestone#8
+- updated: 2026-07-29T23:10:09+08:00
 - write: repo:experiments/r0/capsule-spike/
 - artifact: repo:experiments/r0/capsule-spike/
 - accept AC-1: OpenHarness-derived spike 记录 upstream、fork-point、许可证、实际 patch、测试与可运行 receipt
@@ -163,13 +163,13 @@
 
 ## TASK-PACK-SWE-000 | 切分软件工程 discovery 与 sealed holdout
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: RQ-01,RQ-04,RQ-08
 - deps: TASK-RES-004
 - owner: none
 - claim: none
-- tracking: none
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#16; github:milestone#8
+- updated: 2026-07-29T23:10:09+08:00
 - write: repo:experiments/r0/task-packs/software-engineering/
 - artifact: repo:experiments/r0/task-packs/software-engineering/
 - accept AC-1: discovery、pilot 与 sealed holdout 有互斥任务身份、版本和泄漏审计
@@ -183,13 +183,13 @@
 
 ## TASK-EXP-000 | 完成首个窄幅 proof-of-mechanism
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: RQ-00,RQ-01,RQ-02,RQ-04,RQ-05,RQ-06,RQ-08
 - deps: TASK-CAPSULE-000,TASK-PACK-SWE-000,TASK-RES-004
 - owner: none
 - claim: none
-- tracking: none
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#17; github:milestone#8
+- updated: 2026-07-29T23:10:10+08:00
 - write: repo:experiments/r0/proof-of-mechanism/
 - artifact: repo:experiments/r0/proof-of-mechanism/
 - accept AC-1: 同一 Capsule、任务、模型与预算下预注册 treatment、sham、MME 和停止条件
@@ -203,13 +203,13 @@
 
 ## TASK-OPS-002 | 建立 R0 Tag 保护与相关 CI 规则
 - state: ready
-- rev: 3
+- rev: 4
 - rq: none
 - deps: TASK-DOC-002
 - owner: none
 - claim: none
-- tracking: none
-- updated: 2026-07-29T23:07:08+08:00
+- tracking: github:issue#18; github:milestone#8
+- updated: 2026-07-29T23:10:10+08:00
 - write: repo:.github/workflows/ci.yml
 - write: repo:.github/pull_request_template.md
 - write: repo:AGENTS.md
@@ -228,13 +228,13 @@
 
 ## TASK-GATE-R0-002 | 验收 Evidence & Mother Choice
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: RQ-00,RQ-01,RQ-02,RQ-03,RQ-04,RQ-05,RQ-06,RQ-07,RQ-08,RQ-09,RQ-10
 - deps: TASK-RES-001,TASK-RES-002,TASK-RES-003,TASK-RES-004,TASK-RES-005,TASK-EVAL-000,TASK-CAPSULE-000,TASK-PACK-SWE-000,TASK-EXP-000,TASK-OPS-002
 - owner: none
 - claim: none
-- tracking: none
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#19; github:milestone#8
+- updated: 2026-07-29T23:10:10+08:00
 - write: repo:docs/research/gates/r0.md
 - artifact: repo:docs/research/gates/r0.md
 - accept AC-1: 审计 R0 证据、proof-of-mechanism 与 pre-bootstrap manifest 的方法完整性和可重放性
@@ -270,13 +270,13 @@
 
 ## TASK-OPS-003 | 迁移 PR 合入后归档旧路线对象
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: none
 - deps: TASK-DOC-002
 - owner: none
 - claim: none
-- tracking: none
-- updated: 2026-07-29T18:23:49+08:00
+- tracking: github:issue#20; github:milestone#8
+- updated: 2026-07-29T23:10:10+08:00
 - write: repo:docs/research/github-roadmap-migration.md
 - artifact: repo:docs/research/github-roadmap-migration.md
 - accept AC-1: PR #14 合入 main 后才给 #11、#13 与 PR #12 追加 successor link 并按历史语义归档
