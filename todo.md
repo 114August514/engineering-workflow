@@ -115,7 +115,7 @@
 - deps: TASK-DEC-002
 - owner: agent:root
 - claim: run:canonical-roadmap-migration-20260729T174209p0800
-- tracking: github:pr#14
+- tracking: none
 - updated: 2026-07-29T17:42:09+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
@@ -161,7 +161,7 @@
 - deps: TASK-DOC-001
 - owner: agent:root
 - claim: run:task-ledger-validator-20260729T174121p0800
-- tracking: github:issue#2; github:pr#14; github:milestone#1
+- tracking: github:issue#2; github:milestone#1
 - updated: 2026-07-29T17:41:21+08:00
 - write: repo:docs/research/task-ledger-contract.md
 - write: repo:scripts/check-task-ledger.sh
