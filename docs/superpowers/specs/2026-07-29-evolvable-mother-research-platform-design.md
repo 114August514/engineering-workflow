@@ -379,6 +379,51 @@ R0 的 ledger、gate report 和历史 Tag 继续留在当前仓库。若 R0 以 
 R1，R1 之后的 program ledger 和阶段 Milestone 由 Mother 仓库承接；Capsule 与 Domain 仓库
 只维护各自产物 Issue，并链接 Mother 中的 program task。历史记录不跨仓复制。
 
+### 11.1 保留旧 Issue、Milestone 与 Ledger 语义
+
+迁移只改变后续执行路线，不把旧对象改写成从未表达过的新含义：
+
+- 任务语义和 acceptance 没有变化时，保留原 Task ID、Issue 和历史 Milestone 关系。
+- 任务语义发生变化时，不复用旧 ID。旧任务以 `cancelled` 或适用的原终态进入 append-only
+  ledger，并记录 `superseded-by`；新语义创建新的 Task ID 和 Issue。
+- 旧 Issue 的标题和正文不改造成新任务。通过带 decision commit 的迁移评论、`superseded`
+  label 和双向链接说明去向；关闭理由写“由新任务取代”，不写“已完成”。
+- 旧 Milestone 不重命名成新阶段。用其 gate/closure report 记录 successor Milestone 后再关闭，
+  新 roadmap 创建具有独立名称和编号的 Milestone。
+- 已 accepted 的 `TASK-DEC-001`、历史 PR、commit 和 Tag 保持不变；新方向通过新的 decision
+  task 追加。不得为了让进度图好看而重写历史 acceptance。
+
+迁移 PR 必须包含一张 old -> keep/supersede -> new 映射表。没有映射的旧 Issue 或 Task 不能被
+批量关闭。
+
+### 11.2 CI 相关性，而非普遍阻塞
+
+CI 是验证证据，不是所有工作的全局同步屏障。书面规格批准后，本节取代旧补救设计中
+“所有 PR 均等待完整双平台检查”的普遍阻塞语义，但保留“相关验证必须在终态动作前成立”。
+每个任务或 PR 按当前 acceptance 和改动范围将远端检查分成三类：
+
+- `required`：该检查能够推翻当前验收结论，或覆盖被修改的执行、契约、安全、权限、模板或
+  平台相关路径。
+- `advisory`：结果有诊断价值，但不能改变当前产物是否成立。
+- `n/a`：检查与当前改动和 acceptance 没有可说明的因果路径。
+
+具体规则：
+
+1. CI pending 本身不使任务进入 `blocked`，Agent 可以继续不依赖该结果的工作。
+2. 只有 `required` 检查会阻塞相应 PR 的合并、gate acceptance 或 Tag；等待发生在终态动作前，
+   不要求每次提交后停工。
+3. `advisory` 和 `n/a` 不阻塞 handoff、后续独立任务或结论无关的合并。若仓库 ruleset 仍要求
+   一个总检查，后续实现应让总检查按改动范围返回适用结果，而不是强迫运行无关矩阵。
+4. 远端失败只有在与当前改动或 acceptance 相关时才形成 blocker。已证明属于基础设施故障或
+   无关路径的失败，记录检查 URL、判定理由和复现结果后可以 non-blocking；不能只凭直觉忽略。
+5. 纯研究说明或计划文档默认要求本地 diff、文档链接和结构检查；未修改脚本、模板或平台行为
+   时，完整 OS matrix 默认为 advisory。
+6. 修改可执行脚本、CI、本地与远端契约、安全边界、权限或发布行为时，覆盖这些路径的检查
+   默认 required，除非有更直接且已记录的替代验证。
+
+PR 或 task receipt 只需记录 `ci-scope: required=...; advisory=...; n/a=...; reason=...`。本阶段
+不建设通用变更影响分析器，也不因低风险文档改动增加人工审批。
+
 每个 gate report 增加：
 
 ```text
@@ -417,6 +462,7 @@ outcome: continue | pivot | stop
 - 不在首个机制实验前设计完整通用 Runtime、插件市场、调度器或多租户平台。
 - 不要求每个垂直产品共享同一执行 Capsule。
 - 不因理论上的可替换性同时维护多个完整 fork。
+- 不把所有远端 CI 检查默认升级为任务级 blocker。
 
 ## 十四、书面规格验收
 
@@ -429,3 +475,5 @@ outcome: continue | pivot | stop
 5. 通用 Core 从重复实验和第二 Capsule 中晋升，不在 R1 前冻结。
 6. Continue/Pivot/Stop 与实验 accepted 分离，负结果不会错误解锁下一阶段。
 7. 书面规格复核后才改写研究说明、ledger、GitHub Milestone 和 Issue。
+8. 旧 Task、Issue 和 Milestone 的原语义通过 keep/supersede 映射保留，不被原地改造成新任务。
+9. CI 只有在能影响当前 acceptance 时才 required；pending 或无关失败不阻塞独立进展。
