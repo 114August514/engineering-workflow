@@ -1,3 +1,29 @@
+# Root AGENTS Rewrite Implementation Plan
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+
+**Goal:** Rewrite the root `AGENTS.md` as a stable repository constitution and R0 research-control router.
+
+**Architecture:** Replace the current mixed manual with one short routing document. Stable rules remain inline; changing state and detailed procedures are referenced through their existing single sources of truth.
+
+**Tech Stack:** Markdown, Bash validation scripts, GitHub Actions workflow
+
+---
+
+### Task 1: Replace the repository constitution
+
+**Files:**
+- Modify: `AGENTS.md:1-175`
+- Verify: `docs/research/agent-collaboration-foundation.md`
+- Verify: `todo.md`
+- Verify: `done.md`
+- Verify: `.github/workflows/ci.yml`
+
+- [ ] **Step 1: Replace `AGENTS.md` with the approved constitution**
+
+Use this complete content:
+
+```markdown
 # engineering-workflow
 
 一套让人审得动 AI 产出的软件工程 Domain skill，也在研究路线需要时承担临时研究控制面。
@@ -101,3 +127,40 @@ required；纯研究或文档改动不得因无关 runner pending 停止。
 
 提交格式：`<类型>: <做了什么>`，类型使用 `feat` / `fix` / `docs` / `test` / `chore`。
 roadmap Task 的提交描述带 Task ID。提交前检查公开仓库中没有个人路径、邮箱、密钥或私有来源。
+```
+
+- [ ] **Step 2: Run the relevant documentation validations**
+
+Run:
+
+```bash
+bash tests/docs-links.sh
+bash tests/ci-scope-consistent.sh
+```
+
+Expected: both commands exit `0` and print their success summaries. Do not pipe output through `tail`.
+
+- [ ] **Step 3: Check the rewritten document against the design acceptance**
+
+Confirm all six conditions:
+
+1. The research specification, `todo.md`, and `done.md` are named as separate sources of truth.
+2. Direct maintenance and roadmap Task startup paths are distinct.
+3. Steward, claim, write scope, dependency, handoff, and evidence rules match the research protocol.
+4. BSD/macOS, thin satellite, documentation duplication, and template-secret constraints remain.
+5. File counts, incident narratives, and the English `Working Style` are absent.
+6. The two relevant validation commands passed.
+
+- [ ] **Step 4: Inspect the final diff**
+
+Run:
+
+```bash
+git diff -- AGENTS.md
+```
+
+Expected: one complete replacement of the old mixed manual with the approved constitution; no change to research sources, ledgers, CI, tests, templates, or skill behavior.
+
+- [ ] **Step 5: Commit only when explicitly requested**
+
+The design record was committed separately. Leave the `AGENTS.md` rewrite uncommitted unless the user asks for a commit, so the user retains control of the original working-tree change.
