@@ -55,25 +55,26 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | `TASK-FORK-001` / [Issue #11](https://github.com/114August514/engineering-workflow/issues/11) | `[TASK-CAPSULE-000] 选择并验证首个 Substrate Capsule` | planned；ledger 仍为 ready |
 | 旧 R0 gate / [Issue #13](https://github.com/114August514/engineering-workflow/issues/13) | `[TASK-GATE-R0-002] 验收 Evidence & Mother Choice` | planned；Issue 仍 open |
 | `TASK-EVAL-001` | `TASK-EXP-000` 的窄幅 proof-of-mechanism route | planned；ledger 仍为 blocked |
-| `TASK-ADR-001` | `TASK-DEC-002` + R1 topology evidence route | planned；ledger 仍为 blocked |
-| `TASK-CORE-001` | `TASK-DEC-002` + R1/R3 semantics and promotion evidence route | planned；ledger 仍为 blocked |
-| `TASK-CORE-002` | `TASK-DEC-002` + R1/R3 trace and promotion evidence route | planned；ledger 仍为 blocked |
-| `TASK-ADP-001` | `TASK-DEC-002` + R1/R3 Capsule Port evidence route | planned；ledger 仍为 blocked |
-| `TASK-ADP-002` | `TASK-DEC-002` + R1/R3 Capsule and portability evidence route | planned；ledger 仍为 blocked |
-| `TASK-ASR-001` | `TASK-DEC-002` + R2 mechanism evidence route | planned；ledger 仍为 blocked |
-| `TASK-SWE-001` | `TASK-DEC-002` + R1/R4 software-engineering evidence route | planned；ledger 仍为 blocked |
-| `TASK-SWE-002` | `TASK-DEC-002` + R4 confirmation evidence route | planned；ledger 仍为 blocked |
-| `TASK-GEN-001` | `TASK-DEC-002` + R5 second-vertical evidence route | planned；ledger 仍为 blocked |
-| `TASK-GEN-002` | `TASK-DEC-002` + R5 second-vertical evidence route | planned；ledger 仍为 blocked |
+| `TASK-ADR-001` | `TASK-DEC-002` + R1 topology evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-CORE-001` | `TASK-DEC-002` + R1/R3 semantics and promotion evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-CORE-002` | `TASK-DEC-002` + R1/R3 trace and promotion evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-ADP-001` | `TASK-DEC-002` + R1/R3 Capsule Port evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-ADP-002` | `TASK-DEC-002` + R1/R3 Capsule and portability evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-ASR-001` | `TASK-DEC-002` + R2 mechanism evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-SWE-001` | `TASK-DEC-002` + R1/R4 software-engineering evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-SWE-002` | `TASK-DEC-002` + R4 confirmation evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-GEN-001` | `TASK-DEC-002` + R5 second-vertical evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-GEN-002` | `TASK-DEC-002` + R5 second-vertical evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
 
 旧 Task、Issue、Milestone、PR 和 acceptance 均不原地换义；新路线不继承未完成旧任务的
-完成状态。上表只是 planned 路由，不表示旧 Task 已 cancelled 或 supersession 已写入 ledger。
+完成状态。上表中的 `TASK-DEC-002` 已 accepted；旧 task cancellation 与 successor route 仍为
+planned，不表示旧 Task 已 cancelled 或 successor 已物化。
 
 ## Create
 
 | 新对象 | 身份 | 状态 |
 | --- | --- | --- |
-| 迁移 PR | 跟踪 planned `TASK-DEC-002`；目标 `main`；独立 [draft PR #14](https://github.com/114August514/engineering-workflow/pull/14) | completed (PR only) |
+| 迁移 PR | 承载已 accepted 的 `TASK-DEC-002` 与仍在迁移中的工作；目标 `main`；独立 [draft PR #14](https://github.com/114August514/engineering-workflow/pull/14) | PR created, draft；`TASK-DEC-002` accepted；PR 未合入 |
 | R0 successor Milestone | `R0 - Evidence & Mother Choice` | planned, not created |
 | R0 Issue 1/6 | `[TASK-CAPSULE-000] 选择并验证首个 Substrate Capsule` | planned, not created |
 | R0 Issue 2/6 | `[TASK-PACK-SWE-000] 切分软件工程 discovery 与 sealed holdout` | planned, not created |
@@ -97,6 +98,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | 核对 PR #12 身份与 head | completed | [PR #12](https://github.com/114August514/engineering-workflow/pull/12), `60b768c1fe6e118bc66d126577fe5b32930c62b3` |
 | 写入迁移映射 | completed | `docs/research/github-roadmap-migration.md` |
 | 创建或复用迁移 draft PR | completed | [PR #14](https://github.com/114August514/engineering-workflow/pull/14), created-at `2026-07-29T09:03:38Z` |
+| 记录 `TASK-DEC-002` superseding decision | completed | [ADR 0001](../decisions/0001-evolvable-mother-research-platform.md), commit `29a1450` |
 | 创建 successor Milestone | planned | not created |
 | 创建六个 R0 Issue | planned | not created |
 | 归档 #11、#13 与 PR #12 | planned after migration merge | not changed by this task |

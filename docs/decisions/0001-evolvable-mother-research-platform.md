@@ -42,13 +42,16 @@ R1 起，lab workspace 使用 Git submodule 固定 Mother、Capsule 和 Domain �
 
 ### R0 pre-bootstrap 例外
 
-R0 不创建或假设独立的 Mother、Capsule、lab 仓库。pre-bootstrap composition manifest 只能
-记录：
+R0 不创建或假设独立的 Mother、Capsule、lab 仓库。pre-bootstrap composition manifest 至少
+记录以下可复现身份、版本和引用：
 
+- experiment/preregistration 版本；
 - 当前 `engineering-workflow` 仓库 commit；
 - 彼此不同的 Mother prototype、Capsule spike 和 Domain path；
-- Capsule 的 upstream 与 fork-point；
-- 该实验实际使用的模型、配置、evaluator、treatment/sham、预算与产物引用。
+- OpenHarness upstream 与 fork-point；
+- model、prompt、tool、config 和 evaluator hash；
+- treatment、sham、budget 和 task-set；
+- trace、artifact 和 result 引用。
 
 同一个当前仓库 commit 不得被复制成三条 repository commit，借此伪造 three-repo composition。
 R0 的路径组合是过渡性事实，不支持“外置三仓已经建立”的声明。

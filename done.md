@@ -83,12 +83,13 @@
 - updated: 2026-07-29T17:41:21+08:00
 - write: repo:docs/decisions/0001-evolvable-mother-research-platform.md
 - write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/research/github-roadmap-migration.md
 - artifact: repo:docs/decisions/0001-evolvable-mother-research-platform.md
 - artifact: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
 - artifact: repo:docs/research/github-roadmap-migration.md
 - accept AC-1: 批准 Mother、Capsule、Domain 与 lab 边界，engineering-workflow 保持软件工程 Domain 与 R0 临时控制面
 - evidence AC-1: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=组件边界
-- accept AC-2: R0 只记录当前仓库 commit、不同组件 path 与 upstream/fork-point，R1 起才以 submodule 固定外置三仓 commit
+- accept AC-2: R0 pre-bootstrap manifest 至少记录 experiment/preregistration 版本、当前仓库 commit、不同组件 path、OpenHarness upstream/fork-point、model/prompt/tool/config/evaluator hash、treatment/sham/budget/task-set 及 trace/artifact/result 引用；R1 起才以 submodule 固定外置三仓 commit
 - evidence AC-2: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=Capsule候选与版本固定,R0-pre-bootstrap例外
 - accept AC-3: 只有 TASK-GATE-R0-002 accepted 且 outcome 为 continue 才解锁 R1 bootstrap，continue/pivot/stop 均为合法结果
 - evidence AC-3: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=R1解锁条件
