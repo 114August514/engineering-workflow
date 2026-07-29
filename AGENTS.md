@@ -1,28 +1,84 @@
 # engineering-workflow
 
-这个仓库本身是一套 skill：一份 `SKILL.md` 路由 + 17 份 `references/*.md` +
-5 个 shell 脚本 + 一套语言无关的项目模板。
+一套让人审得动 AI 产出的软件工程 Domain skill，也在研究路线需要时承担临时研究控制面。
 
-**它主张的东西必须先用在它自己身上。** 一个说"CI 必须挡住合并"的仓库自己没有 CI，
-就没有任何说服力。
+> **这是本仓库的宪法。** 这里只放每次开工都必须知道的约束和权威指针；
+> 解释、例子与步骤属于对应的 reference。不要把当前任务状态或可从仓库读取的数量复制进来。
 
-## 验证
+## 权威事实源
 
-```bash
-bash tests/verbs-consistent.sh    # 标准动词在三处一致
-bash tests/docs-links.sh          # 文档交叉引用没断
-bash tests/journal-behaviour.sh   # journal.sh 三项检测真的会触发
-bash tests/ci-scope-consistent.sh # CI relevance receipt 与双平台入口一致
-for f in skills/*/scripts/*.sh install.sh; do bash -n "$f"; done
-```
+- 产品边界、研究问题、阶段门槛与证据方法：
+  [`docs/research/agent-collaboration-foundation.md`](docs/research/agent-collaboration-foundation.md)
+- 当前可执行、已认领和阻塞的 roadmap Task：[`todo.md`](todo.md)
+- 终态任务与完成证据：[`done.md`](done.md)
+- 已批准且仍生效的架构决定：[`docs/decisions/`](docs/decisions/)
+- skill 分流与详细工程流程：
+  [`skills/engineering-project/SKILL.md`](skills/engineering-project/SKILL.md) 及其 `references/`
+- 仓库验证入口：[`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
-CI 在 **ubuntu 和 macos 两个 runner** 上跑这些。macOS 那个不是凑数——
-BSD 工具链专门用来拦 GNU-only 的写法（见下）。
+源码、README、Issue、PR、Milestone 或对话与上述事实源冲突时，不自行调和；指出冲突，
+按事实源和较新的 superseding decision 推进。GitHub 是公开协作视图，不覆盖账本状态。
 
+## 开工
 
-### CI 相关性
+先判断工作属于哪一类：
 
-每个 PR 和 Gate receipt 使用同一个格式：
+- **用户直接提出的窄维护任务**：按 `SKILL.md` 的风险分流直接推进，不要为了微改制造 roadmap Task。
+- **roadmap Task**：只能从 `todo.md` 中选择 `ready` 项，并先由本轮唯一的 ledger steward 完成 claim。
+- **产品边界、研究路线、依赖、架构或公共契约变化**：不得伪装成普通维护；先形成供人审阅的决定。
+
+接手在途工作时，先核对 working tree、近期提交、`todo.md` 与 `done.md`。状态对不上时先恢复事实，
+不要在未知 write scope 上继续写。
+
+## Roadmap 控制协议
+
+- 每个协调周期只有一个 ledger steward。只有 steward 能修改 `todo.md` 和 `done.md`；worker 不直接编辑账本。
+- claim 使用 task ID、expected revision 和 claim token。handoff 或释放后旧 token 失效。
+- worker 只能写 claim 中列出的仓库相对路径或目录前缀。write scope 是排他锁，不是参考范围；
+  不允许绝对路径、glob 或 `..`。
+- 只有在 `done.md` 中处于 `accepted` 的依赖才能解锁任务；`cancelled`、`rolled-back` 和 GitHub close
+  都不能满足依赖。
+- 不自行扩张 Task、RQ 或产品边界，不把实现存在、README 自述或单次运行提升为效果证据。
+- 每条 acceptance criterion 必须有同 ID evidence。Claim、Evidence、Verification 分开记录。
+- 完成迁移必须先确保 `done.md` 有完整终态记录，再从 `todo.md` 删除；禁止先删后写。
+- handoff 先记录绿色 checkpoint、下一步和未决风险，再释放 owner/claim。
+- 仓外写操作执行前记录 effect 和对应 undo；不可逆动作必须有人工批准引用。
+
+具体字段和恢复语义以研究说明的“多 Agent 研究协作协议”和
+[`docs/research/task-ledger-contract.md`](docs/research/task-ledger-contract.md) 为准。
+
+## 内容边界
+
+- 主 `SKILL.md` 只放分流、路由表和硬规则；解释、案例、理由放 `references/`。
+- `frontend-code`、`backend-code`、`api-contract`、`repo-init` 是精准触发的薄壳，
+  只转发到主 skill 的 reference 与 `always.md`，不得复制规范内容。
+- `templates/project-skeleton/AGENTS.md` 只放生成项目的约束和指针；展开做法放模板内
+  `docs/conventions.md`。
+- 文档重复必须有机器检查兜底。没有一致性检查时，新增唯一事实源并让其他位置引用它。
+- 不在宪法里维护 references、脚本、skill、检查项或当前阶段的数量；这些必须从仓库读取。
+
+## Shell 与模板
+
+脚本必须同时兼容 Ubuntu 和 macOS runner，包括 macOS 自带的 Bash 3.2 与 BSD 工具链。
+
+- 正则用 `[[:space:]]`，不用 `\s`。
+- `stat`、`date` 等平台命令必须显式处理 GNU/BSD 差异；兜底失败时要报错或明说跳过。
+- 不用 `sed -i`、`readlink -f`、`xargs -r` 等 GNU-only 接口。
+- 变量后紧跟非 ASCII 字符时写 `${VAR}`，避免 Bash 3.2 错认变量名。
+- 临时文件必须可清理；不得把真实密钥、邮箱、个人路径或机器专用配置写入仓库和模板。
+
+## 测试与验证
+
+先确定改动的 acceptance，再选择能推翻它的最小验证。验证项以 CI workflow 为准，
+不要在这里复制一份会漂移的命令清单。
+
+- 新增测试必须先证明测试输入非空，并通过故意破坏实现确认它会以预期原因失败。
+- 测试断言可观察行为和失败原因，不能只断言退出码，也不能让空输入与空输入比较后报绿。
+- 测试脚本启用 `pipefail` 时，预期非零的被测命令先捕获输出和状态，不用裸管道掩盖行为。
+- 外部工具缺失与被测内容非法必须给出不同错误，避免把环境问题误报成产品缺陷。
+- 查看测试结果必须保留完整失败上下文，不截取可能误导的最后一行。
+
+每个 PR 和 Gate receipt 使用：
 
 ```text
 ci-scope: required=<checks|none>; advisory=<checks|none>; n/a=<checks|none>; reason=<why>
@@ -32,107 +88,16 @@ ci-scope: required=<checks|none>; advisory=<checks|none>; n/a=<checks|none>; rea
 - `advisory`：有信息价值，不阻塞独立工作。
 - `n/a`：与当前变更无因果关系。
 
-pending CI 不改变 task state。文档或研究变更不得因为无关 runner pending 而停止；修改 shell、
-workflow 或跨平台行为时，Ubuntu/macOS 对应检查是 required。Domain CI 只验证本仓产品行为，
-不重新引入已经删除的一次性研究迁移 checker，也不根据路径自动构建 universal wait。
+pending CI 不改变 task state。修改 shell、workflow 或跨平台行为时，Ubuntu 与 macOS 对应检查均为
+required；纯研究或文档改动不得因无关 runner pending 停止。
 
-## 这个仓库的三条特殊约束
+验证只能支持它实际覆盖的 claim。Domain CI 证明本仓产品行为，不证明研究效果、跨 harness 可移植性
+或 Mother 机制价值。
 
-### 1. 脚本必须在 BSD 工具链上也能跑
+## 完成与提交
 
-已经踩过一次：`\s`、`stat -c`、`date -d`、`sed -i`、`readlink -f`、`xargs -r`
-全是 GNU 的，在 macOS 上要么直接失败，要么**静默降级成错误答案**（更糟）。
+完成时报告：做了什么、没做什么、验证命令与结果、仍不确定什么、故意未处理什么、涉及文件，
+以及本次 `ci-scope`。没有直接观察到的结论必须标为推断；不要用“应该没问题”代替证据。
 
-写脚本时：
-
-- 正则用 `[[:space:]]`，不用 `\s`
-- `stat` / `date` 这类要写双分支：`GNU 形式 2>/dev/null || BSD 形式 2>/dev/null`
-- 不用 `sed -i`（两边参数不兼容），写临时文件再 `mv`
-- 不用 `readlink -f`、`xargs -r`
-- 兜底失败时**要么报错要么明说跳过**，不要静默给一个错误答案
-- **`$VAR` 后面紧跟中文标点时必须写成 `${VAR}`** —— macOS 自带 bash 3.2，
-  它会把后面的 UTF-8 字节吃进变量名，于是 `$ADAPTER（` 变成变量 `ADAPTER（`，
-  在 `set -u` 下直接 unbound variable。bash 5 不会，所以本地测不出来。
-  这一条是 CI 第一次跑就抓到的
-
-### 2. 改了动词就要改三处
-
-`make` 的动词表同时出现在 `templates/project-skeleton/Makefile`、
-`references/conventions.md`、`references/skeleton.md`。
-
-这是**故意保留的重复**——两份文档各有教学场景。代价由
-`tests/verbs-consistent.sh` 兜住：不一致就红。**不许在没有这个检查的前提下
-制造新的文档重复。**
-
-### 3. 行数是烟雾报警器，不是预算
-
-`SKILL.md` 每次会话都整个进上下文。但**约束不是 token**（200 行中文 ≈ 5k token，
-在 20 万上下文里不算什么），**是注意力**：一份长路由文档会稀释信号。
-
-所以真正的规则是**职责划分**，不是行数：
-
-- `SKILL.md` 只放三样：分流、路由表、硬规则。
-  任何解释、例子、理由都属于 `references/`
-- `templates/project-skeleton/AGENTS.md` 只放约束和指针，
-  展开的做法放 `templates/project-skeleton/docs/conventions.md`
-  （它随项目走，用的人不需要装这个 skill）
-
-行数（SKILL.md 200 / AGENTS.md 150）只当烟雾报警器：**报警时先问"哪部分
-放错了地方"，而不是"能不能把预算调大"。** 靠压缩句子去凑行数是绕过规则。
-
-### 4. 卫星 skill 只许是薄壳
-
-仓库有 5 个 skill：主 skill `engineering-project`（流程）+ 四个卫星
-`frontend-code` / `backend-code` / `api-contract` / `repo-init`（精准触发 + 转发）。
-
-**拆的是触发壳，不是内容。** 量过：19 份 references 之间有 48 条交叉引用，
-按话题真拆内容会有 18 条（38%）跨界；被引最多的三份恰恰是**横切**的
-（`proportion.md` 12 次、`audit.md` 9 次、`reuse.md` 6 次），
-真拆只能靠复制——那违反本仓库自己的"无机器检查的重复一律禁止"。
-
-所以卫星里**一个字的规范内容都不放**，只有：narrow description + 两三行转发。
-`tests/satellites-thin.sh` 强制这一点：
-
-- ≤ 40 行，超了就是内容跑错地方了
-- frontmatter 的 `name` 必须等于目录名
-- description ≥ 120 字符（卫星存在的唯一理由就是精准触发）
-- 指向的 reference 必须存在
-- **必须指向 `always.md`** —— 否则只触发卫星时，三条横切规则就丢了
-- 主 SKILL.md 不许再内联那三条（`always.md` 是唯一事实源）
-
-加新卫星 = 加一个目录 + 一个 SKILL.md，别顺手往里写内容。
-
-## 写测试
-
-这个仓库的测试**必须带防空断言**。踩过一次：`verbs-consistent.sh` 因为路径错，
-三个变量全是空字符串，空等于空，于是报绿——**在什么都没测到的情况下**。
-
-所以每个测试先断言"输入抓到了东西"，再断言它们的关系。
-
-新增测试之后，**把实现改坏跑一遍**，确认它真的会红。只断言"没成功"
-而不断言失败原因的测试，会在实现被整个删掉时照样绿。
-
-注意测试脚本自己开了 `pipefail`：被测脚本故意非零退出时（`journal.sh`
-有悬空副作用、或拒绝非法 slug 时都返回 1），`"$J" ... | grep` 会**整体判失败**——
-挂的是退出码，不是被断言的行为。**一律走 `out()` 包装**，不要写裸管道。
-这个坑踩过两次：第一次修完之后，新加断言时又写成了裸管道。
-
-**报错要指对地方。** `templates-valid.sh` 曾经在 macOS 上把「PyYAML 没装」
-报成「YAML 不合法」——依赖缺失被说成内容错误，人会去改模板而不是装依赖。
-凡是依赖外部工具的检查，都要先探测能力再干活，两种失败给两种措辞。
-
-**看测试结果时不要 `| tail -1`。** 失败时汇总行根本不会打印，
-只 tail 最后一行会看到一个 ✓ 然后以为过了 —— 这个也踩过。
-
-## 禁止
-
-- 不许在 `SKILL.md` 里堆细节 —— 放 `references/`
-- 不许制造没有机器检查兜底的文档重复
-- 不许用 GNU-only 的 shell 写法
-- 不许写只断言退出码、不断言原因的测试
-- 不许在 `templates/project-skeleton/` 里放任何真实密钥或个人路径
-
-## 提交
-
-`<类型>: <做了什么>`，类型用 `feat` / `fix` / `docs` / `test` / `chore`。
-仓库是公开的，提交前扫一遍有没有个人路径、邮箱、密钥。
+提交格式：`<类型>: <做了什么>`，类型使用 `feat` / `fix` / `docs` / `test` / `chore`。
+roadmap Task 的提交描述带 Task ID。提交前检查公开仓库中没有个人路径、邮箱、密钥或私有来源。
