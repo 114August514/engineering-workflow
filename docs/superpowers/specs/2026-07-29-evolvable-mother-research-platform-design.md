@@ -1,6 +1,8 @@
 # 可演化母体研究平台设计
 
-> 状态：方向已批准，等待书面规格复核
+> 状态：方向已批准；实施 decision 已记录；roadmap 迁移中
+>
+> 实施 decision：[ADR 0001](../../decisions/0001-evolvable-mother-research-platform.md)。本文正文保留批准时的设计与理由。
 >
 > 文档类型：Explanation / Design Spec
 >

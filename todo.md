@@ -108,6 +108,33 @@
 - handoff: none
 - effect: none
 
+## TASK-DOC-002 | 迁移 canonical roadmap 与历史映射
+- state: claimed
+- rev: 1
+- rq: none
+- deps: TASK-DEC-002
+- owner: agent:root
+- claim: run:canonical-roadmap-migration-20260729T174209p0800
+- tracking: github:pr#14
+- updated: 2026-07-29T17:42:09+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- write: repo:README.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/research/github-roadmap-migration.md
+- artifact: repo:docs/research/agent-collaboration-foundation.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- artifact: repo:README.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: canonical roadmap 保留既有来源、RQ、H/A/C/R、证据等级与多 Agent ledger 协议，并写明 Mother/Capsule/Domain/lab、R0/R1 manifest 和 R0-R6 Gate
+- accept AC-2: decision history 明确保留与取代范围，且 canonical roadmap 能回答 continue、pivot 和 stop
+- accept AC-3: 历史补救设计追加 supersession notice，README、design、migration map 与 ledger 指向同一当前事实源且文档链接通过
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+
 ## TASK-FORK-001 | 运行 Component Intake Gate
 - state: ready
 - rev: 2
@@ -128,19 +155,21 @@
 - effect: none
 
 ## TASK-OPS-001 | 为任务账本增加机器检查
-- state: ready
-- rev: 2
+- state: claimed
+- rev: 3
 - rq: none
 - deps: TASK-DOC-001
-- owner: none
-- claim: none
-- tracking: github:issue#2; github:milestone#1
-- updated: 2026-07-29T02:47:36+08:00
+- owner: agent:root
+- claim: run:task-ledger-validator-20260729T174121p0800
+- tracking: github:issue#2; github:pr#14; github:milestone#1
+- updated: 2026-07-29T17:41:21+08:00
 - write: repo:docs/research/task-ledger-contract.md
+- write: repo:scripts/check-task-ledger.sh
 - write: repo:tests/task-ledger.sh
 - write: repo:.github/workflows/ci.yml
 - write: repo:AGENTS.md
 - artifact: repo:docs/research/task-ledger-contract.md
+- artifact: repo:scripts/check-task-ledger.sh
 - artifact: repo:tests/task-ledger.sh
 - accept AC-1: 校验器先断言 fixture 非空，再检查字段、ID、依赖、claim、tracking、scope、evidence 和 effect/undo
 - accept AC-2: 重复 ID、todo/done 重叠、依赖环、scope 冲突、tracking 复用和缺证据分别给出准确失败原因

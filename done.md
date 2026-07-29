@@ -71,3 +71,32 @@
 - handoff: none
 - effect: none
 - move: bootstrap:2026-07-29
+
+## TASK-DEC-002 | 记录可演化 Mother superseding decision
+- state: accepted
+- rev: 1
+- rq: RQ-01,RQ-03,RQ-07,RQ-09,RQ-10
+- deps: TASK-DEC-001
+- owner: human:user
+- claim: conversation:2026-07-29-evolvable-mother-design
+- tracking: github:pr#14
+- updated: 2026-07-29T17:41:21+08:00
+- write: repo:docs/decisions/0001-evolvable-mother-research-platform.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- artifact: repo:docs/decisions/0001-evolvable-mother-research-platform.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: 批准 Mother、Capsule、Domain 与 lab 边界，engineering-workflow 保持软件工程 Domain 与 R0 临时控制面
+- evidence AC-1: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=组件边界
+- accept AC-2: R0 只记录当前仓库 commit、不同组件 path 与 upstream/fork-point，R1 起才以 submodule 固定外置三仓 commit
+- evidence AC-2: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=Capsule候选与版本固定,R0-pre-bootstrap例外
+- accept AC-3: 只有 TASK-GATE-R0-002 accepted 且 outcome 为 continue 才解锁 R1 bootstrap，continue/pivot/stop 均为合法结果
+- evidence AC-3: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=R1解锁条件
+- accept AC-4: TASK-DEC-001 原文与三项原则保留，只取代 abstract-first 顺序；OpenHarness-derived 保持可深改、可替换候选身份
+- evidence AC-4: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=Capsule候选与版本固定,对TASK-DEC-001的影响; ref=conversation:2026-07-29; result=approved
+- accept AC-5: decision、批准设计、实施计划和迁移映射互相可追踪，且不声称计划中的仓库、实验或 tag 已存在
+- evidence AC-5: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=当前非事实; ref=repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md; ref=repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md; ref=repo:docs/research/github-roadmap-migration.md; executed-by=agent:root
+- blocker: none
+- handoff: none
+- effect: none
+- move: roadmap-migration:task-dec-002:20260729
