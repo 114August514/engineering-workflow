@@ -351,8 +351,10 @@ register、能力矩阵、协议边界、评测设计、OpenHarness-derived spik
 `continue` 要求现有方案未完整覆盖、treatment/sham 可信、Mother/Capsule 可独立维护，并具名
 选择 R1 Capsule；否则 pivot 到替代候选或 stop。
 
-R0 只物化当前仓库任务与一个条件化 R1 bootstrap bridge，不创建 Mother/Capsule/lab 仓库，
-不创建 R1-R6 Milestone，也不打 `r0-accepted` tag 冒充 Gate 已完成。
+R0 只物化当前可执行任务与一个条件化 R1 bootstrap bridge，不创建 Mother/Capsule/lab 仓库，
+也不打 `r0-accepted` tag 冒充 Gate 已完成。R1-R6 可以先建立 direction-only Milestone，
+但只能写阶段问题、入口条件和 continue/pivot/stop 边界；不得挂执行 Issue、设置 due date 或承诺
+具体实现。只有前一 Gate `accepted + continue` 后，相应阶段才建立可执行 task graph。
 
 ### R1：Runnable Mother v0
 
@@ -425,7 +427,8 @@ holdout 和 core-change audit。无 breaking core change 且收益/安全门槛�
     单独覆盖 ledger state。
 15. PR 必须写 Task ID 并引用对应 Issue；只有该 PR 满足全部 acceptance 且合入后才能使用
     `Closes #N`。中间 spike、部分证据或依赖 PR 只使用 `Refs #N`，不能提前关闭任务。
-16. Milestone 只投影当前可执行 Gate，进度百分比不是验收。Gate report 必须分别记录
+16. Milestone 分为当前执行与方向占位两种：只有当前阶段可挂执行 Issue；未来阶段只写问题、
+    入口和结果边界，不设 due date，进度百分比不构成验收。Gate report 必须分别记录
     `state: accepted` 与 `outcome: continue | pivot | stop`；只有 `accepted + continue` 才能
     解锁下一阶段。Tag 保护由独立任务验收，未满足时不得创建 `rN-accepted`。
 

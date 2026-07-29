@@ -1,6 +1,6 @@
 # 可演化 Mother 研究路线迁移计划
 
-> 状态：已在 PR #14 实施，等待 squash merge
+> 状态：PR #14 实施中；Task 5A 已 claim，整体等待 squash merge
 >
 > 本文是执行路线，不是实现 receipt。除已批准设计外，文中出现的 ADR、validator、
 > GitHub Milestone/Issue、Mother/Capsule 仓库、实验与 tag 均不得据此声称已经存在或通过。
@@ -114,8 +114,9 @@ ci-scope: required=...; advisory=...; n/a=...; reason=...
 | R5 Second Vertical | 已晋升机制能否迁移到高对比领域 | adaptation set、第二垂直 holdout、core-change audit | 无 breaking core change 且收益/安全门槛成立 | 需要 breaking core change；收缩为 Domain/Capsule scope |
 | R6 Productization | 哪些部分值得稳定和承诺兼容 | research preview/SDK/领域产品、兼容矩阵、迁移说明、升级演练 | 多次实验、多个具名组合和现场数据共同支持 | 证据不足则保持 experimental、收缩或退役 |
 
-只在当前仓库物化 R0 与一个条件化 R1 bootstrap bridge。R1-R6 的具体 Task、Issue 和 Milestone
-由未来 Mother 仓库在 R0 `continue` 后创建，避免现在把远期路线伪装成已知研发排期。
+只在当前仓库物化 R0 与一个条件化 R1 bootstrap bridge。R1-R6 可以先创建 direction-only
+Milestone，但不挂 Issue、不设 due date；具体 Task、Issue 和可执行 successor Milestone 由未来
+Mother 仓库在前一 Gate `accepted + continue` 后创建，避免把方向占位伪装成研发排期。
 
 ## 6. R0 Task Graph
 
@@ -135,6 +136,7 @@ ci-scope: required=...; advisory=...; n/a=...; reason=...
 | `TASK-GATE-R0-002` | R0 evidence audit 与 continue/pivot/stop | 全部 R0 研究与运行产物 | blocked |
 | `TASK-OPS-R1-BOOTSTRAP-001` | 创建 Mother/Capsule/lab 并把本仓作为 Domain 接入 | `TASK-GATE-R0-002@continue` | blocked，不创建 R0 Issue |
 | `TASK-OPS-003` | 迁移 PR 合入后归档旧路线对象 | 迁移 PR 已在默认分支 | blocked，不作为研究 Gate 依赖 |
+| `TASK-OPS-004` | 清退旧路线投影并建立方向 Milestone | `TASK-DOC-002` | 实施时 claimed，不作为研究 Gate 依赖 |
 
 R0 pre-bootstrap manifest 至少记录：experiment/preregistration 版本、当前仓库 commit、
 Mother prototype path、Capsule spike path、Domain path、OpenHarness upstream/fork point、
@@ -159,7 +161,7 @@ R1 起才改用 lab commit 加 Mother/Capsule/Domain repository URL、exact comm
 |---|---|---|
 | `TASK-FORK-001` / Issue `#11` | `TASK-CAPSULE-000` | 旧块 cancelled，保留原 acceptance；新 Issue 承载 runnable spike 与候选对照 |
 | `TASK-EVAL-001` | `TASK-EXP-000` | 旧块 cancelled；新任务先做窄幅因果实验 |
-| `TASK-OPS-001` / Issue `#2` | `TASK-OPS-R1-BOOTSTRAP-001` 后的 Mother 控制面路线 | 旧块 cancelled 并保留原 AC；Issue 不在本次迁移中改写或关闭 |
+| `TASK-OPS-001` / Issue `#2` | `TASK-OPS-R1-BOOTSTRAP-001` 后的 Mother 控制面路线 | 旧块 cancelled 并保留原 AC；Task 5A 只追加 successor comment，PR #14 合入后由 `TASK-OPS-003` 关闭 |
 | Issue `#13` 的旧 Gate | `TASK-GATE-R0-002` | 不复用 Task ID；新 Gate 分离 accepted 与 outcome |
 | `TASK-ADR/CORE/ADP/ASR/SWE/GEN-*` abstract-first 任务 | `TASK-DEC-002` 与 R1-R5 evidence route | cancelled 并逐项记录 cancellation/successor，不伪造完成证据 |
 
@@ -167,33 +169,40 @@ R1 起才改用 lab commit 加 Mother/Capsule/Domain repository URL、exact comm
 
 - 迁移使用新分支 `agent/evolvable-mother-roadmap` 和独立 PR。
 - 先提交 old-to-new map，再创建新 Milestone/Issue。
-- PR #14 合入前只给 `#11/#13` 与 PR `#12` 追加 proposed-successor link，不关闭对象。
-- PR #14 必须 squash merge；合入后 `TASK-OPS-003` 再按历史语义关闭这三个对象。这样 PR #12
+- PR #14 合入前只给 `#2/#11/#13` 与 PR `#12` 追加 proposed-successor link，不关闭对象。
+- PR #14 必须 squash merge；合入后 `TASK-OPS-003` 再按历史语义关闭这四个对象。这样 PR #12
   不会因祖先提交进入 main 而被 GitHub 自动判为 merged，关闭后仍可重新打开。
 - Issue #1 由包含其原交付物的 PR #14 使用 `Closes #1` 在 squash merge 时关闭；PR #12 仍保留
   原标题、正文、head 与任务身份。
-- Milestone `#1` 不重命名，也不作为 R0 Gate 的依赖；等其中保留的原任务全部终态后再单独 closeout。
+- 旧 Milestone #1-#7 不重命名；Task 5A 把活跃 R0 Issue 重投影后直接关闭这些旧入口，
+  不连带关闭其中 Issue/PR。
 
 ## 8. GitHub 投影
 
-迁移只创建当前可执行的 R0 投影：
+迁移创建当前可执行的 R0 投影与不承诺实现的阶段方向：
 
 - 一个新 Milestone：`R0 - Evidence & Mother Choice`。
 - 六个新 Issue：`TASK-CAPSULE-000`、`TASK-PACK-SWE-000`、`TASK-EXP-000`、
   `TASK-OPS-002`、`TASK-GATE-R0-002`、`TASK-OPS-003`。
+- 六个不挂 Issue、不设 due date 的 R1-R6 direction-only Milestone。
 - 一个独立 migration PR，目标 `main`。
 
 创建规则保持简单：按精确 Task ID/title 查询一次，存在则核对并复用，不存在才创建；查询失败停止
 本次外部写入。每次 mutation 的 URL 和时间回填 `docs/research/github-roadmap-migration.md`。
 
-外部效果只登记两个恢复边界：
+外部效果只登记三个恢复边界：
 
 ```text
 FX-GH-R0-PROJECTION: create successor Milestone/Issues/comments
 undo: close newly created objects; retain audit events and mapping
 
-FX-GH-R0-SUPERSEDE: after migration merge, archive #11/#13 and PR #12
+FX-GH-R0-SUPERSEDE: after migration merge, close #2/#11/#13 and PR #12
 undo: reopen objects; retain successor comments and audit history
+
+FX-GH-MILESTONE-DIRECTIONS: move active R0 issues; create direction milestones;
+close old milestones; comment #2; update #20 and PR #14 projections
+undo: reopen old milestones; move issues back; close direction milestones;
+restore #20/PR #14 projection from prestate commit 9484028; retain comments and audit
 ```
 
 ## 9. 实施工作包
@@ -321,14 +330,34 @@ undo: reopen objects; retain successor comments and audit history
 
 1. 创建/复用新 R0 Milestone 与六个精确 Task Issue。
 2. 回填 Issue/Milestone URL 与 mutation receipt，再 push。
-3. 给旧对象添加 proposed-successor link，但不在 migration PR 合入前关闭它们。
-4. 不创建 R1-R6 Milestone、repository 或 tag。
+3. 给旧 Issue/PR 添加 proposed-successor link，但不在 migration PR 合入前关闭它们；旧
+   Milestone 的退出由 Task 5A 独立处理。
+4. 本步骤不创建 R1-R6 对象；direction-only Milestone 由 Task 5A 单独拥有。
 
 **验收**
 
 - 新 Issue 的 Task ID、依赖、AC、CI scope 与 ledger 一致。
-- 旧 Issue/PR/Milestone 的标题和正文未被改写为新语义。
+- 旧 Issue/PR 的标题和正文、旧 Milestone 的标题与原始描述未被改写为新语义。
 - 外部查询失败不会被当作“不存在”继续写入。
+
+### Task 5A：清退旧路线投影并建立方向 Milestone
+
+**做什么**
+
+1. 把仍服务当前 R0 的 Issue `#3/#7/#8/#9/#10` 从旧 Milestone #1 重投影到 #8。
+2. 旧 Milestone #1-#7 保留原标题与原始描述后关闭，不原地复用；migration map 承载 successor 关系。
+3. 让 #8 成为唯一当前执行 Milestone；新建 R1-R6 direction-only Milestone，仅写阶段问题、
+   入口条件和 continue/pivot/stop 边界。
+4. 给 Issue #2 追加 proposed-successor comment，但不在 PR #14 合入前关闭它。
+5. 不给未来 Milestone 挂 Issue、设置 due date 或声明实现已经启动；R1 bootstrap 后由 Mother
+   创建可执行 successor 并关闭当前方向占位。
+6. 更新 Issue #20 与 PR #14 正文，使关闭范围、direction-only 语义和未交付边界与 ledger 一致。
+
+**验收**
+
+- GitHub open Milestone 只呈现当前 R0 和 R1-R6 方向，不再混入 abstract-first 路线。
+- 旧 Milestone 可通过原 URL 审计，原始描述仍保留；每次 mutation 有 URL、时间和 undo。
+- `todo.md`、canonical roadmap、migration map、Issue #20 与 PR #14 的口径一致。
 
 ### Task 6：验证、评审与 PR readiness
 
@@ -365,7 +394,7 @@ git diff --check
 这次迁移完成只意味着：
 
 1. 新 decision、canonical roadmap、migration map 与 ledger 契约进入默认分支。
-2. 旧语义被保留，新 R0 Task/Issue/Milestone 可追踪。
+2. 旧语义可审计但退出当前入口；新 R0 Task/Issue/Milestone 与 R1-R6 方向占位可追踪。
 3. ledger 迁移有一次性故障注入验证与 review receipt；CI relevance 有持久最小机器检查。
 4. 未来 Mother/Capsule/lab 创建被 `TASK-GATE-R0-002@continue` 明确锁住。
 

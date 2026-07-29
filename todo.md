@@ -274,20 +274,45 @@
 
 ## TASK-OPS-003 | 迁移 PR 合入后归档旧路线对象
 - state: blocked
-- rev: 3
+- rev: 4
 - rq: none
 - deps: TASK-DOC-002
 - owner: none
 - claim: none
 - tracking: github:issue#20; github:milestone#8
-- updated: 2026-07-29T23:52:06+08:00
+- updated: 2026-07-30T00:19:09+08:00
 - write: repo:docs/research/github-roadmap-migration.md
 - artifact: repo:docs/research/github-roadmap-migration.md
-- accept AC-1: PR #14 以 squash merge 合入 main 后，保留已追加的 proposed-successor links 与历史语义，再关闭 #11、#13 与 PR #12
-- accept AC-2: 每次 mutation 记录 URL、时间与 undo；Milestone #1 继续等待原任务终态后单独 closeout
+- accept AC-1: PR #14 以 squash merge 合入 main 后，保留 proposed-successor links 与历史语义，再关闭 #2、#11、#13 与 PR #12；Issue #1 由 PR #14 的 `Closes #1` 关闭
+- accept AC-2: 每次 mutation 记录 URL、时间与 undo；旧 Milestone #1-#7 的关闭与活跃 R0 Issue 重投影由 TASK-OPS-004 独立验收
 - evidence: none
-- blocker: deps:TASK-DOC-002; external=github:pr#14; need=squash-merged-to-main before closing #11,#13,PR#12; excluded=github:milestone#1
+- blocker: deps:TASK-DOC-002; external=github:pr#14; need=squash-merged-to-main before closing #2,#11,#13,PR#12
 - handoff: none
-- effect: FX-GH-R0-SUPERSEDE; action=close issue#11 issue#13 and pr#12 after migration squash merge
+- effect: FX-GH-R0-SUPERSEDE; action=close issue#2 issue#11 issue#13 and pr#12 after migration squash merge
 - undo: FX-GH-R0-SUPERSEDE; action=reopen closed objects and retain successor comments and audit
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
+
+## TASK-OPS-004 | 清退旧路线投影并建立方向 Milestone
+- state: claimed
+- rev: 1
+- rq: none
+- deps: TASK-DOC-002
+- owner: agent:root
+- claim: run:milestone-directions-20260730T001909p0800
+- tracking: github:pr#14
+- updated: 2026-07-30T00:19:09+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:docs/research/github-roadmap-migration.md
+- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: #8 是唯一承载当前 R0 执行 Issue 的 Milestone；#3、#7、#8、#9、#10 已重投影到 #8，旧 Milestone #1-#7 保留原身份与描述后关闭
+- accept AC-2: R1-R6 各有一个 direction-only Milestone，只记录阶段问题、入口条件和 continue/pivot/stop 边界，不挂 Issue、不设 due date、不承诺具体实现
+- accept AC-3: Issue #2 已追加 proposed-successor comment；GitHub URL、时间、effect 与 undo 回填 migration map，PR #14 与 Issue #20 指向同一当前口径
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: FX-GH-MILESTONE-DIRECTIONS; action=move active R0 issues create direction milestones close historical milestone#1-#7 append issue#2 successor audit and update issue#20/pr#14 projections
+- undo: FX-GH-MILESTONE-DIRECTIONS; action=reopen historical milestones restore issue milestone#1 close direction milestones restore issue#20/pr#14 projection from prestate commit 9484028 and retain successor audit
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=documentation and reversible GitHub roadmap projection do not change product runtime

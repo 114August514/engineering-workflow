@@ -370,19 +370,24 @@ Conformance 只证明结构可实现，不能代替用户价值或跨领域效�
 Milestone 调整为：
 
 1. `R0 - Evidence & Mother Choice`
-2. `R1 - Runnable Mother v0`
-3. `R2 - Mechanism Labs`
-4. `R3 - Promotion & Portability`
-5. `R4 - Software Engineering Confirmation`
-6. `R5 - Second Vertical`
-7. `R6 - Productization`
+2. `R1 — Runnable Mother v0`
+3. `R2 — Mechanism Labs`
+4. `R3 — Promotion & Portability`
+5. `R4 — Software Engineering Confirmation`
+6. `R5 — Second Vertical`
+7. `R6 — Productization`
+
+R0 是当前唯一可以挂执行 Issue 的 Milestone。R1-R6 在当前仓库只建立 direction-only
+Milestone，用于确认阶段问题、入口条件和 continue/pivot/stop 边界；不设 due date，不提前拆
+具体 Issue，也不表示阶段已经启动。
 
 实验 Issue 即使得到负结果，只要方法完整也可由实验 PR 关闭。Promotion 使用新的 Issue/PR。
 GitHub 仍是 ledger 的协作投影，不单独决定任务 acceptance 或 gate outcome。
 
 R0 的 ledger、gate report 和历史 Tag 继续留在当前仓库。若 R0 以 `outcome: continue` 解锁
-R1，R1 之后的 program ledger 和阶段 Milestone 由 Mother 仓库承接；Capsule 与 Domain 仓库
-只维护各自产物 Issue，并链接 Mother 中的 program task。历史记录不跨仓复制。
+R1，Mother 仓库创建可执行 program ledger 和 successor Milestone；当前仓库的方向占位随即
+链接 successor 后关闭。Capsule 与 Domain 仓库只维护各自产物 Issue，并链接 Mother 中的
+program task。GitHub Milestone 不跨仓转移，历史记录也不跨仓复制。
 
 ### 11.1 保留旧 Issue、Milestone 与 Ledger 语义
 
@@ -393,8 +398,9 @@ R1，R1 之后的 program ledger 和阶段 Milestone 由 Mother 仓库承接；C
   ledger，并记录 `superseded-by`；新语义创建新的 Task ID 和 Issue。
 - 旧 Issue 的标题和正文不改造成新任务。通过带 decision commit 的迁移评论、`superseded`
   label 和双向链接说明去向；关闭理由写“由新任务取代”，不写“已完成”。
-- 旧 Milestone 不重命名成新阶段。用其 gate/closure report 记录 successor Milestone 后再关闭，
-  新 roadmap 创建具有独立名称和编号的 Milestone。
+- 旧 Milestone 不重命名成新阶段。保留原标题和原始描述后关闭，successor 关系记录在 migration
+  map；仍服务当前 R0 的 Issue 通过 mutation receipt 重投影到新 R0 Milestone。新 roadmap
+  创建具有独立名称和编号的 Milestone。
 - 已 accepted 的 `TASK-DEC-001`、历史 PR、commit 和 Tag 保持不变；新方向通过新的 decision
   task 追加。不得为了让进度图好看而重写历史 acceptance。
 
