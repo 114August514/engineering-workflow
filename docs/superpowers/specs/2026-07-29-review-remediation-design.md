@@ -5,6 +5,10 @@
 > 适用范围：PR #12，`agent/research-foundation`
 >
 > 决策原则：只硬挡确定性错误；低概率、可恢复、局部影响的问题采用鸵鸟原则。
+>
+> 历史状态：本文保留 PR #12 的原修复语义，不再是当前迁移路线。当前边界与任务图以
+> [`2026-07-29-evolvable-mother-roadmap-migration.md`](../plans/2026-07-29-evolvable-mother-roadmap-migration.md)
+> 和 `TASK-DEC-002` 为准。
 
 ## 一、目标
 
@@ -136,6 +140,11 @@ worker 或 steward 异常时采用人工恢复：确认 Git 状态、当前 Agen
 然后由 steward 递增 revision、换 claim token 并重新分配。不实现自动 lease、heartbeat 或选举。
 
 ## 七、机器检查边界
+
+> Supersession（2026-07-29）：以下是原 `TASK-OPS-001` 的历史方案，原 AC 保留但
+> 不在当前 Domain 仓库实施。将迁移账本 checker 接入本 skill 的 CI 会混合产品面与
+> 研究控制面；本地任务已 cancelled，后续是否机器化由 R0 `continue` 后的外置 Mother
+> 以跨 Domain 证据重新决定。
 
 新增 `tests/task-ledger.sh`，并接入 CI 与 `AGENTS.md`。它只检查本地、确定性不变量：
 

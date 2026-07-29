@@ -149,34 +149,6 @@
 - undo: none
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate canonical roadmap content
 
-## TASK-OPS-001 | 为任务账本增加机器检查
-- state: claimed
-- rev: 4
-- rq: none
-- deps: TASK-DOC-001
-- owner: agent:root
-- claim: run:task-ledger-validator-20260729T174121p0800
-- tracking: github:issue#2; github:milestone#1
-- updated: 2026-07-29T18:23:49+08:00
-- write: repo:docs/research/task-ledger-contract.md
-- write: repo:scripts/check-task-ledger.sh
-- write: repo:tests/task-ledger.sh
-- write: repo:.github/workflows/ci.yml
-- write: repo:AGENTS.md
-- artifact: repo:docs/research/task-ledger-contract.md
-- artifact: repo:scripts/check-task-ledger.sh
-- artifact: repo:tests/task-ledger.sh
-- accept AC-1: 校验器先断言 fixture 非空，再检查字段、ID、依赖、claim、tracking、scope、evidence 和 effect/undo
-- accept AC-2: 重复 ID、todo/done 重叠、依赖环、scope 冲突、tracking 复用和缺证据分别给出准确失败原因
-- accept AC-3: 故意破坏实现可使对应负例变红，脚本通过 Bash 3.2 与 BSD 工具链约束
-- accept AC-4: CI 和 AGENTS.md 的验证入口都调用任务账本检查
-- evidence: none
-- blocker: none
-- handoff: none
-- effect: none
-- undo: none
-- ci-scope: required=ubuntu,macos; advisory=none; n/a=none; reason=ledger shell and fixtures must work on both supported runners
-
 ## TASK-EVAL-000 | 证明静态 skill 的行为价值
 - state: blocked
 - rev: 2
@@ -260,20 +232,20 @@
 
 ## TASK-OPS-002 | 建立 R0 Tag 保护与相关 CI 规则
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: none
-- deps: TASK-OPS-001
+- deps: TASK-DOC-002
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T18:23:49+08:00
+- updated: 2026-07-29T21:46:26+08:00
 - write: repo:.github/workflows/ci.yml
 - write: repo:docs/research/r0-tag-protection.md
 - artifact: repo:docs/research/r0-tag-protection.md
 - accept AC-1: 相关 required checks、保护目标和终态等待点有版本化规则与 GitHub receipt
 - accept AC-2: R0 Gate 未 accepted 且 outcome 非 continue 时不得创建 acceptance tag
 - evidence: none
-- blocker: deps:TASK-OPS-001; need=ledger validator 与 CI relevance 入口先完成
+- blocker: deps:TASK-DOC-002; need=canonical roadmap 先明确 Domain 内相关 CI 与外置控制面的边界
 - handoff: none
 - effect: FX-GH-R0-TAG-PROTECTION; action=create or update the scoped R0 ruleset after approval
 - undo: FX-GH-R0-TAG-PROTECTION; action=restore the previous ruleset or remove the new ruleset and retain audit

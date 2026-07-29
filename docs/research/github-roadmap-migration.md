@@ -10,7 +10,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | 对象 | 原身份 | 原 URL | 保留事实 |
 | --- | --- | --- | --- |
 | Issue #1 | `[TASK-DOC-001] 建立协作底座研究规格与任务账本` | [#1](https://github.com/114August514/engineering-workflow/issues/1) | 保留原 acceptance 与交付历史 |
-| Issue #2 | `[TASK-OPS-001] 为任务账本增加机器检查` | [#2](https://github.com/114August514/engineering-workflow/issues/2) | 保留原任务语义 |
+| Issue #2 | `[TASK-OPS-001] 为任务账本增加机器检查` | [#2](https://github.com/114August514/engineering-workflow/issues/2) | 保留原标题、正文与历史语义；外部对象本次未改动，本地实现路线因产品边界 cancelled |
 | Issue #3 | `[TASK-RES-004] 设计四基线与预注册评测` | [#3](https://github.com/114August514/engineering-workflow/issues/3) | 继续产生 R0 评测证据 |
 | Issue #7 | `[TASK-RES-003] 核验 MCP/ACP/A2A/AG-UI 协议边界` | [#7](https://github.com/114August514/engineering-workflow/issues/7) | 继续产生 R0 协议证据 |
 | Issue #8 | `[TASK-RES-005] 收集第二垂直任务与领域评审者` | [#8](https://github.com/114August514/engineering-workflow/issues/8) | 继续产生 R0 领域证据 |
@@ -43,7 +43,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | `TASK-RES-003` | 核验协议边界 | ready | keep 原状态与语义 |
 | `TASK-RES-004` | 设计四基线与预注册评测 | ready | keep 原状态与语义 |
 | `TASK-RES-005` | 收集第二垂直任务与领域评审者 | ready | keep 原状态与语义 |
-| `TASK-OPS-001` | 为任务账本增加机器检查 | ready | keep 原状态与语义 |
+| `TASK-OPS-001` | 为任务账本增加机器检查 | cancelled | 保留原 AC，不在 Domain 仓库伪装实现；successor 指向条件化 Mother bootstrap |
 | `TASK-EVAL-000` | 证明静态 skill 的行为价值 | blocked | keep 原状态与语义 |
 
 ## Supersede
@@ -55,6 +55,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | `TASK-FORK-001` / [Issue #11](https://github.com/114August514/engineering-workflow/issues/11) | `[TASK-CAPSULE-000] 选择并验证首个 Substrate Capsule` | planned；ledger 仍为 ready |
 | 旧 R0 gate / [Issue #13](https://github.com/114August514/engineering-workflow/issues/13) | `[TASK-GATE-R0-002] 验收 Evidence & Mother Choice` | planned；Issue 仍 open |
 | `TASK-EVAL-001` | `TASK-EXP-000` 的窄幅 proof-of-mechanism route | planned；ledger 仍为 blocked |
+| `TASK-OPS-001` / [Issue #2](https://github.com/114August514/engineering-workflow/issues/2) | `TASK-OPS-R1-BOOTSTRAP-001` 后由外置 Mother 重新决定机器控制面 | ledger cancelled；原 Issue 未改动，不继承完成状态 |
 | `TASK-ADR-001` | `TASK-DEC-002` + R1 topology evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
 | `TASK-CORE-001` | `TASK-DEC-002` + R1/R3 semantics and promotion evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
 | `TASK-CORE-002` | `TASK-DEC-002` + R1/R3 trace and promotion evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |

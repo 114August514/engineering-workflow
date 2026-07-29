@@ -396,3 +396,33 @@
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
 - move: TASK-GEN-002:r2
 - move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-OPS-001 | 为任务账本增加机器检查
+- state: cancelled
+- rev: 5
+- rq: none
+- deps: TASK-DOC-001
+- owner: none
+- claim: none
+- tracking: github:issue#2; github:milestone#1
+- updated: 2026-07-29T21:46:26+08:00
+- write: repo:docs/research/task-ledger-contract.md
+- write: repo:tests/task-ledger.sh
+- write: repo:.github/workflows/ci.yml
+- write: repo:AGENTS.md
+- artifact: repo:docs/research/task-ledger-contract.md
+- artifact: repo:tests/task-ledger.sh
+- accept AC-1: 校验器先断言 fixture 非空，再检查字段、ID、依赖、claim、tracking、scope、evidence 和 effect/undo
+- accept AC-2: 重复 ID、todo/done 重叠、依赖环、scope 冲突、tracking 复用和缺证据分别给出准确失败原因
+- accept AC-3: 故意破坏实现可使对应负例变红，脚本通过 Bash 3.2 与 BSD 工具链约束
+- accept AC-4: CI 和 AGENTS.md 的验证入口都调用任务账本检查
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- undo: none
+- cancellation-reason: 按原路径在本仓实施会把研究迁移控制面永久并入 Domain 产品仓库，与外置 Mother 和可替换 Capsule 的职责边界冲突；保留原 AC，但不在本仓伪装完成
+- superseded-by: TASK-OPS-R1-BOOTSTRAP-001
+- successor-route: R0 continue 后由外置 Mother 基于跨 Domain 证据重新决定 ledger checker
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled task has no delivered product change or acceptance claim
+- move: move-task-ops-001-cancelled-r5

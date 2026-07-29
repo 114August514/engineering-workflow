@@ -7,15 +7,15 @@
 这是当前迁移需要的最小 Markdown 契约。它保护会制造虚假终态或并行写冲突的
 不变量，不是通用 Markdown parser、GitHub 投影框架或 CI 影响分析器。
 
-## 验证入口
+## 执行边界
 
-```bash
-scripts/check-task-ledger.sh todo.md done.md
-```
+`todo.md` 和 `done.md` 都必须存在，并且各自声明 `<!-- ledger:v2 -->`，两份账本
+也必须分别至少包含一个 Task。当前仓库是软件工程 Domain，不把研究迁移 checker
+作为产品脚本或产品回归测试长期入库；迁移期间使用过的一次性检查器在收尾时删除。
 
-两个输入都必须存在，并且各自声明 `<!-- ledger:v2 -->`。`todo.md` 和
-`done.md` 必须分别至少解析到一个 `TASK`；任意一份空转都必须失败。成功返回
-0，契约违反返回 1，用法或输入文件错误返回 2。
+R0 `continue` 之前由 steward 在任务移动和 PR review 时按本契约核对关键不变量。
+如果后续确实需要机器执行，应在外置 Mother 控制面中重新定义并以跨 Domain 证据验收，
+不能从本仓的临时实现直接推导为通用能力。
 
 Task 块以下列标题开始：
 
@@ -24,7 +24,7 @@ Task 块以下列标题开始：
 ```
 
 Task ID 在单个账本内不得重复，也不得同时出现在 `todo.md` 和 `done.md`。
-未列在下文的历史字段可以保留；validator 不借它们推导新状态。
+未列在下文的历史字段可以保留；不得借它们推导新状态。
 
 ## 状态与 Claim
 
@@ -41,7 +41,7 @@ owner/claim：两者要么都是 `none`，要么都是具体值，不得只留�
 每个块有唯一的 `state`、`rev`、`rq`、`deps`、`owner`、`claim`、`tracking`、
 `updated`、`blocker`、`handoff` 和 `ci-scope`。另外至少有一行 `write`、一行
 `artifact`、一条 `accept AC-*` 和一行 `effect`。`rev` 是 steward 做 CAS 时使用的
-单一正整数；metadata 迁移也要递增它并更新 `updated`。Validator 不伪造分布式事务。
+单一正整数；metadata 迁移也要递增它并更新 `updated`。本契约不伪造分布式事务。
 
 ## 依赖
 
@@ -59,9 +59,8 @@ TASK-CONDITIONAL-001 -> TASK-DECISION-001@continue
 `outcome` 与后缀相同时满足；目标必须显式保留 `outcome` 字段。未 accepted 的
 Task 若有该字段只能写 `none`，accepted 时只能写三个枚举值之一。
 
-Validator 只实现上述通用语义，不认识本次迁移的具体 Task ID。当前路线使用哪一条
-条件桥、哪些任务不应进入 Gate，直接记录在 `todo.md`、迁移映射和 decision 中审核，
-不写进可复用脚本。
+当前路线使用哪一条条件桥、哪些任务不应进入 Gate，直接记录在 `todo.md`、迁移映射
+和 decision 中审核，不写进 Domain 产品脚本。
 
 ## Acceptance 与终态
 
@@ -117,7 +116,7 @@ tracking；其他 Task 在 `evidence` 或 PR body 中列出该 PR，不重复 `t
 
 每个 `FX-*` effect 都必须有同 ID undo，反向也一样；不允许 `none` 与 `FX-*`
 在同一侧并存。不可逆
-动作的人工批准引用由 ledger 正文保留；validator 不猜测一段文字是否真的可逆。
+动作的人工批准引用由 ledger 正文保留；本契约不猜测一段文字是否真的可逆。
 
 ## CI Scope
 
@@ -130,15 +129,13 @@ tracking；其他 Task 在 `evidence` 或 PR body 中列出该 PR，不重复 `t
 `required` 只放能推翻当前 acceptance 的检查；`advisory` 有信息价值但不阻塞；
 `n/a` 与当前改动无因果关系。列表值由逗号分隔或写 `none`，`reason` 不得为空。
 同一分类中 `none` 不得和具体 check 并存，同一 check 也不得同时出现在两个
-分类。Validator 只校验这四个键、token 结构与
-分类不冲突，不硬编码当前 runner 或 check 名称，也不根据路径推断相关性。
+分类。分类不硬编码当前 runner 或 check 名称，也不根据路径自动推断相关性；
+pending CI 本身不改变 Task state。
 
-本 Task 的 validator 只检查 receipt 存在与最小结构，不根据 diff 推导分类，也不等待远端 CI。
-Task 4 负责统一 PR receipt 词汇、让 CI 调用 validator、在 AGENTS.md 公开入口，并为
-分类一致性增加独立测试。pending CI 本身不改变 Task state。
+## 工具边界
 
-## 测试边界
-
-`tests/task-ledger.sh` 使用小型临时 Markdown fixture，先断言 fixture 确实抓到 Task，
-再用少量代表用例检查上述关键不变量和具体失败原因。常规运行最后验收仓库真实的
-`todo.md` 和 `done.md`。
+本次迁移的一次性检查覆盖过空输入、ID、依赖、条件 outcome、终态 evidence、move token、
+write scope、effect/undo 与 CI receipt，并用故障注入确认不是假绿。该检查只构成迁移
+receipt，不构成这个 skill 的产品能力，因此不保留 `scripts/check-task-ledger.sh` 或
+`tests/task-ledger.sh`。长期约束依靠本契约、账本 diff 和 review；外置 Mother 是否需要
+通用 checker，由后续跨 Domain 实验决定。

@@ -124,12 +124,12 @@ ci-scope: required=...; advisory=...; n/a=...; reason=...
 | `TASK-DEC-002` | 记录可演化 Mother superseding decision | `TASK-DEC-001` | ADR 与 evidence 落盘后 accepted |
 | `TASK-DOC-002` | 迁移 canonical roadmap 与历史映射 | `TASK-DEC-002` | 实施时 claimed |
 | `TASK-RES-001..005` | 保留原 evidence/capability/protocol/evaluation/second-vertical 研究 | 原依赖 | 保留原状态与身份 |
-| `TASK-OPS-001` | 为 ledger 增加最小机器检查 | `TASK-DOC-001` | 实施时 claimed |
+| `TASK-OPS-001` | 保留原 ledger 机器检查任务语义 | `TASK-DOC-001` | cancelled；实现位置不属于 Domain 产品仓库 |
 | `TASK-EVAL-000` | 保留静态 skill 行为基线 | `TASK-RES-004` | 保留原状态 |
 | `TASK-CAPSULE-000` | OpenHarness-derived runnable spike 与候选对照 | `TASK-RES-002,003` | blocked |
 | `TASK-PACK-SWE-000` | discovery/holdout 切分 | `TASK-RES-004` | blocked |
 | `TASK-EXP-000` | 首个同底座 proof-of-mechanism | Capsule、Pack、评测设计 | blocked |
-| `TASK-OPS-002` | tag 保护与 CI relevance 规则 | `TASK-OPS-001` | blocked |
+| `TASK-OPS-002` | tag 保护与 CI relevance 规则 | `TASK-DOC-002` | blocked |
 | `TASK-GATE-R0-002` | R0 evidence audit 与 continue/pivot/stop | 全部 R0 研究与运行产物 | blocked |
 | `TASK-OPS-R1-BOOTSTRAP-001` | 创建 Mother/Capsule/lab 并把本仓作为 Domain 接入 | `TASK-GATE-R0-002@continue` | blocked，不创建 R0 Issue |
 | `TASK-OPS-003` | 迁移 PR 合入后归档旧路线对象 | 迁移 PR 已在默认分支 | blocked，不作为研究 Gate 依赖 |
@@ -145,7 +145,9 @@ R1 起才改用 lab commit 加 Mother/Capsule/Domain repository URL、exact comm
 ### 7.1 保留
 
 - `TASK-RES-000`、`TASK-DEC-001`、`TASK-DOC-001` 保持 accepted 与原 acceptance/evidence。
-- `TASK-RES-001..005`、`TASK-OPS-001`、`TASK-EVAL-000` 保持 Task ID、Issue 与原验收语义。
+- `TASK-RES-001..005`、`TASK-EVAL-000` 保持 Task ID、Issue 与原验收语义及状态。
+- `TASK-OPS-001` 保持 Task ID、Issue 与原验收语义，但因实现位置违反 Domain/Mother
+  边界转为 cancelled；不登记 acceptance evidence。
 - GitHub Issue `#1,#2,#3,#7,#8,#9,#10` 和 Milestone `#1` 保持原身份。
 - PR `#12` 保持原标题、正文和历史任务含义。
 
@@ -155,6 +157,7 @@ R1 起才改用 lab commit 加 Mother/Capsule/Domain repository URL、exact comm
 |---|---|---|
 | `TASK-FORK-001` / Issue `#11` | `TASK-CAPSULE-000` | 旧块 cancelled，保留原 acceptance；新 Issue 承载 runnable spike 与候选对照 |
 | `TASK-EVAL-001` | `TASK-EXP-000` | 旧块 cancelled；新任务先做窄幅因果实验 |
+| `TASK-OPS-001` / Issue `#2` | `TASK-OPS-R1-BOOTSTRAP-001` 后的 Mother 控制面路线 | 旧块 cancelled 并保留原 AC；Issue 不在本次迁移中改写或关闭 |
 | Issue `#13` 的旧 Gate | `TASK-GATE-R0-002` | 不复用 Task ID；新 Gate 分离 accepted 与 outcome |
 | `TASK-ADR/CORE/ADP/ASR/SWE/GEN-*` abstract-first 任务 | `TASK-DEC-002` 与 R1-R5 evidence route | cancelled 并逐项记录 cancellation/successor，不伪造完成证据 |
 
@@ -237,26 +240,25 @@ undo: reopen objects; retain successor comments and audit history
 **文件**
 
 - Create: `docs/research/task-ledger-contract.md`
-- Create: `scripts/check-task-ledger.sh`
-- Create: `tests/task-ledger.sh`
 - Modify: `todo.md`, `done.md`
 
 **做什么**
 
 1. 契约只覆盖当前真实需要：Task ID/state、依赖与 `@continue`、accepted/evidence、
    cancellation/successor、write scope、effect/undo、tracking、CI scope、done move token。
-2. 用 TDD 实现廉价 validator；必须有非空输入断言和会真正变红的负例。
+2. 用一次性 checker 验证迁移，覆盖非空输入和真正变红的负例；完成后删除，避免把
+   研究迁移控制面混入 Domain 产品脚本与回归测试。
 3. 原语义不变任务做最小字段补齐；旧 abstract-first 任务移入 done/cancelled，保留原 acceptance，
    不追加假 evidence。
 4. 登记 R0 新任务与条件化 bootstrap bridge。
+5. `TASK-OPS-001` 保留原标题、tracking 和 AC 后转为 cancelled，机器控制面的 successor
+   指向 R0 `continue` 后的外置 Mother bootstrap；Issue #2 本步骤不改动。
 
 **验收**
 
-- `scripts/check-task-ledger.sh todo.md done.md` 通过。
-- `bash tests/task-ledger.sh` 通过，且至少一次故意破坏能使对应负例变红。
+- 一次性 checker 在删除前通过，且故意破坏时对应负例变红；最终产品树不保留它。
+- 原有产品测试全部通过，且没有新增迁移专用 `.sh`。
 - 只有 bootstrap bridge 使用 `TASK-GATE-R0-002@continue`。
-
-具体 parser 和 fixture 设计属于本 Task 的 PR，不在 roadmap 中预写完整实现。
 
 ### Task 3：更新 canonical research 文档
 
@@ -293,9 +295,10 @@ undo: reopen objects; retain successor comments and audit history
 **做什么**
 
 1. 统一 `required/advisory/n/a` 词汇与 PR receipt。
-2. CI 调用 ledger validator 与现有仓库验证。
+2. Domain CI 只调用与 skill 产品行为相关的现有仓库验证；ledger checker 是否进入
+   外置 Mother 由跨 Domain 证据决定。
 3. pending CI 不改变 task state；只在 merge/gate/tag 等终态动作等待相关 required checks。
-4. `TASK-OPS-001` 的原 AC 全部有证据后才 accepted。
+4. 不把已 cancelled 的 `TASK-OPS-001` 或一次性 checker 伪装成 accepted。
 
 **验收**
 
