@@ -63,5 +63,8 @@ jobs:
       - name: 文档交叉引用没断
         run: bash tests/docs-links.sh
 
+      - name: CI relevance receipt 一致
+        run: bash tests/ci-scope-consistent.sh
+
       - name: 标准动词三处一致
         run: bash tests/verbs-consistent.sh

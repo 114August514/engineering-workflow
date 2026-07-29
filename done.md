@@ -1,0 +1,489 @@
+# DONE
+<!-- ledger:v2 -->
+
+通用人机协作底座的 append-only 完成账本。终态只允许 `accepted`、`cancelled`、
+`rolled-back`；只有 `accepted` 可以满足依赖。对应 ID 不得继续出现在
+[`todo.md`](todo.md)；格式契约见
+[`docs/research/task-ledger-contract.md`](docs/research/task-ledger-contract.md)。
+
+## TASK-RES-000 | 完成初始证据扫描
+- state: accepted
+- rev: 2
+- rq: RQ-00,RQ-01,RQ-02,RQ-03,RQ-04,RQ-05,RQ-06,RQ-07,RQ-08,RQ-09,RQ-10
+- deps: none
+- owner: agent:root
+- claim: run:initial-research-20260729
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- artifact: repo:docs/research/agent-collaboration-foundation.md
+- accept AC-1: 核验五个 harness/方法项目、四个协议和高信度人机协作研究
+- evidence AC-1: ref=repo:docs/research/agent-collaboration-foundation.md; sections=二,三,四,八
+- accept AC-2: 非官方或无效果证据的来源不被提升为成熟度结论
+- evidence AC-2: ref=repo:docs/research/agent-collaboration-foundation.md; result=114August514/claude-code 已降级为来源边界
+- blocker: none
+- handoff: none
+- effect: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=metadata amendment does not reopen historical acceptance
+- move: ledger-v2:task-res-000:20260729
+- amendment-receipt: scope=transaction-metadata-only; previous-move=bootstrap:2026-07-29; acceptance-evidence=unchanged
+
+## TASK-DEC-001 | 批准产品边界
+- state: accepted
+- rev: 2
+- rq: RQ-01,RQ-03,RQ-07,RQ-09,RQ-10
+- deps: TASK-RES-000
+- owner: human:user
+- claim: conversation:2026-07-29
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- artifact: repo:docs/research/agent-collaboration-foundation.md
+- accept AC-1: 产品不重写完整 execution harness，自研协作语义、保障、评测和 adapter contract
+- evidence AC-1: ref=conversation:2026-07-29; result=approved
+- accept AC-2: 成熟开源组件通过 Component Intake Gate 后优先 fork/适配
+- evidence AC-2: ref=conversation:2026-07-29; result=approved
+- blocker: none
+- handoff: none
+- effect: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=metadata amendment does not reopen historical acceptance
+- move: ledger-v2:task-dec-001:20260729
+- amendment-receipt: scope=transaction-metadata-only; previous-move=bootstrap:2026-07-29; acceptance-evidence=unchanged
+
+## TASK-DOC-001 | 建立研究规格与协作账本
+- state: accepted
+- rev: 5
+- rq: none
+- deps: TASK-DEC-001
+- owner: agent:root
+- claim: run:research-spec-20260729
+- tracking: github:issue#1; github:pr#12; github:milestone#1
+- updated: 2026-07-30T00:03:13+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:todo.md
+- write: repo:done.md
+- write: repo:README.md
+- artifact: repo:docs/research/agent-collaboration-foundation.md
+- artifact: repo:todo.md
+- artifact: repo:done.md
+- accept AC-1: 研究规格明确问题、边界、RQ、证据、基线、stage gates、停止条件和协作协议
+- evidence AC-1: ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:docs/research/agent-collaboration-foundation.md
+- accept AC-2: 任务账本包含固定字段、依赖、claim、tracking、write scope、acceptance 和恢复语义
+- evidence AC-2: ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:todo.md; ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:done.md
+- accept AC-3: 本仓库要求的文档与 shell 验证全部通过
+- evidence AC-3: command=repository-required-verification; exit=0; at=2026-07-29T02:48:29+08:00; replay-source=git:60b768c1fe6e118bc66d126577fe5b32930c62b3; replay-command=all-tests-and-shell-syntax; replay-exit=0; replay-at=2026-07-30T00:03:13+08:00
+- blocker: none
+- handoff: none
+- effect: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=metadata amendment does not reopen historical acceptance
+- move: ledger-v2:task-doc-001:20260729
+- amendment-receipt: scope=pin-and-replay-historical-evidence; previous-rev=4; previous-move=bootstrap:2026-07-29; acceptance-content=unchanged; original-head=60b768c1fe6e118bc66d126577fe5b32930c62b3
+
+## TASK-DEC-002 | 记录可演化 Mother superseding decision
+- state: accepted
+- rev: 2
+- rq: RQ-01,RQ-03,RQ-07,RQ-09,RQ-10
+- deps: TASK-DEC-001
+- owner: human:user
+- claim: conversation:2026-07-29-evolvable-mother-design
+- tracking: github:pr#14
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/decisions/0001-evolvable-mother-research-platform.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/research/github-roadmap-migration.md
+- artifact: repo:docs/decisions/0001-evolvable-mother-research-platform.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: 批准 Mother、Capsule、Domain 与 lab 边界，engineering-workflow 保持软件工程 Domain 与 R0 临时控制面
+- evidence AC-1: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=组件边界
+- accept AC-2: R0 pre-bootstrap manifest 至少记录 experiment/preregistration 版本、当前仓库 commit、不同组件 path、OpenHarness upstream/fork-point、model/prompt/tool/config/evaluator hash、treatment/sham/budget/task-set 及 trace/artifact/result 引用；R1 起才以 submodule 固定外置三仓 commit
+- evidence AC-2: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=Capsule候选与版本固定,R0-pre-bootstrap例外
+- accept AC-3: 只有 TASK-GATE-R0-002 accepted 且 outcome 为 continue 才解锁 R1 bootstrap，continue/pivot/stop 均为合法结果
+- evidence AC-3: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=R1解锁条件
+- accept AC-4: TASK-DEC-001 原文与三项原则保留，只取代 abstract-first 顺序；OpenHarness-derived 保持可深改、可替换候选身份
+- evidence AC-4: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=Capsule候选与版本固定,对TASK-DEC-001的影响; ref=conversation:2026-07-29; result=approved
+- accept AC-5: decision、批准设计、实施计划和迁移映射互相可追踪，且不声称计划中的仓库、实验或 tag 已存在
+- evidence AC-5: ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; sections=当前非事实; ref=repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md; ref=repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md; ref=repo:docs/research/github-roadmap-migration.md; executed-by=agent:root
+- blocker: none
+- handoff: none
+- effect: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=metadata addition does not reopen the accepted decision
+- move: roadmap-migration:task-dec-002:20260729
+
+## TASK-FORK-001 | 运行 Component Intake Gate
+- state: cancelled
+- rev: 3
+- rq: RQ-07,RQ-10
+- deps: TASK-RES-000
+- owner: none
+- claim: none
+- tracking: github:issue#11; github:milestone#1
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/component-intake.md
+- artifact: repo:docs/research/component-intake.md
+- accept AC-1: Kimi Code、OpenHarness、oh-my-pi、Claude SDK 均有 adopt/fork/adapt/build 结论
+- accept AC-2: 记录硬能力、许可证、上游 commit、测试、安全、patch budget、12 个月 TCO 和退出方案
+- accept AC-3: 至少完成一次候选升级演练设计，外部仓库保持只读
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 旧纸面 Component Intake 不再承载 runnable spike 与结构不同候选对照
+- superseded-by: TASK-CAPSULE-000
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-FORK-001:r3
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-ADR-001 | 决定仓库拓扑与 fork 布局
+- state: cancelled
+- rev: 2
+- rq: RQ-03,RQ-07,RQ-10
+- deps: TASK-RES-002,TASK-RES-003,TASK-FORK-001,TASK-EVAL-000
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/decisions/
+- artifact: repo:docs/decisions/
+- accept AC-1: ADR 比较原仓扩展、monorepo 和独立 runtime 三条路径
+- accept AC-2: 实现语言、fork 上游同步、Domain Pack 边界和退出策略都有明确决定
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: abstract-first topology 已被 R0 pre-bootstrap 与 evidence-first 路线取代
+- superseded-by: TASK-DEC-002
+- successor-route: R1 topology evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-ADR-001:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-CORE-001 | 定义协作 glossary 与不变量
+- state: cancelled
+- rev: 2
+- rq: RQ-03,RQ-09
+- deps: TASK-RES-001,TASK-RES-003
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/collaboration-glossary.md
+- artifact: repo:docs/research/collaboration-glossary.md
+- accept AC-1: Actor、Objective、WorkItem、Decision、HumanTask、ActionEnvelope、Claim、Evidence、Verification、MemoryRecord、Handoff 均有边界
+- accept AC-2: 核心定义不包含软件工程专用字段，冲突术语有唯一裁决
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 不再于实验需要出现前冻结 harness-neutral glossary 与不变量
+- superseded-by: TASK-DEC-002
+- successor-route: R1/R3 semantics and promotion evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-CORE-001:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-CORE-002 | 定义核心 schema 与 golden traces
+- state: cancelled
+- rev: 2
+- rq: RQ-03,RQ-09
+- deps: TASK-CORE-001,TASK-ADR-001
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: 核心 schema、状态投影、版本规则和三组 golden trace 可被 validator 读取
+- accept AC-2: 相同版本输入重建相同状态，Domain Pack 字段只通过 extension 出现
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: core schema 与 trace 改由 R1/R3 实验和 promotion 证据反推
+- superseded-by: TASK-DEC-002
+- successor-route: R1/R3 trace and promotion evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-CORE-002:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-ADP-001 | 定义 Harness Adapter contract
+- state: cancelled
+- rev: 2
+- rq: RQ-03,RQ-07
+- deps: TASK-RES-002,TASK-RES-003,TASK-CORE-001,TASK-ADR-001
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: 契约覆盖 start、resume、steer、cancel、approve、events、artifacts 和 usage
+- accept AC-2: capability 明确区分 observe、advise、enforce，且不引用后端私有工具名
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 完整 Adapter contract 改为实验所需的最小 Capsule Port
+- superseded-by: TASK-DEC-002
+- successor-route: R1/R3 Capsule Port evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-ADP-001:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-ASR-001 | 设计保障、恢复与 Human Task
+- state: cancelled
+- rev: 2
+- rq: RQ-04,RQ-05,RQ-06
+- deps: TASK-CORE-001,TASK-RES-004,TASK-ADR-001
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: role/decision rights、HumanTask、ActionEnvelope、policy order 和 compensation contract 有明确 schema
+- accept AC-2: deny fail-closed，不可逆动作有升级路径，非幂等系统只承诺 receipt 与 reconciliation
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: R0 先验证单一真实失败机制，不预建完整保障层
+- superseded-by: TASK-DEC-002
+- successor-route: R2 mechanism evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-ASR-001:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-EVAL-001 | 建立四基线 evaluation harness
+- state: cancelled
+- rev: 2
+- rq: RQ-01,RQ-02,RQ-04,RQ-05,RQ-08
+- deps: TASK-RES-004,TASK-CORE-001,TASK-EVAL-000,TASK-ADR-001
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: 同一输入可运行 H、A、C、R 并分别计量注意力、风险、时间和成本
+- accept AC-2: 支持 Kernel 与 Assurance 消融、冻结 holdout 和故障注入
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 四基线 harness 范围过宽，R0 先做同底座窄幅因果实验
+- superseded-by: TASK-EXP-000
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-EVAL-001:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-ADP-002 | 打通两个执行后端
+- state: cancelled
+- rev: 2
+- rq: RQ-07,RQ-10
+- deps: TASK-ADP-001,TASK-FORK-001,TASK-ADR-001
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: 一个官方商业后端和一个开源后端通过相同 conformance fixtures
+- accept AC-2: 单 Agent 崩溃恢复、action ID、pause/resume 和 capability 降级均有证据
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 两后端全量接入改为首个 Capsule 与后续 portability canary
+- superseded-by: TASK-DEC-002
+- successor-route: R1/R3 Capsule portability evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-ADP-002:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-SWE-001 | 映射软件工程 Domain Pack
+- state: cancelled
+- rev: 2
+- rq: RQ-01,RQ-03,RQ-09
+- deps: TASK-CORE-002,TASK-ASR-001,TASK-EVAL-001
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/software-engineering-domain-pack.md
+- artifact: repo:docs/research/software-engineering-domain-pack.md
+- accept AC-1: 风险分流、闸门、journal、undo、审计和 traceability 均映射到 Domain Pack
+- accept AC-2: Git、PR、测试、Make 和部署字段没有进入通用核心
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 软件工程 Domain 接入与机制归属延后到 R1/R4 evidence route
+- superseded-by: TASK-DEC-002
+- successor-route: R1/R4 software-engineering evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-SWE-001:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-SWE-002 | 执行软件工程对照验证
+- state: cancelled
+- rev: 2
+- rq: RQ-00,RQ-01,RQ-02,RQ-04,RQ-05,RQ-06,RQ-08
+- deps: TASK-SWE-001,TASK-ADP-002
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: 按预注册阈值报告 R-C、R-H、R-A、机制消融和置信区间
+- accept AC-2: joint outcome、注意力、严重风险、恢复和经济性均入档，负结果不删除
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: sealed 软件工程确认实验延后到具名 R4 route
+- superseded-by: TASK-DEC-002
+- successor-route: R4 confirmation evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-SWE-002:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-GEN-001 | 选择高对比第二垂直
+- state: cancelled
+- rev: 2
+- rq: RQ-09
+- deps: TASK-RES-005,TASK-SWE-002
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/second-vertical-selection.md
+- artifact: repo:docs/research/second-vertical-selection.md
+- accept AC-1: 按对象差异、副作用、验证器、真实任务、领域 owner 和风险评分
+- accept AC-2: research-to-decision 默认候选与至少两个替代项有证据化比较
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 第二垂直选定延后到具名 R5 route
+- superseded-by: TASK-DEC-002
+- successor-route: R5 second-vertical selection evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-GEN-001:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-GEN-002 | 实现并评测第二 Domain Pack
+- state: cancelled
+- rev: 2
+- rq: RQ-01,RQ-03,RQ-09
+- deps: TASK-GEN-001
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: 至少 90% 核心不变且没有新增领域事件，未审批发布为零
+- accept AC-2: 四基线结果可复现；失败时收缩通用性声明而不修改验收口径
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- cancellation-reason: 第二 Domain Pack 与 sealed holdout 延后到具名 R5 route
+- superseded-by: TASK-DEC-002
+- successor-route: R5 second-vertical implementation evidence
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled historical route has no implementation acceptance
+- move: TASK-GEN-002:r2
+- move-receipt: at=2026-07-29T18:23:49+08:00; by=agent:root; decision=TASK-DEC-002
+
+## TASK-OPS-001 | 为任务账本增加机器检查
+- state: cancelled
+- rev: 5
+- rq: none
+- deps: TASK-DOC-001
+- owner: none
+- claim: none
+- tracking: github:issue#2; github:milestone#1
+- updated: 2026-07-29T21:46:26+08:00
+- write: repo:docs/research/task-ledger-contract.md
+- write: repo:tests/task-ledger.sh
+- write: repo:.github/workflows/ci.yml
+- write: repo:AGENTS.md
+- artifact: repo:docs/research/task-ledger-contract.md
+- artifact: repo:tests/task-ledger.sh
+- accept AC-1: 校验器先断言 fixture 非空，再检查字段、ID、依赖、claim、tracking、scope、evidence 和 effect/undo
+- accept AC-2: 重复 ID、todo/done 重叠、依赖环、scope 冲突、tracking 复用和缺证据分别给出准确失败原因
+- accept AC-3: 故意破坏实现可使对应负例变红，脚本通过 Bash 3.2 与 BSD 工具链约束
+- accept AC-4: CI 和 AGENTS.md 的验证入口都调用任务账本检查
+- evidence: none
+- blocker: none
+- handoff: none
+- effect: none
+- undo: none
+- cancellation-reason: 按原路径在本仓实施会把研究迁移控制面永久并入 Domain 产品仓库，与外置 Mother 和可替换 Capsule 的职责边界冲突；保留原 AC，但不在本仓伪装完成
+- superseded-by: TASK-OPS-R1-BOOTSTRAP-001
+- successor-route: R0 continue 后由外置 Mother 基于跨 Domain 证据重新决定 ledger checker
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled task has no delivered product change or acceptance claim
+- move: move-task-ops-001-cancelled-r5
+
+## TASK-DOC-002 | 迁移 canonical roadmap 与历史映射
+- state: accepted
+- rev: 5
+- rq: none
+- deps: TASK-DEC-002
+- owner: agent:root
+- claim: run:canonical-roadmap-migration-20260729T174209p0800
+- tracking: none
+- updated: 2026-07-30T00:07:57+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- write: repo:README.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/research/github-roadmap-migration.md
+- artifact: repo:docs/research/agent-collaboration-foundation.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- artifact: repo:README.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: canonical roadmap 保留既有来源、RQ、H/A/C/R、证据等级与多 Agent ledger 协议，并写明 Mother/Capsule/Domain/lab、R0/R1 manifest 和 R0-R6 Gate
+- evidence AC-1: ref=repo:docs/research/agent-collaboration-foundation.md; sections=一,五,七,八,九,十,十一
+- accept AC-2: decision history 明确保留与取代范围，且 canonical roadmap 能回答 continue、pivot 和 stop
+- evidence AC-2: ref=repo:docs/research/agent-collaboration-foundation.md; sections=一,十,十三; ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; ref=repo:docs/research/github-roadmap-migration.md
+- accept AC-3: 历史补救设计追加 supersession notice，README、design、migration map 与 ledger 指向同一当前事实源且文档链接通过
+- evidence AC-3: ref=repo:README.md; ref=repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md; ref=repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md; ref=repo:docs/research/github-roadmap-migration.md; review=local-markdown-target-audit; result=all-resolved; at=2026-07-29T23:58:07+08:00
+- blocker: none
+- handoff: none
+- effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate canonical roadmap content
+- move: move-task-doc-002-accepted-r3
+- amendment-receipt: scope=link-evidence-and-github-projection-correction; previous-rev=4; acceptance-content=unchanged; tests/docs-links.sh=product-references-only; refs=github:issue#16,github:issue#17,github:issue#20,github:pr#14
+
+## TASK-OPS-004 | 清退旧路线投影并建立方向 Milestone
+- state: accepted
+- rev: 2
+- rq: none
+- deps: TASK-DOC-002
+- owner: agent:root
+- claim: run:milestone-directions-20260730T001909p0800
+- tracking: github:pr#14
+- updated: 2026-07-30T00:35:28+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:docs/research/github-roadmap-migration.md
+- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/superpowers/plans/2026-07-29-evolvable-mother-roadmap-migration.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: #8 是唯一承载当前 R0 执行 Issue 的 Milestone；#3、#7、#8、#9、#10 已重投影到 #8，旧 Milestone #1-#7 保留原身份与描述后关闭
+- evidence AC-1: refs=github:issue#3,github:issue#7,github:issue#8,github:issue#9,github:issue#10; milestone=github:milestone#8; issue-updated-at=2026-07-29T16:31:45Z..16:31:48Z; result=milestone#8-open-with-11-issues; historical=github:milestone#1..#7-closed-with-original-titles-and-descriptions; closed-at=2026-07-29T16:31:59Z..16:32:05Z
+- accept AC-2: R1-R6 各有一个 direction-only Milestone，只记录阶段问题、入口条件和 continue/pivot/stop 边界，不挂 Issue、不设 due date、不承诺具体实现
+- evidence AC-2: refs=github:milestone#9,github:milestone#10,github:milestone#11,github:milestone#12,github:milestone#13,github:milestone#14; created-at=2026-07-29T16:31:13Z..16:31:31Z; result=open-with-0-issues-and-no-due-date
+- accept AC-3: Issue #2 已追加 proposed-successor comment；GitHub URL、时间、effect 与 undo 回填 migration map，PR #14 与 Issue #20 指向同一当前口径
+- evidence AC-3: ref=https://github.com/114August514/engineering-workflow/issues/2#issuecomment-5120696144; comment-at=2026-07-29T16:32:30Z; ref=github:issue#20; updated-at=2026-07-29T16:33:18Z; ref=github:pr#14; projection-code-head=9f298baea9387d208ecf1d2193628c3cf7ec38bd; updated-at=2026-07-29T16:33:19Z; map=repo:docs/research/github-roadmap-migration.md
+- blocker: none
+- handoff: none
+- effect: FX-GH-MILESTONE-DIRECTIONS; action=move active R0 issues create direction milestones close historical milestone#1-#7 append issue#2 successor audit and update issue#20/pr#14 projections
+- undo: FX-GH-MILESTONE-DIRECTIONS; action=reopen historical milestones restore issue milestone#1 close direction milestones restore issue#20/pr#14 projection from prestate commit 9484028 and retain successor audit
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=documentation and reversible GitHub roadmap projection do not change product runtime
+- move: move-task-ops-004-accepted-r2

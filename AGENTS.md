@@ -12,11 +12,29 @@
 bash tests/verbs-consistent.sh    # 标准动词在三处一致
 bash tests/docs-links.sh          # 文档交叉引用没断
 bash tests/journal-behaviour.sh   # journal.sh 三项检测真的会触发
+bash tests/ci-scope-consistent.sh # CI relevance receipt 与双平台入口一致
 for f in skills/*/scripts/*.sh install.sh; do bash -n "$f"; done
 ```
 
 CI 在 **ubuntu 和 macos 两个 runner** 上跑这些。macOS 那个不是凑数——
 BSD 工具链专门用来拦 GNU-only 的写法（见下）。
+
+
+### CI 相关性
+
+每个 PR 和 Gate receipt 使用同一个格式：
+
+```text
+ci-scope: required=<checks|none>; advisory=<checks|none>; n/a=<checks|none>; reason=<why>
+```
+
+- `required`：失败能推翻当前 acceptance；只在 merge、gate、tag 等终态动作前等待相关 checks。
+- `advisory`：有信息价值，不阻塞独立工作。
+- `n/a`：与当前变更无因果关系。
+
+pending CI 不改变 task state。文档或研究变更不得因为无关 runner pending 而停止；修改 shell、
+workflow 或跨平台行为时，Ubuntu/macOS 对应检查是 required。Domain CI 只验证本仓产品行为，
+不重新引入已经删除的一次性研究迁移 checker，也不根据路径自动构建 universal wait。
 
 ## 这个仓库的三条特殊约束
 
