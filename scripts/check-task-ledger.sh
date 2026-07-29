@@ -470,10 +470,16 @@ END {
       for (number=1; number<=dep_count; number++) {
         dep=dep_items[number]
         base=dep
+        condition=""
         conditional=(index(dep, "@") > 0)
-        if (conditional) sub(/@.*/, "", base)
-        if (conditional && !(id == "TASK-OPS-R1-BOOTSTRAP-001" && dep == "TASK-GATE-R0-002@continue")) {
-          report("非法条件依赖: " id " -> " dep)
+        if (conditional) {
+          sub(/@.*/, "", base)
+          condition=dep
+          sub(/^[^@]*@/, "", condition)
+          if (index(condition, "@") > 0 ||
+              (condition != "continue" && condition != "pivot" && condition != "stop")) {
+            report("非法条件依赖: " id " -> " dep)
+          }
         }
         if (!valid_task_id(base)) {
           report("依赖 Task ID 格式错误: " id " -> " dep)
@@ -485,13 +491,20 @@ END {
         dependency_count[record]++
         dependency[record SUBSEP dependency_count[record]]=dep
         dependency_base[record SUBSEP dependency_count[record]]=base
+        dependency_condition[record SUBSEP dependency_count[record]]=condition
         edge_count++
         edge_from[edge_count]=id
         edge_to[edge_count]=base
       }
     }
-    if (id == "TASK-OPS-R1-BOOTSTRAP-001" && clean_deps != "TASK-GATE-R0-002@continue") {
-      report("bootstrap bridge 必须仅依赖 TASK-GATE-R0-002@continue")
+    outcome_key=field_key(record, "outcome")
+    if (outcome_key in field_count) {
+      outcome=field_value[outcome_key]
+      if (state == "accepted" && outcome != "continue" && outcome != "pivot" && outcome != "stop") {
+        report("accepted outcome 非法: " id " " outcome)
+      } else if (state != "accepted" && outcome != "none") {
+        report("未 accepted 不得记录 outcome: " id " " outcome)
+      }
     }
   }
 
@@ -501,6 +514,7 @@ END {
     for (number=1; number<=dependency_count[record]; number++) {
       dep=dependency[record SUBSEP number]
       base=dependency_base[record SUBSEP number]
+      condition=dependency_condition[record SUBSEP number]
       if (!(base in all_id)) {
         report("依赖不存在: " id " -> " dep)
         continue
@@ -508,35 +522,22 @@ END {
       if ((state == "ready" || state == "claimed" || state == "accepted") && state_by_id[base] != "accepted") {
         report(state " 依赖尚未 accepted: " id " -> " base)
       }
-      if ((state == "ready" || state == "claimed" || state == "accepted") &&
-          index(dep, "@") > 0 && outcome_by_id[base] != "continue") {
-        report(state " 条件依赖尚未 continue: " id " -> " dep)
+      if (condition != "") {
+        target_record=first_record[base]
+        target_outcome_key=field_key(target_record, "outcome")
+        if (!(target_outcome_key in field_count)) {
+          report("条件依赖目标缺少 outcome: " id " -> " base)
+        } else if ((state == "ready" || state == "claimed" || state == "accepted") &&
+                   outcome_by_id[base] != condition) {
+          report(state " 条件依赖未满足: " id " -> " dep)
+        }
       }
-      if (id == "TASK-GATE-R0-002" && base == "TASK-OPS-003") report("R0 Gate 不得依赖 TASK-OPS-003")
     }
     if (state == "cancelled") {
       successor=field_value[field_key(record, "superseded-by")]
       if (successor != "" && successor != "none" && !(successor in all_id)) {
         report("superseded-by 不存在: " id " -> " successor)
       }
-    }
-  }
-
-  if (!("TASK-GATE-R0-002" in all_id)) report("缺少 TASK-GATE-R0-002")
-  if (!("TASK-OPS-R1-BOOTSTRAP-001" in all_id)) report("缺少 TASK-OPS-R1-BOOTSTRAP-001")
-  if ("TASK-GATE-R0-002" in all_id) {
-    gate_record=first_record["TASK-GATE-R0-002"]
-    gate_state=field_value[field_key(gate_record, "state")]
-    gate_outcome_key=field_key(gate_record, "outcome")
-    gate_outcome=field_value[gate_outcome_key]
-    if (!(gate_outcome_key in field_count) || gate_outcome == "" ||
-        (gate_state == "accepted" && gate_outcome == "none")) {
-      if (gate_state == "accepted") report("accepted Gate 缺少 outcome: TASK-GATE-R0-002")
-      else report("缺少字段 outcome: TASK-GATE-R0-002")
-    } else if (gate_state == "accepted" && gate_outcome != "continue" && gate_outcome != "pivot" && gate_outcome != "stop") {
-      report("accepted Gate outcome 非法: TASK-GATE-R0-002 " gate_outcome)
-    } else if (gate_state != "accepted" && gate_outcome != "none") {
-      report("Gate 未 accepted 不得记录 outcome: " gate_outcome)
     }
   }
 

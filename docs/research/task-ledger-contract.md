@@ -49,17 +49,19 @@ owner/claim：两者要么都是 `none`，要么都是具体值，不得只留�
 普通依赖只由 `accepted` 满足；`ready`、`claimed` 和 `accepted` 不得指向未
 accepted 的目标。`blocked` 可以保留尚未满足的依赖。
 
-当前唯一条条件依赖是：
+条件依赖在 Task ID 后追加一个 outcome：
 
 ```text
-TASK-OPS-R1-BOOTSTRAP-001 -> TASK-GATE-R0-002@continue
+TASK-CONDITIONAL-001 -> TASK-DECISION-001@continue
 ```
 
-bootstrap bridge 必须精确使用这条 `deps`，任何其他 Task、目标或条件后缀都是
-错误。该条件只在 Gate 为 `accepted` 且记录 `outcome: continue` 时满足；
-`pivot` 或 `stop` 不能解锁 R1。Gate 的 `accepted` 只证明方法和证据完整，
-`outcome` 是独立结论：未 accepted 时只能是 `none`，accepted 时必须且只能是
-`continue`、`pivot` 或 `stop`。`TASK-OPS-003` 这类 GitHub 清理任务不得成为 R0 Gate 依赖。
+后缀只允许 `continue`、`pivot` 或 `stop`。条件只在目标为 `accepted` 且其
+`outcome` 与后缀相同时满足；目标必须显式保留 `outcome` 字段。未 accepted 的
+Task 若有该字段只能写 `none`，accepted 时只能写三个枚举值之一。
+
+Validator 只实现上述通用语义，不认识本次迁移的具体 Task ID。当前路线使用哪一条
+条件桥、哪些任务不应进入 Gate，直接记录在 `todo.md`、迁移映射和 decision 中审核，
+不写进可复用脚本。
 
 ## Acceptance 与终态
 
@@ -109,8 +111,8 @@ tracking；其他 Task 在 `evidence` 或 PR body 中列出该 PR，不重复 `t
 有效果时，每个可重复的 `effect`/`undo` 行使用同一个 `FX-*` ID：
 
 ```text
-- effect: FX-GH-R0-PROJECTION; action=create successor objects
-- undo: FX-GH-R0-PROJECTION; action=close created objects and retain audit history
+- effect: FX-REMOTE-PROJECTION; action=create successor objects
+- undo: FX-REMOTE-PROJECTION; action=close created objects and retain audit history
 ```
 
 每个 `FX-*` effect 都必须有同 ID undo，反向也一样；不允许 `none` 与 `FX-*`
@@ -137,6 +139,6 @@ Task 4 负责统一 PR receipt 词汇、让 CI 调用 validator、在 AGENTS.md 
 
 ## 测试边界
 
-`tests/task-ledger.sh` 使用真实临时 Markdown fixture，先断言 fixture 确实抓到 Task，
-再检查合法图与具体失败原因。`TASK_LEDGER_SKIP_ACTUAL=1` 只用于 ledger 迁移期间
-单独跑 unit fixtures；常规运行始终验收仓库真实的 `todo.md` 和 `done.md`。
+`tests/task-ledger.sh` 使用小型临时 Markdown fixture，先断言 fixture 确实抓到 Task，
+再用少量代表用例检查上述关键不变量和具体失败原因。常规运行最后验收仓库真实的
+`todo.md` 和 `done.md`。
