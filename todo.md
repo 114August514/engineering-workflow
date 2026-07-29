@@ -1,9 +1,11 @@
 # TODO
-<!-- ledger:v1 -->
+<!-- ledger:v2 -->
 
 通用人机协作底座的当前任务账本。产品边界和 roadmap 以
 [`docs/research/agent-collaboration-foundation.md`](docs/research/agent-collaboration-foundation.md)
-为唯一事实源；终态任务只进入 [`done.md`](done.md)。
+为唯一事实源；账本格式见
+[`docs/research/task-ledger-contract.md`](docs/research/task-ledger-contract.md)，终态任务只进入
+[`done.md`](done.md)。
 
 ## 控制协议
 
@@ -20,13 +22,13 @@
 
 ## TASK-RES-001 | 建立 claim/evidence 登记册
 - state: ready
-- rev: 2
+- rev: 3
 - rq: RQ-00,RQ-01,RQ-02,RQ-03,RQ-04,RQ-05,RQ-06,RQ-07,RQ-08,RQ-09,RQ-10
 - deps: TASK-RES-000
 - owner: none
 - claim: none
 - tracking: github:issue#9; github:milestone#1
-- updated: 2026-07-29T02:47:36+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/evidence-register.md
 - artifact: repo:docs/research/evidence-register.md
 - accept AC-1: 每个核心产品 claim 记录证据等级、版本、方法、可支持与不可支持的结论
@@ -35,16 +37,18 @@
 - blocker: none
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate this research artifact
 
 ## TASK-RES-002 | 固化 harness 能力与缺陷矩阵
 - state: ready
-- rev: 2
+- rev: 3
 - rq: RQ-07,RQ-08
 - deps: TASK-RES-000
 - owner: none
 - claim: none
 - tracking: github:issue#10; github:milestone#1
-- updated: 2026-07-29T02:47:36+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/harness-capability-matrix.md
 - artifact: repo:docs/research/harness-capability-matrix.md
 - accept AC-1: 覆盖 12-factor-agents、OpenHarness、oh-my-pi、Kimi Code、Claude Code
@@ -53,16 +57,18 @@
 - blocker: none
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate this research artifact
 
 ## TASK-RES-003 | 核验协议边界
 - state: ready
-- rev: 2
+- rev: 3
 - rq: RQ-03,RQ-07
 - deps: TASK-RES-000
 - owner: none
 - claim: none
 - tracking: github:issue#7; github:milestone#1
-- updated: 2026-07-29T02:47:36+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/protocol-boundaries.md
 - artifact: repo:docs/research/protocol-boundaries.md
 - accept AC-1: MCP、ACP、A2A、AG-UI 的稳定能力和限制均采用官方规范核验
@@ -71,16 +77,18 @@
 - blocker: none
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate this research artifact
 
 ## TASK-RES-004 | 设计四基线与预注册评测
 - state: ready
-- rev: 2
+- rev: 3
 - rq: RQ-00,RQ-01,RQ-02,RQ-04,RQ-05,RQ-08
 - deps: TASK-RES-000
 - owner: none
 - claim: none
 - tracking: github:issue#3; github:milestone#1
-- updated: 2026-07-29T02:47:36+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/evaluation-design.md
 - artifact: repo:docs/research/evaluation-design.md
 - accept AC-1: 定义任务语料、评分量表、H/A/C/R 基线、机制消融、主指标和混淆因素
@@ -89,16 +97,18 @@
 - blocker: none
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate this research artifact
 
 ## TASK-RES-005 | 收集第二垂直任务与领域评审者
 - state: ready
-- rev: 2
+- rev: 3
 - rq: RQ-09
 - deps: TASK-RES-000
 - owner: none
 - claim: none
 - tracking: github:issue#8; github:milestone#1
-- updated: 2026-07-29T02:47:36+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/second-vertical-corpus.md
 - artifact: repo:docs/research/second-vertical-corpus.md
 - accept AC-1: 至少比较 research-to-decision 与两个替代垂直的对象、副作用和验证器差异
@@ -107,16 +117,18 @@
 - blocker: none
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate this research artifact
 
 ## TASK-DOC-002 | 迁移 canonical roadmap 与历史映射
 - state: claimed
-- rev: 1
+- rev: 2
 - rq: none
 - deps: TASK-DEC-002
 - owner: agent:root
 - claim: run:canonical-roadmap-migration-20260729T174209p0800
 - tracking: none
-- updated: 2026-07-29T17:42:09+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
 - write: repo:README.md
@@ -134,35 +146,18 @@
 - blocker: none
 - handoff: none
 - effect: none
-
-## TASK-FORK-001 | 运行 Component Intake Gate
-- state: ready
-- rev: 2
-- rq: RQ-07,RQ-10
-- deps: TASK-RES-000
-- owner: none
-- claim: none
-- tracking: github:issue#11; github:milestone#1
-- updated: 2026-07-29T02:47:36+08:00
-- write: repo:docs/research/component-intake.md
-- artifact: repo:docs/research/component-intake.md
-- accept AC-1: Kimi Code、OpenHarness、oh-my-pi、Claude SDK 均有 adopt/fork/adapt/build 结论
-- accept AC-2: 记录硬能力、许可证、上游 commit、测试、安全、patch budget、12 个月 TCO 和退出方案
-- accept AC-3: 至少完成一次候选升级演练设计，外部仓库保持只读
-- evidence: none
-- blocker: none
-- handoff: none
-- effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate canonical roadmap content
 
 ## TASK-OPS-001 | 为任务账本增加机器检查
 - state: claimed
-- rev: 3
+- rev: 4
 - rq: none
 - deps: TASK-DOC-001
 - owner: agent:root
 - claim: run:task-ledger-validator-20260729T174121p0800
 - tracking: github:issue#2; github:milestone#1
-- updated: 2026-07-29T17:41:21+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/task-ledger-contract.md
 - write: repo:scripts/check-task-ledger.sh
 - write: repo:tests/task-ledger.sh
@@ -179,16 +174,18 @@
 - blocker: none
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=ubuntu,macos; advisory=none; n/a=none; reason=ledger shell and fixtures must work on both supported runners
 
 ## TASK-EVAL-000 | 证明静态 skill 的行为价值
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: RQ-00
 - deps: TASK-RES-004
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T02:14:24+08:00
+- updated: 2026-07-29T18:23:49+08:00
 - write: repo:docs/research/baselines/
 - artifact: repo:docs/research/baselines/
 - accept AC-1: 裸 harness 与静态 skill 至少完成 30 个同模型、同任务的配对 task-run
@@ -197,201 +194,149 @@
 - blocker: deps:TASK-RES-004; need=评测设计先冻结任务、量表和停止条件
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
 
-## TASK-ADR-001 | 决定仓库拓扑与 fork 布局
-- state: blocked
-- rev: 1
-- rq: RQ-03,RQ-07,RQ-10
-- deps: TASK-RES-002,TASK-RES-003,TASK-FORK-001,TASK-EVAL-000
-- owner: none
-- claim: none
-- tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: repo:docs/decisions/
-- artifact: repo:docs/decisions/
-- accept AC-1: ADR 比较原仓扩展、monorepo 和独立 runtime 三条路径
-- accept AC-2: 实现语言、fork 上游同步、Domain Pack 边界和退出策略都有明确决定
-- evidence: none
-- blocker: deps:TASK-RES-002,TASK-RES-003,TASK-FORK-001,TASK-EVAL-000; need=能力、协议、复用和价值基线完成
-- handoff: none
-- effect: none
-
-## TASK-CORE-001 | 定义协作 glossary 与不变量
-- state: blocked
-- rev: 1
-- rq: RQ-03,RQ-09
-- deps: TASK-RES-001,TASK-RES-003
-- owner: none
-- claim: none
-- tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: repo:docs/research/collaboration-glossary.md
-- artifact: repo:docs/research/collaboration-glossary.md
-- accept AC-1: Actor、Objective、WorkItem、Decision、HumanTask、ActionEnvelope、Claim、Evidence、Verification、MemoryRecord、Handoff 均有边界
-- accept AC-2: 核心定义不包含软件工程专用字段，冲突术语有唯一裁决
-- evidence: none
-- blocker: deps:TASK-RES-001,TASK-RES-003; need=证据登记与协议边界完成
-- handoff: none
-- effect: none
-
-## TASK-CORE-002 | 定义核心 schema 与 golden traces
-- state: blocked
-- rev: 1
-- rq: RQ-03,RQ-09
-- deps: TASK-CORE-001,TASK-ADR-001
-- owner: none
-- claim: none
-- tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: none
-- artifact: none
-- accept AC-1: 核心 schema、状态投影、版本规则和三组 golden trace 可被 validator 读取
-- accept AC-2: 相同版本输入重建相同状态，Domain Pack 字段只通过 extension 出现
-- evidence: none
-- blocker: deps:TASK-CORE-001,TASK-ADR-001; need=glossary 与仓库拓扑批准后由 ADR 指定路径
-- handoff: none
-- effect: none
-
-## TASK-ADP-001 | 定义 Harness Adapter contract
-- state: blocked
-- rev: 1
-- rq: RQ-03,RQ-07
-- deps: TASK-RES-002,TASK-RES-003,TASK-CORE-001,TASK-ADR-001
-- owner: none
-- claim: none
-- tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: none
-- artifact: none
-- accept AC-1: 契约覆盖 start、resume、steer、cancel、approve、events、artifacts 和 usage
-- accept AC-2: capability 明确区分 observe、advise、enforce，且不引用后端私有工具名
-- evidence: none
-- blocker: deps:TASK-RES-002,TASK-RES-003,TASK-CORE-001,TASK-ADR-001; need=输入完成并由 ADR 指定路径
-- handoff: none
-- effect: none
-
-## TASK-ASR-001 | 设计保障、恢复与 Human Task
-- state: blocked
-- rev: 1
-- rq: RQ-04,RQ-05,RQ-06
-- deps: TASK-CORE-001,TASK-RES-004,TASK-ADR-001
-- owner: none
-- claim: none
-- tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: none
-- artifact: none
-- accept AC-1: role/decision rights、HumanTask、ActionEnvelope、policy order 和 compensation contract 有明确 schema
-- accept AC-2: deny fail-closed，不可逆动作有升级路径，非幂等系统只承诺 receipt 与 reconciliation
-- evidence: none
-- blocker: deps:TASK-CORE-001,TASK-RES-004,TASK-ADR-001; need=术语、评测和拓扑完成
-- handoff: none
-- effect: none
-
-## TASK-EVAL-001 | 建立四基线 evaluation harness
-- state: blocked
-- rev: 1
-- rq: RQ-01,RQ-02,RQ-04,RQ-05,RQ-08
-- deps: TASK-RES-004,TASK-CORE-001,TASK-EVAL-000,TASK-ADR-001
-- owner: none
-- claim: none
-- tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: none
-- artifact: none
-- accept AC-1: 同一输入可运行 H、A、C、R 并分别计量注意力、风险、时间和成本
-- accept AC-2: 支持 Kernel 与 Assurance 消融、冻结 holdout 和故障注入
-- evidence: none
-- blocker: deps:TASK-RES-004,TASK-CORE-001,TASK-EVAL-000,TASK-ADR-001; need=设计、术语、静态基线和拓扑完成
-- handoff: none
-- effect: none
-
-## TASK-ADP-002 | 打通两个执行后端
+## TASK-CAPSULE-000 | 选择并验证首个 Substrate Capsule
 - state: blocked
 - rev: 1
 - rq: RQ-07,RQ-10
-- deps: TASK-ADP-001,TASK-FORK-001,TASK-ADR-001
+- deps: TASK-RES-002,TASK-RES-003
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: none
-- artifact: none
-- accept AC-1: 一个官方商业后端和一个开源后端通过相同 conformance fixtures
-- accept AC-2: 单 Agent 崩溃恢复、action ID、pause/resume 和 capability 降级均有证据
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:experiments/r0/capsule-spike/
+- artifact: repo:experiments/r0/capsule-spike/
+- accept AC-1: OpenHarness-derived spike 记录 upstream、fork-point、许可证、实际 patch、测试与可运行 receipt
+- accept AC-2: 至少与一个结构不同候选按相同最小任务比较能力、维护成本和退出路径
+- accept AC-3: 形成选择或拒绝首个 Capsule 的具名结论，不发布 harness-neutral 声明
 - evidence: none
-- blocker: deps:TASK-ADP-001,TASK-FORK-001,TASK-ADR-001; need=契约、复用决定和拓扑完成
+- blocker: deps:TASK-RES-002,TASK-RES-003; need=能力矩阵与协议边界先形成候选输入
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
 
-## TASK-SWE-001 | 映射软件工程 Domain Pack
+## TASK-PACK-SWE-000 | 切分软件工程 discovery 与 sealed holdout
 - state: blocked
 - rev: 1
-- rq: RQ-01,RQ-03,RQ-09
-- deps: TASK-CORE-002,TASK-ASR-001,TASK-EVAL-001
+- rq: RQ-01,RQ-04,RQ-08
+- deps: TASK-RES-004
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: repo:docs/research/software-engineering-domain-pack.md
-- artifact: repo:docs/research/software-engineering-domain-pack.md
-- accept AC-1: 风险分流、闸门、journal、undo、审计和 traceability 均映射到 Domain Pack
-- accept AC-2: Git、PR、测试、Make 和部署字段没有进入通用核心
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:experiments/r0/task-packs/software-engineering/
+- artifact: repo:experiments/r0/task-packs/software-engineering/
+- accept AC-1: discovery、pilot 与 sealed holdout 有互斥任务身份、版本和泄漏审计
+- accept AC-2: 任务、评分量表、H/A/C/R 基线与 evaluator 在揭示 holdout 前冻结
 - evidence: none
-- blocker: deps:TASK-CORE-002,TASK-ASR-001,TASK-EVAL-001; need=核心、保障和评测实现完成
+- blocker: deps:TASK-RES-004; need=预注册评测先定义语料与停止条件
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
 
-## TASK-SWE-002 | 执行软件工程对照验证
+## TASK-EXP-000 | 完成首个窄幅 proof-of-mechanism
 - state: blocked
 - rev: 1
 - rq: RQ-00,RQ-01,RQ-02,RQ-04,RQ-05,RQ-06,RQ-08
-- deps: TASK-SWE-001,TASK-ADP-002
+- deps: TASK-CAPSULE-000,TASK-PACK-SWE-000,TASK-RES-004
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: none
-- artifact: none
-- accept AC-1: 按预注册阈值报告 R-C、R-H、R-A、机制消融和置信区间
-- accept AC-2: joint outcome、注意力、严重风险、恢复和经济性均入档，负结果不删除
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:experiments/r0/proof-of-mechanism/
+- artifact: repo:experiments/r0/proof-of-mechanism/
+- accept AC-1: 同一 Capsule、任务、模型与预算下预注册 treatment、sham、MME 和停止条件
+- accept AC-2: trace、artifact、结果与失败 episode 可重放，负结果不被改写为机制成功
 - evidence: none
-- blocker: deps:TASK-SWE-001,TASK-ADP-002; need=Domain Pack 与两个 adapter 完成
+- blocker: deps:TASK-CAPSULE-000,TASK-PACK-SWE-000,TASK-RES-004; need=Capsule、任务包与评测设计就绪
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
 
-## TASK-GEN-001 | 选择高对比第二垂直
+## TASK-OPS-002 | 建立 R0 Tag 保护与相关 CI 规则
 - state: blocked
 - rev: 1
-- rq: RQ-09
-- deps: TASK-RES-005,TASK-SWE-002
+- rq: none
+- deps: TASK-OPS-001
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: repo:docs/research/second-vertical-selection.md
-- artifact: repo:docs/research/second-vertical-selection.md
-- accept AC-1: 按对象差异、副作用、验证器、真实任务、领域 owner 和风险评分
-- accept AC-2: research-to-decision 默认候选与至少两个替代项有证据化比较
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:.github/workflows/ci.yml
+- write: repo:docs/research/r0-tag-protection.md
+- artifact: repo:docs/research/r0-tag-protection.md
+- accept AC-1: 相关 required checks、保护目标和终态等待点有版本化规则与 GitHub receipt
+- accept AC-2: R0 Gate 未 accepted 且 outcome 非 continue 时不得创建 acceptance tag
 - evidence: none
-- blocker: deps:TASK-RES-005,TASK-SWE-002; need=候选语料和第一垂直结果完成
+- blocker: deps:TASK-OPS-001; need=ledger validator 与 CI relevance 入口先完成
 - handoff: none
-- effect: none
+- effect: FX-GH-R0-TAG-PROTECTION; action=create or update the scoped R0 ruleset after approval
+- undo: FX-GH-R0-TAG-PROTECTION; action=restore the previous ruleset or remove the new ruleset and retain audit
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
 
-## TASK-GEN-002 | 实现并评测第二 Domain Pack
+## TASK-GATE-R0-002 | 验收 Evidence & Mother Choice
 - state: blocked
 - rev: 1
-- rq: RQ-01,RQ-03,RQ-09
-- deps: TASK-GEN-001
+- rq: RQ-00,RQ-01,RQ-02,RQ-03,RQ-04,RQ-05,RQ-06,RQ-07,RQ-08,RQ-09,RQ-10
+- deps: TASK-RES-001,TASK-RES-002,TASK-RES-003,TASK-RES-004,TASK-RES-005,TASK-EVAL-000,TASK-CAPSULE-000,TASK-PACK-SWE-000,TASK-EXP-000,TASK-OPS-002
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T02:14:24+08:00
-- write: none
-- artifact: none
-- accept AC-1: 至少 90% 核心不变且没有新增领域事件，未审批发布为零
-- accept AC-2: 四基线结果可复现；失败时收缩通用性声明而不修改验收口径
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/gates/r0.md
+- artifact: repo:docs/research/gates/r0.md
+- accept AC-1: 审计 R0 证据、proof-of-mechanism 与 pre-bootstrap manifest 的方法完整性和可重放性
+- accept AC-2: 独立记录 outcome 为 continue、pivot 或 stop，并给出反证、限制与 successor route
+- accept AC-3: accepted 只表示审计完整，不自动证明 Mother、Capsule 或通用机制有效
 - evidence: none
-- blocker: deps:TASK-GEN-001; need=第二垂直获批且实现路径由 ADR 指定
+- blocker: deps:R0-research-and-runtime-artifacts; need=全部具名依赖进入 accepted
 - handoff: none
 - effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
+- outcome: none
+
+## TASK-OPS-R1-BOOTSTRAP-001 | 创建 Mother/Capsule/lab 并把本仓作为 Domain 接入
+- state: blocked
+- rev: 1
+- rq: none
+- deps: TASK-GATE-R0-002@continue
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: none
+- artifact: none
+- accept AC-1: 仅在 R0 Gate accepted 且 outcome 为 continue 后创建独立 Mother、Capsule 与 lab 仓库
+- accept AC-2: lab 以 submodule 固定 Mother、Capsule、engineering-workflow Domain 的具名 exact commit
+- evidence: none
+- blocker: deps:TASK-GATE-R0-002@continue; need=Gate accepted 与 outcome continue 同时成立
+- handoff: none
+- effect: FX-GH-R1-BOOTSTRAP; action=create external Mother Capsule and lab repositories and add the Domain submodule
+- undo: FX-GH-R1-BOOTSTRAP; action=archive newly created objects remove new submodule links and retain audit history
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=conditional bridge is not unlocked
+
+## TASK-OPS-003 | 迁移 PR 合入后归档旧路线对象
+- state: blocked
+- rev: 1
+- rq: none
+- deps: TASK-DOC-002
+- owner: none
+- claim: none
+- tracking: none
+- updated: 2026-07-29T18:23:49+08:00
+- write: repo:docs/research/github-roadmap-migration.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: PR #14 合入 main 后才给 #11、#13 与 PR #12 追加 successor link 并按历史语义归档
+- accept AC-2: 每次 mutation 记录 URL、时间与 undo；Milestone #1 继续等待原任务终态后单独 closeout
+- evidence: none
+- blocker: deps:TASK-DOC-002; external=github:pr#14; need=merged-to-main before archiving #11,#13,PR#12; excluded=github:milestone#1
+- handoff: none
+- effect: FX-GH-R0-SUPERSEDE; action=archive issue#11 issue#13 and pr#12 after migration merge
+- undo: FX-GH-R0-SUPERSEDE; action=reopen archived objects and retain successor comments and audit
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
