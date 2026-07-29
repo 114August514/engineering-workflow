@@ -429,13 +429,13 @@
 
 ## TASK-DOC-002 | 迁移 canonical roadmap 与历史映射
 - state: accepted
-- rev: 4
+- rev: 5
 - rq: none
 - deps: TASK-DEC-002
 - owner: agent:root
 - claim: run:canonical-roadmap-migration-20260729T174209p0800
 - tracking: none
-- updated: 2026-07-29T23:58:07+08:00
+- updated: 2026-07-30T00:07:57+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
 - write: repo:README.md
@@ -458,4 +458,4 @@
 - undo: none
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate canonical roadmap content
 - move: move-task-doc-002-accepted-r3
-- amendment-receipt: scope=replace-overclaimed-link-test-receipt; acceptance-content=unchanged; tests/docs-links.sh=product-references-only
+- amendment-receipt: scope=link-evidence-and-github-projection-correction; previous-rev=4; acceptance-content=unchanged; tests/docs-links.sh=product-references-only; refs=github:issue#16,github:issue#17,github:issue#20,github:pr#14
