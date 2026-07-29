@@ -426,3 +426,35 @@
 - successor-route: R0 continue 后由外置 Mother 基于跨 Domain 证据重新决定 ledger checker
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=cancelled task has no delivered product change or acceptance claim
 - move: move-task-ops-001-cancelled-r5
+
+## TASK-DOC-002 | 迁移 canonical roadmap 与历史映射
+- state: accepted
+- rev: 3
+- rq: none
+- deps: TASK-DEC-002
+- owner: agent:root
+- claim: run:canonical-roadmap-migration-20260729T174209p0800
+- tracking: none
+- updated: 2026-07-29T23:01:04+08:00
+- write: repo:docs/research/agent-collaboration-foundation.md
+- write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- write: repo:README.md
+- write: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- write: repo:docs/research/github-roadmap-migration.md
+- artifact: repo:docs/research/agent-collaboration-foundation.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
+- artifact: repo:README.md
+- artifact: repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md
+- artifact: repo:docs/research/github-roadmap-migration.md
+- accept AC-1: canonical roadmap 保留既有来源、RQ、H/A/C/R、证据等级与多 Agent ledger 协议，并写明 Mother/Capsule/Domain/lab、R0/R1 manifest 和 R0-R6 Gate
+- evidence AC-1: ref=repo:docs/research/agent-collaboration-foundation.md; sections=一,五,七,八,九,十,十一
+- accept AC-2: decision history 明确保留与取代范围，且 canonical roadmap 能回答 continue、pivot 和 stop
+- evidence AC-2: ref=repo:docs/research/agent-collaboration-foundation.md; sections=一,十,十三; ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; ref=repo:docs/research/github-roadmap-migration.md
+- accept AC-3: 历史补救设计追加 supersession notice，README、design、migration map 与 ledger 指向同一当前事实源且文档链接通过
+- evidence AC-3: ref=repo:README.md; ref=repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md; ref=repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md; ref=repo:docs/research/github-roadmap-migration.md; command=bash tests/docs-links.sh; exit=0; at=2026-07-29T23:01:04+08:00
+- blocker: none
+- handoff: none
+- effect: none
+- undo: none
+- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate canonical roadmap content
+- move: move-task-doc-002-accepted-r3

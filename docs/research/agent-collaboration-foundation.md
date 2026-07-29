@@ -1,10 +1,10 @@
-# 通用人机协作底座：研究说明与研发 Roadmap
+# 可演化 Mother 研究平台：研究说明与研发 Roadmap
 
 > 文档类型：Explanation。面向本仓库维护者、Agent 应用开发者和参与泛化升级的
 > 人类/Agent 协作者。本文是本次升级的研究与产品边界唯一事实源；执行状态只记录在
 > [`todo.md`](../../todo.md) 和 [`done.md`](../../done.md)。
 
-状态：已批准方向，进入研究验证
+状态：`TASK-DEC-002` 已批准；R0 研究与迁移实施中
 
 基线日期：2026-07-29
 
@@ -14,25 +14,27 @@
 
 ## 一、决策摘要
 
-本项目不再把自己定义成一套只服务软件工程的工作流，也不重写完整的通用 Agent
-execution harness。泛化升级的目标是：
+本项目继续把 `engineering-workflow` 作为软件工程垂直产品，不从这个 Domain 仓库直接
+冻结通用 Runtime。当前研究路线是：
 
-> 构建 harness-neutral 的 Human-Agent Collaboration Runtime。自己拥有协作语义、
-> 确定性控制、保障与评测；复用或 fork 成熟的执行 harness，并通过薄适配层接入。
+```text
+Domain Product -> Evolvable Mother -> Capsule Port -> Substrate Capsule
+                         |
+                         +-> lab workspace 固定一次实验组合
+```
 
-产品由四部分组成：
+1. **Evolvable Mother** 拥有 Workbench、实验协议、规范化 trace/artifact、evaluator，以及
+   incubating/promoted mechanisms。机制先在具名组合中被证伪或支持，再决定是否晋升。
+2. **Substrate Capsule** 封装具体执行底座。OpenHarness-derived 是首个可替换候选，不是
+   永久标准；证据不支持时可以深改、替换或停止。
+3. **Domain Product** 拥有领域术语、资产、策略与验证器。当前仓库既是软件工程 Domain，
+   也只在 R0 临时承担研究控制面。
+4. **lab workspace** 只固定一次实验使用的 Mother、Capsule、Domain、预注册和运行 receipt，
+   不成为三者的业务源码仓。
 
-1. **Collaboration Kernel**：共同目标、任务图、角色与决策权、Human Task、交接、
-   证据与验证、记忆治理。
-2. **Assurance & Evaluation Plane**：身份、能力、策略、动作闸口、副作用与补偿、
-   审计、回放、对照实验和在线指标。
-3. **Harness Adapter**：把不同 harness 的启动、恢复、中断、审批、事件、产物、
-   checkpoint 和用量投影成稳定契约。
-4. **Domain Pack**：领域对象、流程模板、策略、验证器和交互投影。当前仓库成为第一份
-   软件工程 Domain Pack，而不是继续充当通用内核本身。
-
-保留一个最小 reference runner，用来验证契约和运行 conformance fixtures。它不是另一套
-以终端、代码编辑和模型 provider 为中心的完整 harness。
+通用 Core、稳定 Capsule contract 和 harness-neutral 声明都不是起点。它们只能由重复实验、
+第二 Capsule portability canary 和第二垂直 sealed holdout 的证据晋升出来。Gate 审计结果使用
+`accepted`，路线结果另记 `continue | pivot | stop`；只有 `accepted + continue` 解锁下一阶段。
 
 ## 二、问题不是“Agent 不够自治”
 
@@ -98,53 +100,56 @@ execution harness。泛化升级的目标是：
 ## 五、产品边界
 
 ```text
-人类工作入口 / 垂直应用 / IDE / 工单与业务系统
-                        │
-                     Domain Pack
-                        │
-┌──────────────── Human-Agent Collaboration Runtime ────────────────┐
-│ Collaboration Kernel                                              │
-│  Objective · WorkGraph · Role · HumanTask · Decision · Handoff    │
-│  Claim · Evidence · Verification · Intervention · MemoryRecord    │
-│                                                                    │
-│ Assurance & Evaluation Plane                                      │
-│  Identity · Capability · Policy · ActionEnvelope · Authorization  │
-│  SideEffect · Compensation · Audit · Trace · Replay · Evaluation  │
-└───────────────────────────┬────────────────────────────────────────┘
-                            │ Harness Adapter
-             ┌──────────────┼───────────────┬───────────────┐
-          Claude          Kimi         OpenHarness       oh-my-pi
-             └──────────────┴───────────────┴───────────────┘
-                        模型 / 工具 / 执行环境
+软件工程 Domain Product（本仓库）
+           |
+           v
+Evolvable Mother
+  Workbench · preregistration · trace/artifact · evaluator
+  incubating mechanisms · promotion records
+           |
+           v  当前实验所需的最小 Capsule Port
+Substrate Capsule（首个候选：OpenHarness-derived）
+           |
+           v
+模型 · 工具 · sandbox · execution harness
+
+lab workspace = Mother + Capsule + Domain 的具名 composition receipt
 ```
 
-### 5.1 内核必须拥有的对象
+### 5.1 所有权边界
 
-| 对象 | 最小职责 |
-|---|---|
-| `Actor` | 人、Agent 或服务的稳定身份、角色和能力边界 |
-| `Objective` | 目标、非目标、约束、完成条件和责任人 |
-| `WorkItem` | 依赖、状态、owner、预算、风险和产物契约 |
-| `Decision` | 决策问题、候选方案、决策权、理由和有效期 |
-| `HumanTask` | 找谁、为什么现在找、需要什么输入、截止和默认行为 |
-| `ActionEnvelope` | 动作提议、影响范围、权限、幂等键、预览和补偿 |
-| `Claim` | Actor 声称成立的事实或完成状态 |
-| `Evidence` | 来源、时间、版本、适用范围和完整性 |
-| `Verification` | 验证者、方法、结果、置信度和反例 |
-| `MemoryRecord` | 来源、所有者、保密级别、时效、冲突和撤销状态 |
-| `Handoff` | 已完成、未完成、已验证、风险、下一责任人和恢复入口 |
+| 组件 | 拥有 | 不拥有 |
+|---|---|---|
+| Mother | Workbench、实验资产、规范化 trace/artifact、evaluator、机制生命周期 | 软件工程对象、某个 harness 的私有类型、未经证据支持的永久 Core |
+| Capsule | 具体底座接入、私有执行类型、能力降级、底座维护与替换 | Mother 的实验结论、Domain 业务语义 |
+| Domain | 领域术语、任务、策略、验证器、产品行为 | Mother/Capsule 的通用接口定义权 |
+| lab | 一次实验的版本组合、预注册、预算与结果引用 | Mother、Capsule、Domain 的业务源码 |
 
-### 5.2 跨实现不变量
+跨边界只暴露当前实验必需的信息。旧路线中的 `Actor`、`Objective`、`WorkItem`、`Decision`、
+`HumanTask`、`ActionEnvelope`、`Claim`、`Evidence`、`Verification`、`MemoryRecord` 和 `Handoff`
+保留为待实验的机制/对象候选，不再作为 R1 之前必须冻结的通用对象模型。
+
+### 5.2 R0 与 R1 composition manifest
+
+R0 尚无独立三仓。pre-bootstrap manifest 至少记录：experiment/preregistration 版本、当前仓库
+commit、彼此不同的 Mother prototype/Capsule spike/Domain path、OpenHarness upstream 与
+fork-point、model/prompt/tool/config/evaluator hash、treatment/sham/budget/task-set，以及
+trace/artifact/result 引用。同一个 commit 不得复制成 Mother、Capsule、Domain 三条仓库身份。
+
+只有 `TASK-GATE-R0-002` 达到 `accepted + continue`，R1 才创建独立 Mother、Capsule 和 lab，
+并用 lab commit 的 submodule gitlink 固定三个 repository URL 与 exact commit。
+
+### 5.3 跨实现研究不变量
 
 1. **状态不等于上下文。** 完整状态可持久、查询和回放；模型只看到任务所需投影。
 2. **提议不等于授权，授权不等于执行。** 三者分别记录并可由不同 Actor 完成。
 3. **Claim 不等于 Evidence，Evidence 不等于 Verification。** 完成不能靠自我声明。
 4. **每个副作用都有主体、策略、结果和恢复信息。** 不可补偿时必须显式升级风险。
 5. **人类注意力是一等预算。** 通知必须说明紧迫性、影响、可选项和不响应的后果。
-6. **人和 Agent 使用同一任务与决策模型。** 不能把人降格为一个特殊的 approval tool。
-7. **回放必须绑定版本。** 模型、提示、工具 schema、策略和上下文投影版本都进入 trace。
-8. **领域内容不进入通用核心。** 软件工程的 PR、Git、测试和部署属于 Domain Pack。
-9. **默认复用现有协议。** 新 wire protocol 需要证明已有协议无法承载。
+6. **回放绑定版本。** 模型、提示、工具 schema、策略、组合和上下文投影都进入 trace。
+7. **领域内容不提前晋升。** Git、PR、测试和部署首先属于软件工程 Domain。
+8. **默认复用现有协议。** 新 wire protocol 需要证明已有协议无法承载。
+9. **负结果也是有效结果。** `pivot` 和 `stop` 不得被改写成 `continue` 来维持 roadmap。
 
 ## 六、Build / Fork / Adapt 决策规则
 
@@ -243,16 +248,16 @@ adapter 或选择性复用 package。若 patch queue 持续扩大，应转为 ad
 每个核心实验在同一任务、同一输入和同等外部资源下至少比较：
 
 1. `H / human-only`：正常工具、IDE、测试和文档，但没有生成式 Agent。
-2. `A / agent-only`：相同模型、工具、Domain Pack 和预算，执行期间没有人工干预。
-3. `C / conventional-harness`：目标 harness 原生人机工作流，加同一份静态 Domain Pack，
-   但没有 Collaboration Runtime enforcement。
-4. `R / collaboration-runtime`：与 C 使用相同 harness、UI、模型、工具、提示和预算，
-   唯一新增变量是 Runtime。
+2. `A / agent-only`：相同模型、工具、Domain 资产和预算，执行期间没有人工干预。
+3. `C / conventional-capsule`：目标 Capsule 的原生人机工作流，加同一份静态 Domain 资产，
+   但没有待测 Mother mechanism。
+4. `R / mother-treatment`：与 C 使用同一个 Capsule、UI、模型、工具、提示、预算和任务集，
+   唯一新增变量是预注册的 Mother mechanism。
 
-主因果对比是 `R-C`；`R-H` 判断人的效率收益，`R-A` 判断协作带来的质量与风险收益。
-RQ-00 另设“裸 harness”辅助臂，证明静态 skill 本身是否创造价值。不能只比较两个 Agent
-模型，也不能用 agent-only benchmark 推断人机协作效果。reference runner 只用于合约、
-复现和故障注入，不能充当被刻意削弱的产品基线。
+主因果对比是同底座 `R-C`；`R-H` 判断人的效率收益，`R-A` 判断协作带来的质量与风险收益。
+每个机制实验还必须有可信 sham 和必要消融，不能用“更强底座”冒充 Mother 效果。RQ-00 另设
+“裸 harness”辅助臂，证明静态 skill 本身是否创造价值；agent-only benchmark 不能推断
+人机协作效果。
 
 ### 9.2 任务分层
 
@@ -288,9 +293,9 @@ serious defect escape。其他指标以 Pareto 前沿和分项结果报告。
 
 ### 9.4 机制消融与统计约束
 
-除四基线外，固定 adapter 比较 `C+Kernel`、`C+Assurance`、
-`C+Kernel+Assurance`。每层必须改善一个预注册指标或满足必要安全门槛；没有独立价值的层
-应删除，而不是靠总体结果保留。
+R2 的每个机制独立预注册 treatment、sham、预算、MME、停止条件和消融。多个机制不得先捆成
+一个 Runtime 再用总体结果替每层背书；unsupported、falsified 或 inconclusive 都不能解锁
+promotion，只有达到预注册阈值的 supported 结果才另建晋升 Task。
 
 研究开始前冻结主要终点、最小有意义效应（MME）、非劣界、功效分析、缺失数据、失败
 episode、超时、多重比较和一次确认性复验。模型重试和 seed 嵌套在 task 内，不能冒充独立
@@ -301,136 +306,91 @@ episode、超时、多重比较和一次确认性复验。模型重试和 seed �
 - `R-C` 的 validated completion 提高 10 个百分点且人工时间不恶化超过 5%；或人工时间
   降低 20%，质量非劣界为 -5 个百分点。
 - 严重缺陷的单侧 95% 置信区间排除超过 2 个百分点的恶化。
-- Assurance 对预注册高危故障的召回不低于 90%，误阻断不高于 5% episode，周期增加
-  不超过 10%。
+- 高危故障召回不低于 90%，误阻断不高于 5% episode，周期增加不超过 10%。
 
 这些数字是设计先验，不是既有证据；必须在看确认性结果前根据 pilot、功效和业务损失
 冻结或改写。统计显著但低于 MME 不算产品成功。
 
-主要混淆因素必须锁定或建模：模型/harness 版本、提示与上下文、工具权限、token/时间
+主要混淆因素必须锁定或建模：Mother/Capsule/model 版本、提示与上下文、工具权限、token/时间
 预算、UI、参与者经验与仓库熟悉度、学习/疲劳/携带效应、任务泄漏、评审者偏差、Agent
 随机性、基础设施延迟和研究期间的上游演进。失败 episode 不得事后排除。
 
 ## 十、研发 Roadmap
 
-Roadmap 是依赖与证据门槛，不是按季度排列的 MVP 功能表。
+Roadmap 是可反驳问题与证据门槛，不是按季度排列的功能清单。每个 Gate 先审计方法与证据是否
+完整（`accepted`），再单独记录 `outcome: continue | pivot | stop`。只有
+`accepted + continue` 解锁下一阶段；pivot 创建具名 successor route，stop 停止投入。
 
 ```text
-R0 证据与边界
-      │
-      ▼
-R1 协作语义与 conformance ─────┐
-      │                         │
-      ├──────────────┐          │
-      ▼              ▼          │
-R2 保障与注意力   R3 Adapter 与 reference runner
-      └──────────────┬───────────┘
-                     ▼
-              R4 软件工程垂直验证
-                     │
-                     ▼
-              R5 第二垂直泛化验证
-                     │
-                     ▼
-              R6 产品化与标准化
+R0 Evidence & Mother Choice
+              |
+              v
+R1 Runnable Mother v0
+              |
+              v
+R2 Mechanism Labs
+              |
+              v
+R3 Promotion & Portability
+              |
+              v
+R4 Software Engineering Confirmation
+              |
+              v
+R5 Second Vertical
+              |
+              v
+R6 Productization
 ```
 
-### R0：证据、任务与复用边界
+### R0：Evidence & Mother Choice
 
-**研究目标：** 证明存在一个未被成熟 harness 和现有协议覆盖、且值得产品化的问题。
+回答是否存在值得研发的材料性协作失败，以及首个 Capsule 是否可用。最小产物是 evidence
+register、能力矩阵、协议边界、评测设计、OpenHarness-derived spike、结构不同候选对照、一个
+proof-of-mechanism 和 Gate report。`continue` 要求现有方案未完整覆盖、treatment/sham 可信、
+Mother/Capsule 可独立维护，并具名选择 R1 Capsule；否则 pivot 到替代候选或 stop。
 
-产物包括 claim/evidence 登记册、harness 能力与缺陷矩阵、协议边界图、任务语料与评分
-量表、四基线实验设计、Component Intake Gate 和 fork 候选清单。第二垂直的真实任务、
-领域 owner 和评审者也从本阶段开始收集，不能等内核完成后再寻找例子。
+R0 只物化当前仓库任务与一个条件化 R1 bootstrap bridge，不创建 Mother/Capsule/lab 仓库，
+不创建 R1-R6 Milestone，也不打 `r0-accepted` tag 冒充 Gate 已完成。
 
-**通过门槛：** 每个核心产品 claim 都有证据等级和反证；至少两个独立 harness 的机制已
-源码核验；评测任务能区分执行能力与协作能力。RQ-00 至少完成 30 个配对 task-run，盲评
-一致性达到 `κ ≥ 0.7`，并同时找到静态提示无法稳定防住的重大失败。
+### R1：Runnable Mother v0
 
-**停止条件：** 静态 skill 相比裸 harness 没有可重复收益；所谓缺口已经被现有协议/产品
-完整覆盖；或价值只能来自更强模型而非协作机制。届时停止平台化，保持软件工程 skill。
+回答 Mother、Capsule、Domain 是否能组成可记录、可重放的真实闭环。产物是独立三仓与 lab、
+软件工程 Domain 接入、真实任务、three-repo manifest、trace/artifact 和 sham。只有 clean-checkout
+能按具名 exact commit 重跑，才可 continue；记录不稳定、sham 不可信或独立重跑失败则 pivot/stop。
 
-### R1：协作语义与 conformance
+### R2：Mechanism Labs
 
-**研究目标：** 找到最小、稳定、领域无关的状态与事件模型。
+每次只回答一个机制能否改善 R0 已观察失败。每机制独立预注册 MME、预算、treatment/sham、
+消融和失败 episode。supported 且达到预注册阈值时另建 promotion Task；falsified/inconclusive
+保留为证据并换机制、收缩或停止，不能靠 Gate accepted 自动晋升。
 
-产物包括 glossary、核心对象 schema、状态投影、事件因果关系、版本规则、adapter contract、
-三组 golden trace 和 conformance validator。
+### R3：Promotion & Portability
 
-**通过门槛：** coding 与第二垂直历史任务中至少 95% 的协作事件可由核心 + extension
-表达；核心 schema 不出现 Git、PR、test、citation 等领域词；相同版本输入可重建相同的
-确定性状态；连续 held-out 批次不再修改核心事件。
+裁决有效机制属于 Mother、Capsule、Domain 还是 lab-only。产物是 versioned mechanism、最小
+trace/core、第二 Capsule canary 和归属报告。第二 Capsule 不改写机制本体且关键事件无损才支持
+Mother promotion；contract breaking、效果消失或反向时收缩为 Capsule-specific 或 Domain-specific。
 
-**转向条件：** 若后端事件不足以重建状态，则 adapter 明确标记能力降级；若动作执行前
-无法拦截，则对需要强保障的工作负载改走 embedded reference runner。
+### R4：Software Engineering Confirmation
 
-### R2：保障、恢复与人类注意力
+在 sealed holdout 上比较 H/A/C/R，报告 joint outcome、最佳单方、人类注意力、风险、恢复、时间
+和成本。预注册 MME、非劣界和安全 guardrail 同时成立才 continue；无材料性收益或安全边界失败
+则 pivot/stop，不用开发集结果替代确认性证据。
 
-**研究目标：** 把人类参与从逐工具弹窗提升为基于风险、责任和证据的协作协议。
+### R5：Second Vertical
 
-产物包括 role/decision-right 模型、Human Task、ActionEnvelope、策略判定、credential broker
-边界、副作用/补偿日志、Claim/Evidence/Verification 和 memory lifecycle。
+把已晋升机制迁到对象、验证器和副作用显著不同的领域。产物是 adaptation set、第二垂直
+holdout 和 core-change audit。无 breaking core change 且收益/安全门槛成立才支持更宽声明；
+需要 breaking change 时收缩为 Domain/Capsule scope，而不是维护虚假的通用 Core。
 
-**通过门槛：** deny 路径 fail-closed；未审批不可逆动作和恢复后的重复副作用均为零；
-故障注入可定位和 reconcile/补偿；误阻断低于 5%；普通任务新增人工审批不超过 1–2 次。
-外部系统不支持幂等时只承诺 receipt + reconciliation，不宣称 exactly-once。
+### R6：Productization
 
-**停止条件：** 结构化协作只增加表单与等待，没有改善错误接受、恢复或注意力成本。此时
-收缩为 Assurance Gateway，而不继续扩大流程内核。
+只稳定已有多次实验、多个具名组合和现场数据共同支持的部分，交付 research preview/SDK/领域
+产品、兼容矩阵、迁移说明和升级演练。证据不足的机制保持 experimental、收缩或退役；此前不以
+生态规模、marketplace 或“支持所有 Agent”作为成功指标。
 
-### R3：Adapter 与最小 reference runner
-
-**研究目标：** 验证“厚协作控制面、薄执行适配层”是否成立。
-
-优先接一个官方商业后端和一个可审计开源后端。fork 必须通过许可证、模块边界、测试、
-安全和上游同步审计；reference runner 只实现 conformance 所需能力。
-
-**通过门槛：** 两个后端通过同一 fixtures；start/resume/steer/cancel/approve/event/artifact/
-usage 的降级是显式的；adapter 声明 `observe`、`advise` 或 `enforce` 能力档；上层不依赖
-私有 transcript、模型名或工具名。单 Agent 崩溃恢复通过前不实现多 Agent 调度，两个正式
-adapter 稳定前不扩第三个支持面。
-
-**转向条件：** 若大部分关键能力只能靠后端私有实现，则选择一个开源核心做受控 fork，
-但仍保持 adapter 契约，避免产品语义与 fork 绑定。
-
-### R4：软件工程 Domain Pack
-
-**研究目标：** 用当前仓库验证协作内核，而不是把当前流程原样搬进核心。
-
-映射对象包括风险分流、阶段闸门、EARS 验收、ADR、契约、审计、journal、undo log、
-限界上下文锁和 spec-test traceability。
-
-**通过门槛：** 相比 C 基线，pilot gate 候选为中位评审时间下降 25%、严重遗漏下降 30%、
-任务成功率非劣于 5 个百分点、时间/token 开销不超过 20%；最终阈值由 RES-004 在实验前
-冻结。现有 shell 验证继续通过。
-
-**转向条件：** 若收益只来自软件工程已有的 Git、diff 和测试，而非通用协作机制，则将
-成果保留在 Domain Pack，不宣称底座泛化成功。
-
-### R5：第二垂直泛化
-
-**研究目标：** 在具有不同对象、验证器和副作用模型的领域复现实验。
-
-默认高对比候选是“有证据的 research-to-decision memo”：没有 Git diff、编译器和测试
-套件，正确性依赖 claim-evidence、来源质量、时效和冲突处理，发布/发送仍是不可逆动作。
-R0 仍按“对比度、真实任务、领域 owner、风险、可验证性”评审它，也允许证据支持的替代项。
-
-**通过门槛：** 至少 90% 核心不变且不新增领域事件，只新增 Domain Pack 或 extension；
-同一四基线实验观察到可复现的协作收益；未审批发布为零；adapter 与 assurance 层无需
-领域特判。
-
-**停止条件：** 第二垂直要求 breaking core change，或收益无法超过最佳单方。此时重新划定
-产品边界，允许形成多个明确的垂直内核，而不是维持虚假的通用抽象。
-
-### R6：产品化与标准化
-
-只有 R5 通过后才进入。工作包括稳定 SDK、迁移策略、兼容矩阵、组织治理、长期运维、
-第三方 Domain Pack、协议扩展提案和公开评测。连续两次上游升级和跨 harness replay 必须
-通过 conformance；正式 adapter 的单次升级目标不超过 1–2 工程日，否则降级为 experimental
-或收缩支持面。此前不以生态规模、marketplace 或“支持所有 Agent”作为成功指标。
-
-所有阶段共享四个发布阻塞项：未审批不可逆副作用、恢复后重复执行、subagent 权限逃逸、
-事件日志泄露敏感 payload。任一出现都不得进入下一发布级别。
+所有阶段共享四个发布阻塞项：holdout 泄漏或不可复现的 composition、没有 evidence 的虚假终态、
+未审批不可逆副作用，以及恢复后重复执行。其他未知风险先显式记录，在真实失败影响 Gate 时补保护。
 
 ## 十一、多 Agent 研究协作协议
 
@@ -464,22 +424,24 @@ R0 仍按“对比度、真实任务、领域 owner、风险、可验证性”�
     单独覆盖 ledger state。
 15. PR 必须写 Task ID 并引用对应 Issue；只有该 PR 满足全部 acceptance 且合入后才能使用
     `Closes #N`。中间 spike、部分证据或依赖 PR 只使用 `Refs #N`，不能提前关闭任务。
-16. Milestone 对应 roadmap gate，但进度百分比不是验收。每个活跃阶段保留一个 gate Issue；
-    只有 gate report 合入、gate Issue 与 Milestone 关闭后，才在该主干提交创建不可移动的
-    annotated tag `rN-accepted`。新证据推翻结论时另写 superseding decision，不改写历史 Tag。
+16. Milestone 只投影当前可执行 Gate，进度百分比不是验收。Gate report 必须分别记录
+    `state: accepted` 与 `outcome: continue | pivot | stop`；只有 `accepted + continue` 才能
+    解锁下一阶段。Tag 保护由独立任务验收，未满足时不得创建 `rN-accepted`。
 
 ## 十二、当前非目标
 
 - 不承诺支持所有模型、所有 harness 或所有业务领域。
 - 不先造 TUI、IDE、聊天前端、模型 gateway、MCP/A2A/ACP/AG-UI 替代协议。
 - 不把多 Agent 数量、自治时长、token 消耗或代码产量当成北极星。
-- 不在 R0/R1 未通过前决定长期实现语言、部署拓扑和多租户产品形态。
+- R0 不创建独立 Mother、Capsule 或 lab；R1 只在 `TASK-GATE-R0-002@continue` 满足后 bootstrap。
 - 不把 fork 等同于复制整个仓库；不接收许可证不清或无法持续同步的来源。
 - 不用单一 benchmark、demo 或 README 声明证明跨领域泛化。
 
 ## 十三、决策与文档维护
 
-- 本文维护研究问题、产品边界、阶段门槛和证据方法。
+- 本文是当前研究问题、组件边界、阶段门槛和证据方法的唯一事实源。
+- 批准来源见 [`TASK-DEC-002` ADR](../decisions/0001-evolvable-mother-research-platform.md)，
+  历史身份与外部效果见 [GitHub Roadmap 迁移映射](github-roadmap-migration.md)。
 - 任务状态只维护在 [`todo.md`](../../todo.md)；完成记录只维护在
   [`done.md`](../../done.md)。
 - 架构或复用选择一旦涉及不可逆投入，写入 `docs/decisions/`，不直接改写历史理由。

@@ -4,6 +4,9 @@
 >
 > 实施 decision：[ADR 0001](../../decisions/0001-evolvable-mother-research-platform.md)。本文正文保留批准时的设计与理由。
 >
+> 当前产品边界与 R0-R6 路线的唯一事实源：
+> [`agent-collaboration-foundation.md`](../../research/agent-collaboration-foundation.md)。
+>
 > 文档类型：Explanation / Design Spec
 >
 > 面向：本仓库维护者、后续 Mother/Capsule 维护者、研究实施者和垂直产品负责人

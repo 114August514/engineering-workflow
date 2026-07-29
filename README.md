@@ -196,6 +196,9 @@ macOS runner 不是凑数：BSD 工具链专门用来拦 GNU-only 的写法
 （`\s` / `stat -c` / `date -d` / `sed -i` / `readlink -f` / `xargs -r`），
 这些在 macOS 上要么直接失败，要么**静默降级成错误答案**。
 
-调研笔记在 `docs/research/`。泛化升级的研究规格见
-[`docs/research/agent-collaboration-foundation.md`](docs/research/agent-collaboration-foundation.md)，
-当前任务与完成证据分别维护在 [`todo.md`](todo.md) 和 [`done.md`](done.md)。
+调研材料在 `docs/research/`。当前 Mother/Capsule/Domain/lab 边界与 R0-R6 路线的唯一事实源是
+[`docs/research/agent-collaboration-foundation.md`](docs/research/agent-collaboration-foundation.md)；
+批准决定与历史身份映射分别见
+[`docs/decisions/0001-evolvable-mother-research-platform.md`](docs/decisions/0001-evolvable-mother-research-platform.md)
+和 [`docs/research/github-roadmap-migration.md`](docs/research/github-roadmap-migration.md)。当前任务与
+完成证据只维护在 [`todo.md`](todo.md) 和 [`done.md`](done.md)。

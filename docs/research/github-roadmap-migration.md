@@ -3,6 +3,10 @@
 本文只记录从原 R0 路线到“可演化 Mother + 可替换 Capsule + 独立 Domain +
 lab-only composition”的身份迁移。`planned` 表示尚未发生，不能作为实现或验收证据。
 
+当前产品边界与 R0-R6 路线以
+[`agent-collaboration-foundation.md`](agent-collaboration-foundation.md) 为唯一事实源；本文只负责
+历史身份、外部对象与 mutation receipt。
+
 ## Keep
 
 以下对象保留原身份、URL 和历史语义，不通过本次迁移改写：
