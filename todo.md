@@ -202,25 +202,29 @@
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
 
 ## TASK-OPS-002 | 建立 R0 Tag 保护与相关 CI 规则
-- state: blocked
-- rev: 2
+- state: ready
+- rev: 3
 - rq: none
 - deps: TASK-DOC-002
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T21:46:26+08:00
+- updated: 2026-07-29T23:07:08+08:00
 - write: repo:.github/workflows/ci.yml
+- write: repo:.github/pull_request_template.md
+- write: repo:AGENTS.md
+- write: repo:tests/ci-scope-consistent.sh
 - write: repo:docs/research/r0-tag-protection.md
+- artifact: repo:tests/ci-scope-consistent.sh
 - artifact: repo:docs/research/r0-tag-protection.md
 - accept AC-1: 相关 required checks、保护目标和终态等待点有版本化规则与 GitHub receipt
 - accept AC-2: R0 Gate 未 accepted 且 outcome 非 continue 时不得创建 acceptance tag
 - evidence: none
-- blocker: deps:TASK-DOC-002; need=canonical roadmap 先明确 Domain 内相关 CI 与外置控制面的边界
+- blocker: none
 - handoff: none
 - effect: FX-GH-R0-TAG-PROTECTION; action=create or update the scoped R0 ruleset after approval
 - undo: FX-GH-R0-TAG-PROTECTION; action=restore the previous ruleset or remove the new ruleset and retain audit
-- ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim
+- ci-scope: required=ubuntu,macos; advisory=none; n/a=none; reason=workflow and tag protection change the R0 terminal acceptance path
 
 ## TASK-GATE-R0-002 | 验收 Evidence & Mother Choice
 - state: blocked

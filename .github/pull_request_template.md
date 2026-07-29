@@ -16,6 +16,15 @@
 ```
 ```
 
+### CI 相关性
+
+<!-- required 只列能推翻当前 acceptance 的检查；advisory 不阻塞独立工作；n/a 无因果关系。
+     pending 不改变 task state；只在 merge、gate、tag 等终态动作前等待相关 required checks。 -->
+
+```text
+ci-scope: required=<checks|none>; advisory=<checks|none>; n/a=<checks|none>; reason=<why>
+```
+
 ## 哪里不确定
 
 <!-- 写满三条。让评审者直接去最可能有问题的地方，
