@@ -1,6 +1,6 @@
 # 可演化 Mother 研究路线迁移计划
 
-> 状态：planned
+> 状态：已在 PR #14 实施，等待 squash merge
 >
 > 本文是执行路线，不是实现 receipt。除已批准设计外，文中出现的 ADR、validator、
 > GitHub Milestone/Issue、Mother/Capsule 仓库、实验与 tag 均不得据此声称已经存在或通过。
@@ -34,6 +34,8 @@ Domain Product -> Evolvable Mother -> Capsule Port -> Substrate Capsule
 - 不 fork OpenHarness，不实现首个机制，不运行确认性实验。
 - 不冻结永久 Capsule contract、通用对象模型或 harness-neutral 声明。
 - 不创建 `r0-accepted` tag。
+- 不归档或把 `engineering-workflow` 改名为 Mother；它继续作为软件工程 Domain，R1 只迁出
+  临时研究控制面。
 - 不改写旧 Task、Issue、Milestone、PR、commit 或 decision 的原始语义。
 - 不为了预防所有可能故障而引入复杂事务层、通用影响分析器或 GitHub 自动化框架。
 
@@ -104,7 +106,7 @@ ci-scope: required=...; advisory=...; n/a=...; reason=...
 
 | 阶段 | 要回答的问题 | 最小产物 | Continue 门槛 | Pivot/Stop 信号 |
 |---|---|---|---|---|
-| R0 Evidence & Mother Choice | 是否存在值得研发的材料性协作失败，首个 Capsule 是否可用 | evidence register、能力矩阵、协议边界、评测设计、OpenHarness-derived spike、结构不同候选对照、一个 proof-of-mechanism、Gate report | 现有方案未完整覆盖；可信 treatment/sham；Mother/Capsule 可独立维护；OpenHarness-derived 被选为具名 R1 Capsule | 无材料性失败、现有方案已覆盖、无法构造 sham、底座不可维护或 OpenHarness 被拒绝 |
+| R0 Evidence & Mother Choice | 是否存在值得研发的材料性协作失败，首个 Capsule 是否可用 | evidence register、能力矩阵、协议边界、评测设计、OpenHarness-derived spike、结构不同候选对照、范围受限的 Mother prototype、pre-bootstrap manifest、一个 proof-of-mechanism、Gate report | 现有方案未完整覆盖；可信 treatment/sham；Mother/Capsule 可独立维护；OpenHarness-derived 被选为具名 R1 Capsule | 无材料性失败、现有方案已覆盖、无法构造 sham、底座不可维护或 OpenHarness 被拒绝 |
 | R1 Runnable Mother v0 | 三个组件能否组成可记录、可重放的真实闭环 | 独立 Mother/Capsule/lab、软件工程 Domain 接入、真实任务、three-repo manifest、trace/artifact、sham、clean-checkout replay | 具名组合可重复运行且不发布中立性声明 | 记录不稳定、sham 不可信、独立重跑失败 |
 | R2 Mechanism Labs | 单一机制是否改善已观察失败 | 每机制独立预注册、MME、预算、treatment/sham、消融、失败 episode | supported 且达到预注册阈值，另建 promotion Task | falsified/inconclusive；换机制或停止，不靠 accepted 解锁晋升 |
 | R3 Promotion & Portability | 有效机制属于 Mother、Capsule、Domain 还是 lab-only | versioned mechanism、最小 trace/core、第二 Capsule canary、归属裁决 | 第二 Capsule 不改写机制本体且关键事件无损 | contract breaking、效果消失或反向；收缩声明范围 |
@@ -165,8 +167,11 @@ R1 起才改用 lab commit 加 Mother/Capsule/Domain repository URL、exact comm
 
 - 迁移使用新分支 `agent/evolvable-mother-roadmap` 和独立 PR。
 - 先提交 old-to-new map，再创建新 Milestone/Issue。
-- 新 PR 合入默认分支后，`TASK-OPS-003` 才给 `#11/#13` 与 PR `#12` 增加 successor link，
-  再按历史归档语义关闭；关闭前确认新路线包含 PR `#12` 的原 head。
+- PR #14 合入前只给 `#11/#13` 与 PR `#12` 追加 proposed-successor link，不关闭对象。
+- PR #14 必须 squash merge；合入后 `TASK-OPS-003` 再按历史语义关闭这三个对象。这样 PR #12
+  不会因祖先提交进入 main 而被 GitHub 自动判为 merged，关闭后仍可重新打开。
+- Issue #1 由包含其原交付物的 PR #14 使用 `Closes #1` 在 squash merge 时关闭；PR #12 仍保留
+  原标题、正文、head 与任务身份。
 - Milestone `#1` 不重命名，也不作为 R0 Gate 的依赖；等其中保留的原任务全部终态后再单独 closeout。
 
 ## 8. GitHub 投影
@@ -340,7 +345,7 @@ git diff --check
 - 是否改写了历史 acceptance/Issue/PR 语义。
 - 是否把计划中的对象或实验冒充为已实现。
 - Gate accepted/outcome 与 bootstrap 解锁是否分离。
-- validator 是否存在空输入假绿。
+- 一次性 ledger 迁移校验是否用故障注入排除了空输入假绿，并留下 review receipt。
 - CI 是否只等待当前变更真正相关的 required checks。
 
 本迁移会修改 shell 测试与 workflow，因此 migration PR 准备合并时 Ubuntu/macOS 是 required；
@@ -361,7 +366,7 @@ git diff --check
 
 1. 新 decision、canonical roadmap、migration map 与 ledger 契约进入默认分支。
 2. 旧语义被保留，新 R0 Task/Issue/Milestone 可追踪。
-3. ledger 与 CI relevance 有最小机器检查。
+3. ledger 迁移有一次性故障注入验证与 review receipt；CI relevance 有持久最小机器检查。
 4. 未来 Mother/Capsule/lab 创建被 `TASK-GATE-R0-002@continue` 明确锁住。
 
 它不意味着已经证明 Mother 有效、OpenHarness 是最终底座、通用 Core 存在，或产品已经进入 R1。

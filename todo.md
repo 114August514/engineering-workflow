@@ -163,17 +163,18 @@
 
 ## TASK-PACK-SWE-000 | 切分软件工程 discovery 与 sealed holdout
 - state: blocked
-- rev: 2
+- rev: 3
 - rq: RQ-01,RQ-04,RQ-08
 - deps: TASK-RES-004
 - owner: none
 - claim: none
 - tracking: github:issue#16; github:milestone#8
-- updated: 2026-07-29T23:10:09+08:00
+- updated: 2026-07-29T23:52:06+08:00
 - write: repo:experiments/r0/task-packs/software-engineering/
 - artifact: repo:experiments/r0/task-packs/software-engineering/
 - accept AC-1: discovery、pilot 与 sealed holdout 有互斥任务身份、版本和泄漏审计
 - accept AC-2: 任务、评分量表、H/A/C/R 基线与 evaluator 在揭示 holdout 前冻结
+- accept AC-3: sealed holdout 记录版本、digest 与 reveal receipt；R0 proof 只能使用 discovery/pilot，不能消费 sealed holdout 内容
 - evidence: none
 - blocker: deps:TASK-RES-004; need=预注册评测先定义语料与停止条件
 - handoff: none
@@ -183,17 +184,19 @@
 
 ## TASK-EXP-000 | 完成首个窄幅 proof-of-mechanism
 - state: blocked
-- rev: 2
+- rev: 3
 - rq: RQ-00,RQ-01,RQ-02,RQ-04,RQ-05,RQ-06,RQ-08
 - deps: TASK-CAPSULE-000,TASK-PACK-SWE-000,TASK-RES-004
 - owner: none
 - claim: none
 - tracking: github:issue#17; github:milestone#8
-- updated: 2026-07-29T23:10:10+08:00
+- updated: 2026-07-29T23:52:06+08:00
 - write: repo:experiments/r0/proof-of-mechanism/
 - artifact: repo:experiments/r0/proof-of-mechanism/
-- accept AC-1: 同一 Capsule、任务、模型与预算下预注册 treatment、sham、MME 和停止条件
-- accept AC-2: trace、artifact、结果与失败 episode 可重放，负结果不被改写为机制成功
+- accept AC-1: 同一 Capsule、任务、模型与预算下预注册 treatment、sham、MME 和停止条件；预注册 commit/receipt 早于首次运行，后续修订只追加 amendment
+- accept AC-2: 实验只使用 discovery/pilot，不读取 R4 sealed holdout；trace、artifact、结果与失败 episode 可重放，负结果不被改写为机制成功
+- accept AC-3: 在 artifact 目录内产出范围受限的 Mother prototype 与 pre-bootstrap composition manifest，后者记录 experiment/preregistration 版本、当前仓库 commit、不同的 Mother/Capsule/Domain path、OpenHarness upstream/fork-point、model/prompt/tool/config/evaluator hash、treatment/sham/budget/task-set 与 trace/artifact/result 引用
+- accept AC-4: clean checkout 能按 manifest 的具名 commit 与引用重放 proof-of-mechanism，并留下 replay receipt
 - evidence: none
 - blocker: deps:TASK-CAPSULE-000,TASK-PACK-SWE-000,TASK-RES-004; need=Capsule、任务包与评测设计就绪
 - handoff: none
@@ -250,17 +253,18 @@
 
 ## TASK-OPS-R1-BOOTSTRAP-001 | 创建 Mother/Capsule/lab 并把本仓作为 Domain 接入
 - state: blocked
-- rev: 1
+- rev: 2
 - rq: none
 - deps: TASK-GATE-R0-002@continue
 - owner: none
 - claim: none
 - tracking: none
-- updated: 2026-07-29T18:23:49+08:00
+- updated: 2026-07-29T23:52:06+08:00
 - write: none
 - artifact: none
 - accept AC-1: 仅在 R0 Gate accepted 且 outcome 为 continue 后创建独立 Mother、Capsule 与 lab 仓库
 - accept AC-2: lab 以 submodule 固定 Mother、Capsule、engineering-workflow Domain 的具名 exact commit
+- accept AC-3: 研究控制面迁出后 engineering-workflow 仍以原仓库身份保留为软件工程 Domain，不因 bootstrap 被归档或改名为 Mother
 - evidence: none
 - blocker: deps:TASK-GATE-R0-002@continue; need=Gate accepted 与 outcome continue 同时成立
 - handoff: none
@@ -270,20 +274,20 @@
 
 ## TASK-OPS-003 | 迁移 PR 合入后归档旧路线对象
 - state: blocked
-- rev: 2
+- rev: 3
 - rq: none
 - deps: TASK-DOC-002
 - owner: none
 - claim: none
 - tracking: github:issue#20; github:milestone#8
-- updated: 2026-07-29T23:10:10+08:00
+- updated: 2026-07-29T23:52:06+08:00
 - write: repo:docs/research/github-roadmap-migration.md
 - artifact: repo:docs/research/github-roadmap-migration.md
-- accept AC-1: PR #14 合入 main 后才给 #11、#13 与 PR #12 追加 successor link 并按历史语义归档
+- accept AC-1: PR #14 以 squash merge 合入 main 后，保留已追加的 proposed-successor links 与历史语义，再关闭 #11、#13 与 PR #12
 - accept AC-2: 每次 mutation 记录 URL、时间与 undo；Milestone #1 继续等待原任务终态后单独 closeout
 - evidence: none
-- blocker: deps:TASK-DOC-002; external=github:pr#14; need=merged-to-main before archiving #11,#13,PR#12; excluded=github:milestone#1
+- blocker: deps:TASK-DOC-002; external=github:pr#14; need=squash-merged-to-main before closing #11,#13,PR#12; excluded=github:milestone#1
 - handoff: none
-- effect: FX-GH-R0-SUPERSEDE; action=archive issue#11 issue#13 and pr#12 after migration merge
-- undo: FX-GH-R0-SUPERSEDE; action=reopen archived objects and retain successor comments and audit
+- effect: FX-GH-R0-SUPERSEDE; action=close issue#11 issue#13 and pr#12 after migration squash merge
+- undo: FX-GH-R0-SUPERSEDE; action=reopen closed objects and retain successor comments and audit
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=blocked task has no delivered change or acceptance claim

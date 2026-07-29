@@ -7,13 +7,16 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 [`agent-collaboration-foundation.md`](agent-collaboration-foundation.md) 为唯一事实源；本文只负责
 历史身份、外部对象与 mutation receipt。
 
+`engineering-workflow` 仓库本身不归档、不改名为 Mother。它保留为软件工程 Domain，并在 R0
+暂时承载研究控制面；只有 `accepted + continue` 后才把控制面迁入新建的外置 Mother。
+
 ## Keep
 
 以下对象保留原身份、URL 和历史语义，不通过本次迁移改写：
 
 | 对象 | 原身份 | 原 URL | 保留事实 |
 | --- | --- | --- | --- |
-| Issue #1 | `[TASK-DOC-001] 建立协作底座研究规格与任务账本` | [#1](https://github.com/114August514/engineering-workflow/issues/1) | 保留原 acceptance 与交付历史 |
+| Issue #1 | `[TASK-DOC-001] 建立协作底座研究规格与任务账本` | [#1](https://github.com/114August514/engineering-workflow/issues/1) | 保留原 acceptance 与交付历史；由包含原交付物的 PR #14 使用 `Closes #1` 在 squash merge 时关闭 |
 | Issue #2 | `[TASK-OPS-001] 为任务账本增加机器检查` | [#2](https://github.com/114August514/engineering-workflow/issues/2) | 保留原标题、正文与历史语义；外部对象本次未改动，本地实现路线因产品边界 cancelled |
 | Issue #3 | `[TASK-RES-004] 设计四基线与预注册评测` | [#3](https://github.com/114August514/engineering-workflow/issues/3) | 继续产生 R0 评测证据 |
 | Issue #7 | `[TASK-RES-003] 核验 MCP/ACP/A2A/AG-UI 协议边界` | [#7](https://github.com/114August514/engineering-workflow/issues/7) | 继续产生 R0 协议证据 |
@@ -21,7 +24,7 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 | Issue #9 | `[TASK-RES-001] 建立 claim/evidence 登记册` | [#9](https://github.com/114August514/engineering-workflow/issues/9) | 继续维护 R0 证据登记 |
 | Issue #10 | `[TASK-RES-002] 固化 harness 能力与缺陷矩阵` | [#10](https://github.com/114August514/engineering-workflow/issues/10) | 继续产生 R0 harness 证据 |
 | Milestone #1 | `R0 — Evidence & Boundary` | [Milestone #1](https://github.com/114August514/engineering-workflow/milestone/1) | 保留旧路线投影；不属于 `TASK-OPS-003`，待原任务全部终态后单独 closeout |
-| PR #12 | `docs: TASK-DOC-001 建立协作底座研究规格与任务账本` | [PR #12](https://github.com/114August514/engineering-workflow/pull/12) | 保持 draft；原 head 为 `agent/research-foundation@60b768c1fe6e118bc66d126577fe5b32930c62b3` |
+| PR #12 | `docs: TASK-DOC-001 建立协作底座研究规格与任务账本` | [PR #12](https://github.com/114August514/engineering-workflow/pull/12) | 保持 draft 且不合并；原 head 为 `agent/research-foundation@60b768c1fe6e118bc66d126577fe5b32930c62b3`；PR #14 squash merge 后由 `TASK-OPS-003` 关闭 |
 
 旧 Milestone #2 至 #7 采用一条 grouped disposition：
 [#2 `R5 — Cross-domain Generalization`](https://github.com/114August514/engineering-workflow/milestone/2)、
@@ -52,24 +55,24 @@ lab-only composition”的身份迁移。`planned` 表示尚未发生，不能�
 
 ## Supersede
 
-这些是迁移决定，不表示外部对象已经被修改：
+下表记录旧 ledger 身份、已创建的 successor 与仍保持 open 的历史对象：
 
 | 原对象或路线 | 新身份或路线 | 状态 |
 | --- | --- | --- |
-| `TASK-FORK-001` / [Issue #11](https://github.com/114August514/engineering-workflow/issues/11) | `[TASK-CAPSULE-000] 选择并验证首个 Substrate Capsule` | planned；ledger 仍为 ready |
-| 旧 R0 gate / [Issue #13](https://github.com/114August514/engineering-workflow/issues/13) | `[TASK-GATE-R0-002] 验收 Evidence & Mother Choice` | planned；Issue 仍 open |
-| `TASK-EVAL-001` | `TASK-EXP-000` 的窄幅 proof-of-mechanism route | planned；ledger 仍为 blocked |
+| `TASK-FORK-001` / [Issue #11](https://github.com/114August514/engineering-workflow/issues/11) | [`TASK-CAPSULE-000` / Issue #15](https://github.com/114August514/engineering-workflow/issues/15) | ledger cancelled；successor created/blocked；旧 Issue open，已追加 proposed-successor comment |
+| 旧 R0 gate / [Issue #13](https://github.com/114August514/engineering-workflow/issues/13) | [`TASK-GATE-R0-002` / Issue #19](https://github.com/114August514/engineering-workflow/issues/19) | successor created/blocked；旧 Issue open，已追加 proposed-successor comment |
+| `TASK-EVAL-001` | [`TASK-EXP-000` / Issue #17](https://github.com/114August514/engineering-workflow/issues/17) | ledger cancelled；successor created/blocked |
 | `TASK-OPS-001` / [Issue #2](https://github.com/114August514/engineering-workflow/issues/2) | `TASK-OPS-R1-BOOTSTRAP-001` 后由外置 Mother 重新决定机器控制面 | ledger cancelled；原 Issue 未改动，不继承完成状态 |
-| `TASK-ADR-001` | `TASK-DEC-002` + R1 topology evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-CORE-001` | `TASK-DEC-002` + R1/R3 semantics and promotion evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-CORE-002` | `TASK-DEC-002` + R1/R3 trace and promotion evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-ADP-001` | `TASK-DEC-002` + R1/R3 Capsule Port evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-ADP-002` | `TASK-DEC-002` + R1/R3 Capsule and portability evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-ASR-001` | `TASK-DEC-002` + R2 mechanism evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-SWE-001` | `TASK-DEC-002` + R1/R4 software-engineering evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-SWE-002` | `TASK-DEC-002` + R4 confirmation evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-GEN-001` | `TASK-DEC-002` + R5 second-vertical evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
-| `TASK-GEN-002` | `TASK-DEC-002` + R5 second-vertical evidence route | `TASK-DEC-002` accepted；旧 task cancellation 与 successor route planned；ledger 仍为 blocked |
+| `TASK-ADR-001` | `TASK-DEC-002` + R1 topology evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-CORE-001` | `TASK-DEC-002` + R1/R3 semantics and promotion evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-CORE-002` | `TASK-DEC-002` + R1/R3 trace and promotion evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-ADP-001` | `TASK-DEC-002` + R1/R3 Capsule Port evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-ADP-002` | `TASK-DEC-002` + R1/R3 Capsule and portability evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-ASR-001` | `TASK-DEC-002` + R2 mechanism evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-SWE-001` | `TASK-DEC-002` + R1/R4 software-engineering evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-SWE-002` | `TASK-DEC-002` + R4 confirmation evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-GEN-001` | `TASK-DEC-002` + R5 second-vertical evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
+| `TASK-GEN-002` | `TASK-DEC-002` + R5 second-vertical evidence route | ledger cancelled；`TASK-DEC-002` accepted；successor route recorded |
 
 旧 Task、Issue、Milestone、PR 和 acceptance 均不原地换义；新路线不继承未完成旧任务的
 完成状态。`TASK-DEC-002` 已 accepted，旧 abstract-first Task 已按原 acceptance 进入
@@ -79,7 +82,7 @@ cancelled；旧 GitHub 对象仍保持 open，只追加 proposed-successor comme
 
 | 新对象 | 身份 | 状态 |
 | --- | --- | --- |
-| 迁移 PR | 承载已 accepted 的 `TASK-DEC-002` 与仍在迁移中的工作；目标 `main`；独立 [draft PR #14](https://github.com/114August514/engineering-workflow/pull/14) | PR created, draft；`TASK-DEC-002` accepted；PR 未合入 |
+| 迁移 PR | 承载已 accepted 的 `TASK-DEC-002` 与迁移工作；目标 `main`；独立 [PR #14](https://github.com/114August514/engineering-workflow/pull/14) | PR created, ready for review, unmerged；必须 squash merge |
 | R0 successor Milestone | [`R0 - Evidence & Mother Choice`（#8）](https://github.com/114August514/engineering-workflow/milestone/8) | created, open |
 | R0 Issue 1/6 | [`[TASK-CAPSULE-000] 选择并验证首个 Substrate Capsule`（#15）](https://github.com/114August514/engineering-workflow/issues/15) | created, blocked |
 | R0 Issue 2/6 | [`[TASK-PACK-SWE-000] 切分软件工程 discovery 与 sealed holdout`（#16）](https://github.com/114August514/engineering-workflow/issues/16) | created, blocked |
@@ -93,8 +96,8 @@ cancelled；旧 GitHub 对象仍保持 open，只追加 proposed-successor comme
 - `FX-GH-R0-PROJECTION` (completed): effect = 创建 successor Milestone #8、Issue #15-#20，
   并给 #11、#13、PR #12 追加 proposed-successor comment；completed-at = `2026-07-29T15:10:58Z`；
   undo = 关闭新建对象，保留 audit events、评论与本映射。
-- `FX-GH-R0-SUPERSEDE` (planned): effect = 仅在迁移 PR merge 后归档 #11、#13 与 PR #12，
-  并保留 successor links；undo = 重新打开被归档对象，保留 successor links 与 audit。
+- `FX-GH-R0-SUPERSEDE` (planned): effect = 仅在迁移 PR squash merge 后关闭 #11、#13 与 PR #12，
+  并保留 successor links；undo = 重新打开被关闭对象，保留 successor links 与 audit。
 
 ## Receipts
 
@@ -103,9 +106,10 @@ cancelled；旧 GitHub 对象仍保持 open，只追加 proposed-successor comme
 | 核对 PR #12 身份与 head | completed | [PR #12](https://github.com/114August514/engineering-workflow/pull/12), `60b768c1fe6e118bc66d126577fe5b32930c62b3` |
 | 写入迁移映射 | completed | `docs/research/github-roadmap-migration.md` |
 | 创建或复用迁移 draft PR | completed | [PR #14](https://github.com/114August514/engineering-workflow/pull/14), created-at `2026-07-29T09:03:38Z` |
+| 标记迁移 PR ready 并记录 merge-method decision | completed | [PR #14](https://github.com/114August514/engineering-workflow/pull/14), ready for review, unmerged；merge-method=`squash` |
 | 记录 `TASK-DEC-002` superseding decision | completed | [ADR 0001](../decisions/0001-evolvable-mother-research-platform.md), commit `29a1450` |
 | 创建 successor Milestone | completed | [Milestone #8](https://github.com/114August514/engineering-workflow/milestone/8), created-at `2026-07-29T15:08:49Z` |
 | 创建六个 R0 Issue | completed | [#15](https://github.com/114August514/engineering-workflow/issues/15), [#16](https://github.com/114August514/engineering-workflow/issues/16), [#17](https://github.com/114August514/engineering-workflow/issues/17), [#18](https://github.com/114August514/engineering-workflow/issues/18), [#19](https://github.com/114August514/engineering-workflow/issues/19), [#20](https://github.com/114August514/engineering-workflow/issues/20); created-at `2026-07-29T15:10:09Z..15:10:10Z` |
 | 追加 proposed-successor links | completed | [#11 comment](https://github.com/114August514/engineering-workflow/issues/11#issuecomment-5119741963), [#13 comment](https://github.com/114August514/engineering-workflow/issues/13#issuecomment-5119742476), [PR #12 comment](https://github.com/114August514/engineering-workflow/pull/12#issuecomment-5119742752); completed-at `2026-07-29T15:10:58Z` |
-| 归档 #11、#13 与 PR #12 | planned after migration merge | not changed；由 [#20](https://github.com/114August514/engineering-workflow/issues/20) 承载 |
+| 关闭 #11、#13 与 PR #12 | planned after migration squash merge | not changed；由 [#20](https://github.com/114August514/engineering-workflow/issues/20) 承载 |
 | Milestone #1 closeout | planned after its original tasks reach terminal states | not changed；outside `TASK-OPS-003` |

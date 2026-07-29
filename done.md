@@ -52,13 +52,13 @@
 
 ## TASK-DOC-001 | 建立研究规格与协作账本
 - state: accepted
-- rev: 3
+- rev: 4
 - rq: none
 - deps: TASK-DEC-001
 - owner: agent:root
 - claim: run:research-spec-20260729
 - tracking: github:issue#1; github:pr#12; github:milestone#1
-- updated: 2026-07-29T18:23:49+08:00
+- updated: 2026-07-29T23:58:07+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - write: repo:todo.md
 - write: repo:done.md
@@ -67,17 +67,17 @@
 - artifact: repo:todo.md
 - artifact: repo:done.md
 - accept AC-1: 研究规格明确问题、边界、RQ、证据、基线、stage gates、停止条件和协作协议
-- evidence AC-1: ref=repo:docs/research/agent-collaboration-foundation.md
+- evidence AC-1: ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:docs/research/agent-collaboration-foundation.md
 - accept AC-2: 任务账本包含固定字段、依赖、claim、tracking、write scope、acceptance 和恢复语义
-- evidence AC-2: ref=repo:todo.md; ref=repo:done.md
+- evidence AC-2: ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:todo.md; ref=git:60b768c1fe6e118bc66d126577fe5b32930c62b3:done.md
 - accept AC-3: 本仓库要求的文档与 shell 验证全部通过
-- evidence AC-3: command=repository-required-verification; exit=0; at=2026-07-29T02:48:29+08:00
+- evidence AC-3: command=repository-required-verification; exit=0; at=2026-07-29T02:48:29+08:00; commit=60b768c1fe6e118bc66d126577fe5b32930c62b3
 - blocker: none
 - handoff: none
 - effect: none
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=metadata amendment does not reopen historical acceptance
 - move: ledger-v2:task-doc-001:20260729
-- amendment-receipt: scope=transaction-metadata-only; previous-move=bootstrap:2026-07-29; acceptance-evidence=unchanged
+- amendment-receipt: scope=pin-historical-evidence; previous-move=bootstrap:2026-07-29; acceptance-content=unchanged; original-head=60b768c1fe6e118bc66d126577fe5b32930c62b3
 
 ## TASK-DEC-002 | 记录可演化 Mother superseding decision
 - state: accepted
@@ -429,13 +429,13 @@
 
 ## TASK-DOC-002 | 迁移 canonical roadmap 与历史映射
 - state: accepted
-- rev: 3
+- rev: 4
 - rq: none
 - deps: TASK-DEC-002
 - owner: agent:root
 - claim: run:canonical-roadmap-migration-20260729T174209p0800
 - tracking: none
-- updated: 2026-07-29T23:01:04+08:00
+- updated: 2026-07-29T23:58:07+08:00
 - write: repo:docs/research/agent-collaboration-foundation.md
 - write: repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md
 - write: repo:README.md
@@ -451,10 +451,11 @@
 - accept AC-2: decision history 明确保留与取代范围，且 canonical roadmap 能回答 continue、pivot 和 stop
 - evidence AC-2: ref=repo:docs/research/agent-collaboration-foundation.md; sections=一,十,十三; ref=repo:docs/decisions/0001-evolvable-mother-research-platform.md; ref=repo:docs/research/github-roadmap-migration.md
 - accept AC-3: 历史补救设计追加 supersession notice，README、design、migration map 与 ledger 指向同一当前事实源且文档链接通过
-- evidence AC-3: ref=repo:README.md; ref=repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md; ref=repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md; ref=repo:docs/research/github-roadmap-migration.md; command=bash tests/docs-links.sh; exit=0; at=2026-07-29T23:01:04+08:00
+- evidence AC-3: ref=repo:README.md; ref=repo:docs/superpowers/specs/2026-07-29-review-remediation-design.md; ref=repo:docs/superpowers/specs/2026-07-29-evolvable-mother-research-platform-design.md; ref=repo:docs/research/github-roadmap-migration.md; review=local-markdown-target-audit; result=all-resolved; at=2026-07-29T23:58:07+08:00
 - blocker: none
 - handoff: none
 - effect: none
 - undo: none
 - ci-scope: required=none; advisory=none; n/a=ubuntu,macos; reason=current checks do not validate canonical roadmap content
 - move: move-task-doc-002-accepted-r3
+- amendment-receipt: scope=replace-overclaimed-link-test-receipt; acceptance-content=unchanged; tests/docs-links.sh=product-references-only

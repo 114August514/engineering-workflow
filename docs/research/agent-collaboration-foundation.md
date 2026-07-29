@@ -347,8 +347,9 @@ R6 Productization
 
 回答是否存在值得研发的材料性协作失败，以及首个 Capsule 是否可用。最小产物是 evidence
 register、能力矩阵、协议边界、评测设计、OpenHarness-derived spike、结构不同候选对照、一个
-proof-of-mechanism 和 Gate report。`continue` 要求现有方案未完整覆盖、treatment/sham 可信、
-Mother/Capsule 可独立维护，并具名选择 R1 Capsule；否则 pivot 到替代候选或 stop。
+范围受限的 Mother prototype、pre-bootstrap manifest、proof-of-mechanism 和 Gate report。
+`continue` 要求现有方案未完整覆盖、treatment/sham 可信、Mother/Capsule 可独立维护，并具名
+选择 R1 Capsule；否则 pivot 到替代候选或 stop。
 
 R0 只物化当前仓库任务与一个条件化 R1 bootstrap bridge，不创建 Mother/Capsule/lab 仓库，
 不创建 R1-R6 Milestone，也不打 `r0-accepted` tag 冒充 Gate 已完成。
