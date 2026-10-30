@@ -1,5 +1,11 @@
 # engineering-workflow
 
+> **已归档（2026-10-30）**：本仓库不再维护。
+> - 工作流程由 [lean-harness](https://github.com/114August514/lean-harness) 取代。
+> - 工程知识（生命周期、文档、前端、后端、日志与交互文案、代码评审）已按权威规范核实后并入 lean-harness 的
+>   `software-lifecycle`、`project-docs`、`frontend-engineering`、`backend-engineering`、`llm-prompts-in-code` skill 与 `review-work` 的参考资料。
+> - Mother/Capsule 研究路线（R0–R6）未继续，相关 Issue 与 Milestone 已以 not planned 关闭。
+
 一套让 AI 和人一起从 0 搭出工程化项目的工作流。
 
 **设计目标不是"让 AI 写更多代码"，是"让人审得动 AI 写的代码"。**
